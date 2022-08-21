@@ -13,13 +13,21 @@ namespace Cards
     public class CardsManager : MonoBehaviour
     {
         [SerializeField] [AssetsOnly] private CardView cardPrefab;
-
         [SerializeField] [SceneObjectsOnly] private HandManager handManager;
+        [SerializeField] [SceneObjectsOnly] private CardQueue cardQueue;
+        [SerializeField] [SceneObjectsOnly] private CardDropArea cardDropArea;
 
         [Button]
         public void AddCard(Card card)
         {
-            handManager.AddCard(card, cardPrefab);
+            var cardObject = Instantiate(cardPrefab);
+            cardObject.Init(card, HandleEndDrag);
+            handManager.AddCard(cardObject);
+        }
+
+        private bool HandleEndDrag(Card card)
+        {
+            return cardDropArea.IsHovering && cardQueue.AddCard(card);
         }
     }
 }

@@ -21,10 +21,9 @@ namespace Helpers
 
         public void OnEndDrag(PointerEventData eventData)
         {
-            if (_dragEventHandler != null && _dragEventHandler.HandleEndDrag(_startPosition, transform.position)) return;
-
-            transform.position = _startPosition;
             OnExitDragNotification?.Invoke();
+
+            if (_dragEventHandler != null && _dragEventHandler.HandleEndDrag(_startPosition, transform.position)) return;
         }
 
         public event Action OnExitDragNotification;
@@ -38,8 +37,8 @@ namespace Helpers
     public interface IDragEventHandler
     {
         /// <summary>
-        /// Returns true if the drag event was consumed by the handler.
-        /// The card object should also immediately be destroyed by the parent handler
+        ///     Returns true if the drag event was consumed by the handler.
+        ///     The card object should also immediately be destroyed by the parent handler
         /// </summary>
         bool HandleEndDrag(Vector3 startPosition, Vector3 endPosition);
     }

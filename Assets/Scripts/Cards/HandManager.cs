@@ -7,10 +7,9 @@ namespace Cards
     {
         [SerializeField] [SceneObjectsOnly] private HandView handView;
 
-        public void AddCard(Card card, CardView cardPrefab)
+        public void AddCard(CardView cardObject)
         {
-            var cardObject = Instantiate(cardPrefab);
-            cardObject.Init(card);
+
             handView.AddCard(cardObject);
         }
     }
