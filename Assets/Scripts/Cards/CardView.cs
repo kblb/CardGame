@@ -8,7 +8,8 @@ namespace Cards
     [RequireComponent(typeof(DraggableImage))]
     public class CardView : MonoBehaviour, IDragEventHandler
     {
-        public Image cardIcon;
+        [SerializeField]
+        private Image cardIcon;
         private Card _card;
         private DraggableImage _draggableImage;
         private Func<Card, bool> _onDragEnd;
@@ -20,7 +21,7 @@ namespace Cards
 
         public bool HandleEndDrag(Vector3 startPosition, Vector3 endPosition)
         {
-            if (!_onDragEnd(_card)) return false;
+            if (_onDragEnd == null || !_onDragEnd(_card)) return false;
 
             Destroy(gameObject);
             return true;
