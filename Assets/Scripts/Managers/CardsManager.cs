@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using Cards;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 // TODO:
@@ -8,12 +9,12 @@ using UnityEngine;
 // - Add enemy list / basic scriptable enemies
 // - Add player stats/hp & enemy attack
 
-namespace Cards
+namespace Managers
 {
     public class CardsManager : MonoBehaviour
     {
         [SerializeField] [AssetsOnly] private CardView cardPrefab;
-        [SerializeField] [SceneObjectsOnly] private HandManager handManager;
+        [SerializeField] [SceneObjectsOnly] private HandView handView;
         [SerializeField] [SceneObjectsOnly] private CardQueue cardQueue;
         [SerializeField] [SceneObjectsOnly] private CardDropArea cardDropArea;
 
@@ -22,7 +23,7 @@ namespace Cards
         {
             var cardObject = Instantiate(cardPrefab);
             cardObject.Init(card, HandleEndDrag);
-            handManager.AddCard(cardObject);
+            handView.AddCard(cardObject);
         }
 
         private bool HandleEndDrag(Card card)
