@@ -37,4 +37,4 @@ MonoBehaviour:
     - Name: _sprite
       Entry: 10
       Data: 0
-  health: 10
+  health: 12

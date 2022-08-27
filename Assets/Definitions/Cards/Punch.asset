@@ -15,3 +15,4 @@ MonoBehaviour:
   displayName: Punch
   description: A simple punch to get them people back in the line
   icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  damage: 8

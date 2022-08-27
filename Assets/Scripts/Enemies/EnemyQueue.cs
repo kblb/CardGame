@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cards;
 using UnityEngine;
 
 namespace Enemies
@@ -25,7 +26,22 @@ namespace Enemies
             for (var i = 0; i < _enemies.Count; i++)
             {
                 var enemyView = _enemies[i];
-                enemyView.transform.position = _thisTransform.position + new Vector3(i * 0.5f, 0, i * 0.5f);
+                enemyView.transform.position = _thisTransform.position + new Vector3(i * 10f, 0, i * 10f);
+            }
+        }
+        
+        public void Attack(List<Card> cards)
+        {
+            Debug.Log("Attacking");
+            foreach (var card in cards)
+            {
+                var enemyView = _enemies[0];
+                if (enemyView.Attack(card))
+                {
+                    Debug.Log("Died");
+                    _enemies.RemoveAt(0);
+                }
+                Redraw();
             }
         }
     }

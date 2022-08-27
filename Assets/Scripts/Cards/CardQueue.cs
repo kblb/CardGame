@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,6 +13,7 @@ namespace Cards
         [SerializeField] [SceneObjectsOnly] private Button cardCommitButton;
         private CardQueueView _cardQueueView;
         private List<Card> _cards;
+        private event Action<List<Card>> OnCommit;
 
         private void Awake()
         {
@@ -27,6 +29,11 @@ namespace Cards
             _cardQueueView.AddCard(card);
             return true;
         }
+        
+        public void AddOnCommitListener(Action<List<Card>> action)
+        {
+            OnCommit += action;
+        }
 
         private void Clear()
         {
@@ -36,8 +43,8 @@ namespace Cards
 
         private void Commit()
         {
+            OnCommit?.Invoke(_cards);
             Clear();
-            Debug.Log("Commited");
         }
     }
 }

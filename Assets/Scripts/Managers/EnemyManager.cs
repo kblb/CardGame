@@ -1,4 +1,6 @@
-﻿using Enemies;
+﻿using System.Collections.Generic;
+using Cards;
+using Enemies;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -15,6 +17,11 @@ namespace Managers
             var instance = Instantiate(enemyView, enemyQueue.transform);
             instance.Init(enemy);
             enemyQueue.AddEnemy(instance);
+        }
+        
+        public void Attack(List<Card> cards)
+        {
+            enemyQueue.Attack(cards);
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using Cards;
+﻿using System;
+using System.Collections.Generic;
+using Cards;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
 // TODO:
-// - React to card being dropped on drop area
-// - Add dropped cards to `two card pool`
-// - Add "commit attack" button
-// - Add enemy list / basic scriptable enemies
 // - Add player stats/hp & enemy attack
 
 namespace Managers
@@ -24,6 +22,11 @@ namespace Managers
             var cardObject = Instantiate(cardPrefab);
             cardObject.Init(card, HandleEndDrag);
             handView.AddCard(cardObject);
+        }
+        
+        public void AddOnCommitListener(Action<List<Card>> listener)
+        {
+            cardQueue.AddOnCommitListener(listener);
         }
 
         private bool HandleEndDrag(Card card)
