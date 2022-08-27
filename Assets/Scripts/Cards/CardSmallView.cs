@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Cards
@@ -7,8 +6,7 @@ namespace Cards
     [RequireComponent(typeof(Image))]
     public class CardSmallView : MonoBehaviour
     {
-        [SerializeField]
-        private Image cardIcon;
+        [SerializeField] private Image cardIcon;
 
         private void Awake()
         {

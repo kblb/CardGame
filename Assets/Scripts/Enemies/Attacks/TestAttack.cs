@@ -4,10 +4,10 @@
     {
         public Attack NextAttack()
         {
-            return new Attack()
+            return new Attack
             {
                 Damage = 10,
-                Effect = false,
+                Effect = false
             };
         }
     }

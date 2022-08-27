@@ -8,8 +8,7 @@ namespace Cards
     [RequireComponent(typeof(DraggableImage))]
     public class CardView : MonoBehaviour, IDragEventHandler
     {
-        [SerializeField]
-        private Image cardIcon;
+        [SerializeField] private Image cardIcon;
         private Card _card;
         private DraggableImage _draggableImage;
         private Func<Card, bool> _onDragEnd;

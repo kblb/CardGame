@@ -9,11 +9,12 @@ namespace Managers
         [SerializeField] [AssetsOnly] private EnemyView enemyView;
         [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
 
+        [Button]
         public void SpawnEnemy(Enemy enemy)
         {
-            var enemyView = Instantiate(this.enemyView, enemyQueue.transform);
-            enemyView.Init(enemy);
-            //enemyQueue.Add(enemyView);
+            var instance = Instantiate(enemyView, enemyQueue.transform);
+            instance.Init(enemy);
+            enemyQueue.AddEnemy(instance);
         }
     }
 }

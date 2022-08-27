@@ -2,7 +2,7 @@
 {
     public struct Attack
     {
-        public int  Damage;
+        public int Damage;
         public bool Effect;
     }
 }

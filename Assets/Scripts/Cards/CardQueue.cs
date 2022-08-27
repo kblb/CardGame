@@ -9,10 +9,9 @@ namespace Cards
     public class CardQueue : MonoBehaviour
     {
         private const int MaxCards = 2;
-        private List<Card> _cards;
+        [SerializeField] [SceneObjectsOnly] private Button cardCommitButton;
         private CardQueueView _cardQueueView;
-        [SerializeField] [SceneObjectsOnly]
-        private Button cardCommitButton;
+        private List<Card> _cards;
 
         private void Awake()
         {

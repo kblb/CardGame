@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,8 +8,8 @@ namespace Cards
     [RequireComponent(typeof(HorizontalLayoutGroup))]
     public class CardQueueView : MonoBehaviour
     {
-        private List<CardSmallView> _cardViews;
         [SerializeField] [AssetsOnly] private CardSmallView cardPrefab;
+        private List<CardSmallView> _cardViews;
         private Transform _transform;
 
 
@@ -29,10 +28,7 @@ namespace Cards
 
         public void Clear()
         {
-            foreach (var cardView in _cardViews)
-            {
-                Destroy(cardView.gameObject);
-            }
+            foreach (var cardView in _cardViews) Destroy(cardView.gameObject);
             _cardViews = new List<CardSmallView>();
         }
     }

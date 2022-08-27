@@ -2,11 +2,14 @@
 
 namespace Enemies
 {
+    [RequireComponent(typeof(SpriteRenderer))]
     public class EnemyView : MonoBehaviour
     {
+        [SerializeField] private SpriteRenderer sprite;
+
         public void Init(Enemy enemy)
         {
-            throw new System.NotImplementedException();
+            sprite.sprite = enemy.GetSprite;
         }
     }
 }
