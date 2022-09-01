@@ -14,7 +14,7 @@ namespace Enemies
             _enemy = enemy;
             sprite.sprite = enemy.GetSprite;
         }
-        
+
         // TODO: This shouldn't pass through View
         public bool Attack(Card card)
         {

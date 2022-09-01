@@ -2,11 +2,13 @@
 
 namespace Enemies.Attacks
 {
-    public class TestAttack : IEnemyAttack
+    public class BasicHit : IEnemyAttack
     {
+        public float Damage;
+
         public Attack NextAttack(Player player, Enemy[] allEnemies, int myEnemyIndex)
         {
-            return new Attack(10, null, null);
+            return new Attack(Damage, null, null);
         }
     }
 }

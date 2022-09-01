@@ -26,10 +26,10 @@ namespace Enemies
             for (var i = 0; i < _enemies.Count; i++)
             {
                 var enemyView = _enemies[i];
-                enemyView.transform.position = _thisTransform.position + new Vector3(i * 10f, 0, i * 10f);
+                enemyView.transform.position = _thisTransform.position + new Vector3(i * 10f, 0, -5f + 0.1f * i);
             }
         }
-        
+
         public void Attack(List<Card> cards)
         {
             Debug.Log("Attacking");

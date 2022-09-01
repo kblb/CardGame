@@ -24,7 +24,10 @@ MonoBehaviour:
     SerializationNodes:
     - Name: _attack
       Entry: 7
-      Data: 0|Enemies.Attacks.TestAttack, Assembly-CSharp
+      Data: 0|Enemies.Attacks.BasicHit, Assembly-CSharp
+    - Name: Damage
+      Entry: 4
+      Data: 10
     - Name: 
       Entry: 8
       Data: 
@@ -38,3 +41,4 @@ MonoBehaviour:
       Entry: 10
       Data: 0
   health: 12
+  maxHealth: 12
