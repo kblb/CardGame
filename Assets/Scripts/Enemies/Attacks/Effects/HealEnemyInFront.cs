@@ -11,7 +11,7 @@ namespace Enemies.Attacks.Effects
             _flatHealAmount = flatHealAmount;
         }
 
-        public void Apply(Player player, Enemy[] allEnemies, int myEnemyIndex)
+        public void Apply(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex)
         {
             if (myEnemyIndex > 0) allEnemies[myEnemyIndex - 1].Heal(_flatHealAmount);
         }

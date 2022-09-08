@@ -6,7 +6,7 @@ namespace Enemies.Attacks
     {
         public float Damage;
 
-        public Attack NextAttack(Player player, Enemy[] allEnemies, int myEnemyIndex)
+        public Attack NextAttack(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex)
         {
             return new Attack(Damage, null, null);
         }

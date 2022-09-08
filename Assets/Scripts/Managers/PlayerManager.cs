@@ -1,18 +1,24 @@
-﻿using Players;
+﻿using System;
+using Enemies;
+using Players;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Managers
 {
     public class PlayerManager : MonoBehaviour
     {
-        private Player _player;
+        [SerializeField, SceneObjectsOnly]
+        private PlayerController playerController;
 
-        public void DealDamage(float damage)
+        private void Awake()
         {
-            if (_player == null)
-            {
-                _player.DealDamage(damage);
-            }
+            playerController.Init();
+        }
+
+        public void AttackPlayer(Attack selectedAttack)
+        {
+            playerController.AttackPlayer(selectedAttack);
         }
     }
 }

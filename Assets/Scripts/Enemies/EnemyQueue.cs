@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,13 +12,13 @@ namespace Enemies
     {
         [SerializeField, SceneObjectsOnly]
         private List<Transform> slots;
-        private List<EnemyView> enemies;
+        private List<EnemyController> enemies;
         [SerializeField, AssetsOnly]
-        private EnemyView enemyView;
+        private EnemyController enemyController;
 
         private void Awake()
         {
-            enemies = new List<EnemyView>();
+            enemies = new List<EnemyController>();
         }
 
         public bool AddEnemy(Enemy enemy)
@@ -29,19 +30,19 @@ namespace Enemies
         {
             if (enemies.Count >= slots.Count) return false;
             
-            var instance = Instantiate(enemyView, slots[enemies.Count]);
+            var instance = Instantiate(enemyController, slots[enemies.Count]);
             instance.Init(enemy);
             enemies.Add(instance);
 
             return true;
         }
 
-        public void Attack(List<Card> cards)
+        public void AttackEnemies(List<Card> cards)
         {
             foreach (var card in cards)
             {
                 var enemy = enemies.First();
-                if (enemy.Attack(card))
+                if (enemy.AttackEnemy(card))
                 {
                     enemies.RemoveAt(0);
                     Destroy(enemy.gameObject);
@@ -57,6 +58,14 @@ namespace Enemies
                 enemies[i].transform.SetParent(slots[i]);
                 enemies[i].transform.localPosition = Vector3.zero;
             }
+        }
+
+        public Attack AttackPlayer(PlayerModel playerModel)
+        {
+            var enemy = enemies.First();
+            var attack = enemy.SelectedAttack;
+            enemy.SelectNextAttack(playerModel, enemies.Select(e => e.RawEnemy).ToArray(), 0);
+            return attack;
         }
     }
 }

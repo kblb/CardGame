@@ -20,6 +20,6 @@ namespace Enemies
 
     public interface IEnemyAttackEffect
     {
-        void Apply(Player player, Enemy[] allEnemies, int myEnemyIndex);
+        void Apply(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex);
     }
 }

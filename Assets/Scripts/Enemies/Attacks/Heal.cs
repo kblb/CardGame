@@ -8,7 +8,7 @@ namespace Enemies.Attacks
         public readonly float NoHealDamage;
         public readonly float FlatHealAmount;
         
-        public Attack NextAttack(Player player, Enemy[] allEnemies, int myEnemyIndex)
+        public Attack NextAttack(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex)
         {
             return myEnemyIndex switch
             {
