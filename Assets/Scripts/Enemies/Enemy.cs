@@ -14,8 +14,8 @@ namespace Enemies
 
         [OdinSerialize] private IEnemyAttack _attack;
         [OdinSerialize] private IEnemyPassive _passive;
-        [OdinSerialize] private Sprite _sprite;
-        public Sprite GetSprite => _sprite;
+        [OdinSerialize] private GameObject _enemyPrefab;
+        public GameObject GetModel => _enemyPrefab;
 
         public bool Damage(Card card)
         {

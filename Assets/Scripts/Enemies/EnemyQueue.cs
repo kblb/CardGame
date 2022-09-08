@@ -1,47 +1,61 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cards;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Enemies
 {
     public class EnemyQueue : MonoBehaviour
     {
-        private List<EnemyView> _enemies;
-        private Transform _thisTransform;
+        [SerializeField, SceneObjectsOnly]
+        private List<Transform> slots;
+        private List<EnemyView> enemies;
+        [SerializeField, AssetsOnly]
+        private EnemyView enemyView;
 
         private void Awake()
         {
-            _enemies = new List<EnemyView>();
-            _thisTransform = transform;
+            enemies = new List<EnemyView>();
         }
 
-        public void AddEnemy(EnemyView enemyView)
+        public bool AddEnemy(Enemy enemy)
         {
-            _enemies.Add(enemyView);
-            Redraw();
+            return AddToNextFreeSlot(enemy);
         }
-
-        private void Redraw()
+        
+        private bool AddToNextFreeSlot(Enemy enemy)
         {
-            for (var i = 0; i < _enemies.Count; i++)
-            {
-                var enemyView = _enemies[i];
-                enemyView.transform.position = _thisTransform.position + new Vector3(i * 10f, 0, -5f + 0.1f * i);
-            }
+            if (enemies.Count >= slots.Count) return false;
+            
+            var instance = Instantiate(enemyView, slots[enemies.Count]);
+            instance.Init(enemy);
+            enemies.Add(instance);
+
+            return true;
         }
 
         public void Attack(List<Card> cards)
         {
-            Debug.Log("Attacking");
             foreach (var card in cards)
             {
-                var enemyView = _enemies[0];
-                if (enemyView.Attack(card))
+                var enemy = enemies.First();
+                if (enemy.Attack(card))
                 {
-                    Debug.Log("Died");
-                    _enemies.RemoveAt(0);
+                    enemies.RemoveAt(0);
+                    Destroy(enemy.gameObject);
                 }
-                Redraw();
+            }
+            Redraw();
+        }
+        
+        private void Redraw()
+        {
+            for (var i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].transform.SetParent(slots[i]);
+                enemies[i].transform.localPosition = Vector3.zero;
             }
         }
     }

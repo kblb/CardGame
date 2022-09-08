@@ -8,15 +8,12 @@ namespace Managers
 {
     public class EnemyManager : MonoBehaviour
     {
-        [SerializeField] [AssetsOnly] private EnemyView enemyView;
         [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
 
         [Button]
         public void SpawnEnemy(Enemy enemy)
         {
-            var instance = Instantiate(enemyView, enemyQueue.transform);
-            instance.Init(enemy);
-            enemyQueue.AddEnemy(instance);
+            enemyQueue.AddEnemy(enemy);
         }
         
         public void Attack(List<Card> cards)

@@ -3,16 +3,14 @@ using UnityEngine;
 
 namespace Enemies
 {
-    [RequireComponent(typeof(SpriteRenderer))]
     public class EnemyView : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer sprite;
         private Enemy _enemy;
 
         public void Init(Enemy enemy)
         {
             _enemy = enemy;
-            sprite.sprite = enemy.GetSprite;
+            Instantiate(enemy.GetModel, transform);
         }
 
         // TODO: This shouldn't pass through View
