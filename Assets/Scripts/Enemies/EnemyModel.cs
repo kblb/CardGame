@@ -1,4 +1,7 @@
 ﻿using System.Collections.Generic;
+using Enemies.Attacks;
+using Enemies.Passives;
+using Enemies.Passives.Effects;
 using Players;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;

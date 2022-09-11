@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Enemies.Passives.Effects;
 using Players;
 
-namespace Enemies
+namespace Enemies.Passives
 {
     public interface IEnemyPassive
     {

@@ -1,6 +1,6 @@
 ﻿using Players;
 
-namespace Enemies
+namespace Enemies.Attacks
 {
     public interface IEnemyAttack
     {

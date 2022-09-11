@@ -1,4 +1,4 @@
-﻿namespace Enemies
+﻿namespace Enemies.Passives.Effects
 {
     public interface IEnemyPassiveEffect
     {

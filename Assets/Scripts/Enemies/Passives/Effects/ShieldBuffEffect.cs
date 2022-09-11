@@ -1,4 +1,4 @@
-﻿namespace Enemies
+﻿namespace Enemies.Passives.Effects
 {
     public class ShieldBuffEffect : IEnemyPassiveEffect
     {

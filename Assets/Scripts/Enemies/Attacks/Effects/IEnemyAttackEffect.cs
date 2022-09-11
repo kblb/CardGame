@@ -1,6 +1,6 @@
 ﻿using Players;
 
-namespace Enemies
+namespace Enemies.Attacks.Effects
 {
     public interface IEnemyAttackEffect
     {
