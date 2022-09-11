@@ -13,7 +13,6 @@ namespace Cards
         [SerializeField] [SceneObjectsOnly] private Button cardCommitButton;
         private CardQueueView _cardQueueView;
         private List<Card> _cards;
-        private event Action<List<Card>> OnCommit;
 
         private void Awake()
         {
@@ -21,6 +20,7 @@ namespace Cards
             _cardQueueView = GetComponent<CardQueueView>();
             cardCommitButton.onClick.AddListener(Commit);
         }
+        private event Action<List<Card>> OnCommit;
 
         public bool AddCard(Card card)
         {
@@ -29,7 +29,7 @@ namespace Cards
             _cardQueueView.AddCard(card);
             return true;
         }
-        
+
         public void AddOnCommitListener(Action<List<Card>> action)
         {
             OnCommit += action;

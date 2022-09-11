@@ -1,5 +1,4 @@
-﻿using System;
-using Enemies;
+﻿using Enemies;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -8,8 +7,7 @@ namespace Managers
 {
     public class PlayerManager : MonoBehaviour
     {
-        [SerializeField, SceneObjectsOnly]
-        private PlayerController playerController;
+        [SerializeField] [SceneObjectsOnly] private PlayerController playerController;
 
         private void Awake()
         {

@@ -6,10 +6,8 @@ namespace Players
 {
     public class PlayerModel : MonoBehaviour
     {
-        [SerializeField]
-        private float health;
-        public event Action<float> OnHealthChanged;
-        
+        [SerializeField] private float health;
+
         public float Health {
             get => health;
             set {
@@ -18,14 +16,15 @@ namespace Players
             }
         }
 
-        public void AttackPlayer(Attack selectedAttack)
-        {
-            Health -= selectedAttack.Damage;
-        }
-
         private void Start()
         {
             OnHealthChanged?.Invoke(Health);
+        }
+        public event Action<float> OnHealthChanged;
+
+        public void AttackPlayer(Attack selectedAttack)
+        {
+            Health -= selectedAttack.Damage;
         }
     }
 }

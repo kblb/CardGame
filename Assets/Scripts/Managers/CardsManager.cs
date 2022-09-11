@@ -23,7 +23,7 @@ namespace Managers
             cardObject.Init(card, HandleEndDrag);
             handView.AddCard(cardObject);
         }
-        
+
         public void AddOnCommitListener(Action<List<Card>> listener)
         {
             cardQueue.AddOnCommitListener(listener);

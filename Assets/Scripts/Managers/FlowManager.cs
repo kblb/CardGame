@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Cards;
 using Players;
 using Sirenix.OdinInspector;
@@ -21,8 +20,8 @@ namespace Managers
         private void CommitPlayerAttack(List<Card> cards)
         {
             enemyManager.AttackEnemies(cards);
-            // TODO: After attack damage player, select next enemy attack and advance turn
             enemyManager.AttackPlayer(playerModel);
+            enemyManager.PrepareNextRound(playerModel);
         }
     }
 }

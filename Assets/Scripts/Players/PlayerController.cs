@@ -6,11 +6,9 @@ namespace Players
 {
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField, SceneObjectsOnly]
-        private PlayerView view;
-        
-        [SerializeField, SceneObjectsOnly]
-        private PlayerModel model;
+        [SerializeField] [SceneObjectsOnly] private PlayerView view;
+
+        [SerializeField] [SceneObjectsOnly] private PlayerModel model;
 
         public void Init()
         {

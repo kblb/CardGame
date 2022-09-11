@@ -1,10 +1,13 @@
-﻿namespace Enemies.Passives
+﻿using System.Collections.Generic;
+using Players;
+
+namespace Enemies.Passives
 {
     public class TestPassive : IEnemyPassive
     {
-        public Passive Passive()
+        public Dictionary<int, IEnemyPassiveEffect> Passive(PlayerModel playerModel, EnemyModel[] enemies, int myEnemyIndex)
         {
-            return new Passive();
+            return new Dictionary<int, IEnemyPassiveEffect>();
         }
     }
 }

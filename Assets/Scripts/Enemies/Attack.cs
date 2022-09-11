@@ -1,5 +1,4 @@
-﻿using Players;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemies
 {
@@ -18,8 +17,4 @@ namespace Enemies
 
     }
 
-    public interface IEnemyAttackEffect
-    {
-        void Apply(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex);
-    }
 }

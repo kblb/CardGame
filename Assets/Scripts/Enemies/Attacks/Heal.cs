@@ -5,10 +5,10 @@ namespace Enemies.Attacks
 {
     public class Heal : IEnemyAttack
     {
-        public readonly float NoHealDamage;
         public readonly float FlatHealAmount;
-        
-        public Attack NextAttack(PlayerModel playerModel, Enemy[] allEnemies, int myEnemyIndex)
+        public readonly float NoHealDamage;
+
+        public Attack NextAttack(PlayerModel playerModel, EnemyModel[] allEnemies, int myEnemyIndex)
         {
             return myEnemyIndex switch
             {
