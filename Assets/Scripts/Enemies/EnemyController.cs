@@ -11,21 +11,19 @@ namespace Enemies
     public class EnemyController : MonoBehaviour
     {
         public EnemyModel RawEnemy { get; private set; }
+        public EnemyModelInstance EnemyModelInstance { get; private set; }
 
         public Attack SelectedAttack { get; private set; }
-        public List<IEnemyPassiveEffect> Buffs { get; private set; }
-
-        public float Shields { get; private set; }
-        public float Health { get; private set; }
-        public float MaxHealth { get; private set; }
+        public float Shields => EnemyModelInstance.Shields;
+        public float Health => EnemyModelInstance.CurrentHealth;
+        public float MaxHealth => EnemyModelInstance.MaxHealth;
 
         // Extract this to EnemyView
-        public void Init(EnemyModel enemy)
+        public void Init(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
             RawEnemy = enemy;
+            EnemyModelInstance = enemyModelInstance;
             Instantiate(enemy.GetModel, transform);
-            Health = enemy.Health;
-            MaxHealth = enemy.Health;
         }
 
         public void SelectNextAttack(PlayerModel playerModel, EnemyModel[] allEnemies, int myEnemyIndex)
@@ -35,22 +33,22 @@ namespace Enemies
 
         public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyController[] queue, int i)
         {
-            RawEnemy.ApplyPassiveToQueue(playerModel, queue.Select(e => e.RawEnemy).ToArray(), queue.Select(e => e.Buffs).ToArray(), i);
+            RawEnemy.ApplyPassiveToQueue(playerModel, queue.Select(e => e.RawEnemy).ToArray(), queue.Select(e => e.EnemyModelInstance).ToArray(), i);
         }
 
         public void Shield(float amount)
         {
-            Shields += amount;
+            EnemyModelInstance.Shields += amount;
         }
 
         public void Heal(float flatHealAmount)
         {
-            Health = Mathf.Min(Health + flatHealAmount, MaxHealth);
+            EnemyModelInstance.CurrentHealth = Mathf.Min(Health + flatHealAmount, MaxHealth);
         }
 
         public bool AttackEnemy(Card card)
         {
-            Health -= card.damage;
+            EnemyModelInstance.CurrentHealth -= card.damage;
             return Health > 0;
         }
     }

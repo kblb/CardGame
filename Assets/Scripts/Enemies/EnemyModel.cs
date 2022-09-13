@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Enemies.Attacks;
 using Enemies.Passives;
 using Enemies.Passives.Effects;
@@ -26,10 +27,69 @@ namespace Enemies
             return _attack.NextAttack(playerModel, allEnemies, myEnemyIndex);
         }
 
-        public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyModel[] enemies, List<IEnemyPassiveEffect>[] passives, int myEnemyIndex)
+        public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyModel[] enemies, EnemyModelInstance[] passives, int myEnemyIndex)
         {
             var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
-            foreach (var (enemyIndex, passive) in applied) passives[enemyIndex].Add(passive);
+            for (var i = 0; i < applied.Count; i++)
+            {
+                passives[i].AddBuff(applied[i]);
+            }
+        }
+    }
+
+    public class EnemyModelInstance
+    {
+        private readonly List<IEnemyPassiveEffect> buffs;
+        private float maxHealth;
+        private float currentHealth;
+        private float shields;
+        public event Action<float, float, float> HealthChanged;
+
+        public float MaxHealth {
+            get => maxHealth;
+            set {
+                maxHealth = value;
+                OnHealthChanged();
+            }
+        }
+        public float CurrentHealth {
+            get => currentHealth;
+            set {
+                currentHealth = value;
+                OnHealthChanged();
+            }
+        }
+        public float Shields {
+            get => shields;
+            set {
+                shields = value;
+                OnHealthChanged();
+            }
+        }
+
+        public IEnumerable<IEnemyPassiveEffect> Buffs => buffs;
+
+        public EnemyModelInstance(EnemyModel model)
+        {
+            MaxHealth = model.Health;
+            CurrentHealth = model.Health;
+            Shields = 0;
+            buffs = new List<IEnemyPassiveEffect>();
+        }
+        
+        public void AddBuff(IEnemyPassiveEffect passive)
+        {
+            buffs.Add(passive);
+        }
+
+        public void ClearBuffs()
+        {
+            buffs.Clear();
+        }
+
+        private void OnHealthChanged()
+        {
+            HealthChanged?.Invoke(maxHealth, currentHealth, shields);
         }
     }
 

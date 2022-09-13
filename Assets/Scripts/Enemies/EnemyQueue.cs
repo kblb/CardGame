@@ -18,17 +18,17 @@ namespace Enemies
             enemies = new List<EnemyController>();
         }
 
-        public bool AddEnemy(EnemyModel enemy)
+        public bool AddEnemy(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
-            return AddToNextFreeSlot(enemy);
+            return AddToNextFreeSlot(enemy, enemyModelInstance);
         }
 
-        private bool AddToNextFreeSlot(EnemyModel enemy)
+        private bool AddToNextFreeSlot(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
             if (enemies.Count >= slots.Count) return false;
 
             var instance = Instantiate(enemyControllerPrefab, slots[enemies.Count]);
-            instance.Init(enemy);
+            instance.Init(enemy, enemyModelInstance);
             enemies.Add(instance);
 
             return true;
@@ -36,14 +36,14 @@ namespace Enemies
 
         public void AttackEnemies(List<Card> cards)
         {
-            foreach (var card in cards)
+            for (var i = 0; i < cards.Count; i++)
             {
+                var card = cards[i];
                 var enemy = enemies.First();
-                if (enemy.AttackEnemy(card))
-                {
-                    enemies.RemoveAt(0);
-                    Destroy(enemy.gameObject);
-                }
+                if (!enemy.AttackEnemy(card)) continue;
+                
+                enemies.RemoveAt(0);
+                Destroy(enemy.gameObject);
             }
             Redraw();
         }
@@ -69,10 +69,11 @@ namespace Enemies
         {
             enemies.First().SelectNextAttack(playerModel, enemies.Select(e => e.RawEnemy).ToArray(), 0);
 
-            foreach (var e in enemies)
+            for (var i = 0; i < enemies.Count; i++)
             {
-                foreach (var buff in e.Buffs) buff.ApplyEffect(e);
-                e.Buffs.Clear();
+                var e = enemies[i];
+                foreach (var buff in e.EnemyModelInstance.Buffs) buff.ApplyEffect(e);
+                e.EnemyModelInstance.ClearBuffs();
             }
 
             for (var i = 0; i < enemies.Count; i++) enemies[i].ApplyPassiveToQueue(playerModel, enemies.ToArray(), i);

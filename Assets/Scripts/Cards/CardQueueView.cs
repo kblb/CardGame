@@ -28,7 +28,11 @@ namespace Cards
 
         public void Clear()
         {
-            foreach (var cardView in _cardViews) Destroy(cardView.gameObject);
+            for (var i = 0; i < _cardViews.Count; i++)
+            {
+                var cardView = _cardViews[i];
+                Destroy(cardView.gameObject);
+            }
             _cardViews = new List<CardSmallView>();
         }
     }
