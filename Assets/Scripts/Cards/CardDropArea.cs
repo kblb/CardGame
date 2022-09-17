@@ -1,21 +1,19 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Cards
 {
-    public class CardDropArea : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+    public class CardDropArea : MonoBehaviour
     {
-
-        public bool IsHovering { get; set; }
-
-        public void OnPointerEnter(PointerEventData eventData)
-        {
-            IsHovering = true;
+        public bool IsHovering {
+            get {
+                var myTransform = GetComponent<RectTransform>();
+                
+                var mousePosition = Input.mousePosition;
+                
+                Debug.Log($"Mouse position: {mousePosition} & Transform: {myTransform.rect}");
+                return RectTransformUtility.RectangleContainsScreenPoint(myTransform, mousePosition);
+            }
         }
 
-        public void OnPointerExit(PointerEventData eventData)
-        {
-            IsHovering = false;
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace Enemies
         public EnemyModel RawEnemy { get; private set; }
         public EnemyModelInstance EnemyModelInstance { get; private set; }
         
-        [SerializeField, SceneObjectsOnly]
+        [SerializeField]
         private EnemyStatsView statsView;
 
         public Attack SelectedAttack { get; private set; }
@@ -55,7 +55,7 @@ namespace Enemies
         public bool AttackEnemy(Card card)
         {
             EnemyModelInstance.CurrentHealth -= card.damage;
-            return Health > 0;
+            return Health < 0;
         }
     }
 }

@@ -30,9 +30,9 @@ namespace Enemies
         public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyModel[] enemies, EnemyModelInstance[] passives, int myEnemyIndex)
         {
             var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
-            for (var i = 0; i < applied.Count; i++)
+            foreach (var (i, buff) in applied)
             {
-                passives[i].AddBuff(applied[i]);
+                passives[i].AddBuff(buff);
             }
         }
     }
