@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Globalization;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Enemies
@@ -7,7 +9,9 @@ namespace Enemies
     {
         private const int ImageWidth = 240;
 
-        public Image healthBar;
+        [SerializeField]
+        private Image healthBar;
+        [SerializeField] private TMP_Text healthText;
         private float _oldHealth = float.NegativeInfinity;
         private float _oldShield = float.NegativeInfinity;
 
@@ -27,14 +31,17 @@ namespace Enemies
         public void SetModel(EnemyModelInstance enemy)
         {
             enemy.HealthChanged += OnHealthChanged;
+            OnHealthChanged(enemy.MaxHealth, enemy.CurrentHealth, enemy.Shields);
         }
 
         public void OnHealthChanged(float maxHealth, float currentHealth, float shields)
         {
-            if (!(Mathf.Abs(_oldHealth - currentHealth) > Mathf.Epsilon) && !(Mathf.Abs(_oldShield - shields) > Mathf.Epsilon)) return;
-            
+            if (Mathf.Abs(_oldHealth - currentHealth) <= Mathf.Epsilon && Mathf.Abs(_oldShield - shields) <= Mathf.Epsilon) return;
+
             _oldHealth = currentHealth;
             _oldShield = shields;
+
+            healthText.text = currentHealth.ToString(CultureInfo.InvariantCulture) + (shields > 0 ? $"(+{shields})" : "") + "/" + maxHealth.ToString(CultureInfo.InvariantCulture);
 
             var width = Mathf.Max((shields + currentHealth), maxHealth);
             var drawHp = Mathf.FloorToInt((currentHealth / width) * ImageWidth);

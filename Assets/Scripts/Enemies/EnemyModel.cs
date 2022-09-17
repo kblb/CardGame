@@ -44,6 +44,7 @@ namespace Enemies
         private float currentHealth;
         private float shields;
         public event Action<float, float, float> HealthChanged;
+        public event Action<IEnumerable<IEnemyPassiveEffect>> BuffsChanged;
 
         public float MaxHealth {
             get => maxHealth;
@@ -80,6 +81,7 @@ namespace Enemies
         public void AddBuff(IEnemyPassiveEffect passive)
         {
             buffs.Add(passive);
+            OnBuffsChanged();
         }
 
         public void ClearBuffs()
@@ -90,6 +92,11 @@ namespace Enemies
         private void OnHealthChanged()
         {
             HealthChanged?.Invoke(maxHealth, currentHealth, shields);
+        }
+
+        private void OnBuffsChanged()
+        {
+            BuffsChanged?.Invoke(buffs);
         }
     }
 
