@@ -11,13 +11,11 @@ namespace Managers
     {
         [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
         [SerializeField] [SceneObjectsOnly] private PlayerManager playerManager;
-        [SerializeField] [SceneObjectsOnly] private EnemyStatsPanel enemyStatsPanel;
 
         [Button]
         public void SpawnEnemy(EnemyModel enemy)
         {
             var instance = new EnemyModelInstance(enemy);
-            enemyStatsPanel.AddPanel(instance);
             enemyQueue.AddEnemy(enemy, instance);
         }
 

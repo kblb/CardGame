@@ -3,6 +3,7 @@ using System.Linq;
 using Cards;
 using Enemies.Passives.Effects;
 using Players;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Enemies
@@ -12,6 +13,9 @@ namespace Enemies
     {
         public EnemyModel RawEnemy { get; private set; }
         public EnemyModelInstance EnemyModelInstance { get; private set; }
+        
+        [SerializeField, SceneObjectsOnly]
+        private EnemyStatsView statsView;
 
         public Attack SelectedAttack { get; private set; }
         public float Shields => EnemyModelInstance.Shields;
@@ -24,6 +28,8 @@ namespace Enemies
             RawEnemy = enemy;
             EnemyModelInstance = enemyModelInstance;
             Instantiate(enemy.GetModel, transform);
+            
+            statsView.SetModel(EnemyModelInstance);
         }
 
         public void SelectNextAttack(PlayerModel playerModel, EnemyModel[] allEnemies, int myEnemyIndex)
