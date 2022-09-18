@@ -3,11 +3,8 @@ using UnityEngine;
 
 namespace Enemies
 {
-    public struct Attack
+    public class Attack
     {
-        public float Damage { get; }
-        public IEnemyAttackEffect Effect { get; }
-        public Sprite Icon { get; }
 
         public Attack(float damage, IEnemyAttackEffect effect, Sprite icon)
         {
@@ -15,7 +12,9 @@ namespace Enemies
             Effect = effect;
             Icon = icon;
         }
-
+        public float Damage { get; }
+        public IEnemyAttackEffect Effect { get; }
+        public Sprite Icon { get; }
     }
 
 }

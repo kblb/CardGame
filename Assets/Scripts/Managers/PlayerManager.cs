@@ -8,6 +8,7 @@ namespace Managers
     public class PlayerManager : MonoBehaviour
     {
         [SerializeField] [SceneObjectsOnly] private PlayerController playerController;
+        public PlayerModel PlayerModel => playerController.Model;
 
         private void Awake()
         {

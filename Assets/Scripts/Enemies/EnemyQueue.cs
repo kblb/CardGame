@@ -18,20 +18,23 @@ namespace Enemies
             enemies = new List<EnemyController>();
         }
 
-        public bool AddEnemy(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
+        public EnemyController AddEnemy(EnemyModel enemy, EnemyModelInstance enemyModelInstance, PlayerModel playerModel)
         {
-            return AddToNextFreeSlot(enemy, enemyModelInstance);
+            var enemyController = AddToNextFreeSlot(enemy, enemyModelInstance);
+            if (enemyController != null) enemyController.SelectNextAttack(playerModel, enemies.Select(x => x.RawEnemy).ToArray(), enemies.Count - 1);
+            return enemyController;
+
         }
 
-        private bool AddToNextFreeSlot(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
+        private EnemyController AddToNextFreeSlot(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
-            if (enemies.Count >= slots.Count) return false;
+            if (enemies.Count >= slots.Count) return null;
 
             var instance = Instantiate(enemyControllerPrefab, slots[enemies.Count]);
             instance.Init(enemy, enemyModelInstance);
             enemies.Add(instance);
 
-            return true;
+            return instance;
         }
 
         public void AttackEnemies(List<Card> cards)
@@ -41,7 +44,7 @@ namespace Enemies
                 var card = cards[i];
                 var enemy = enemies.First();
                 if (!enemy.AttackEnemy(card)) continue;
-                
+
                 enemies.RemoveAt(0);
                 Destroy(enemy.gameObject);
             }

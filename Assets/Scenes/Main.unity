@@ -1746,7 +1746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cardsManager: {fileID: 1531420985}
   enemyManager: {fileID: 1637871783}
-  playerModel: {fileID: 0}
+  playerModel: {fileID: 621564099}
 --- !u!1 &2079748644
 GameObject:
   m_ObjectHideFlags: 0

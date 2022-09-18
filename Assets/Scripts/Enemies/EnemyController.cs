@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Cards;
-using Enemies.Passives.Effects;
 using Players;
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Enemies
@@ -11,30 +8,25 @@ namespace Enemies
     // Class wrapping Enemy model and it's view
     public class EnemyController : MonoBehaviour
     {
+
+        [SerializeField] private EnemyStatsView statsView;
         public EnemyModel RawEnemy { get; private set; }
         public EnemyModelInstance EnemyModelInstance { get; private set; }
-        
-        [SerializeField]
-        private EnemyStatsView statsView;
 
-        public Attack SelectedAttack { get; private set; }
-        public float Shields => EnemyModelInstance.Shields;
-        public float Health => EnemyModelInstance.CurrentHealth;
-        public float MaxHealth => EnemyModelInstance.MaxHealth;
+        public Attack SelectedAttack => EnemyModelInstance.SelectedAttack;
 
-        // Extract this to EnemyView
         public void Init(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
             RawEnemy = enemy;
             EnemyModelInstance = enemyModelInstance;
             Instantiate(enemy.GetModel, transform);
-            
+
             statsView.SetModel(EnemyModelInstance);
         }
 
         public void SelectNextAttack(PlayerModel playerModel, EnemyModel[] allEnemies, int myEnemyIndex)
         {
-            SelectedAttack = RawEnemy.GetNextAttack(playerModel, allEnemies, myEnemyIndex);
+            EnemyModelInstance.SelectAttack(RawEnemy.GetNextAttack(playerModel, allEnemies, myEnemyIndex));
         }
 
         public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyController[] queue, int i)
@@ -49,13 +41,15 @@ namespace Enemies
 
         public void Heal(float flatHealAmount)
         {
-            EnemyModelInstance.CurrentHealth = Mathf.Min(Health + flatHealAmount, MaxHealth);
+            EnemyModelInstance.CurrentHealth = Mathf.Min(EnemyModelInstance.CurrentHealth + flatHealAmount, EnemyModelInstance.MaxHealth);
         }
 
         public bool AttackEnemy(Card card)
         {
-            EnemyModelInstance.CurrentHealth -= card.damage;
-            return Health < 0;
+            var shieldBreakthroughDamage = Mathf.Max(0, card.damage - EnemyModelInstance.Shields);
+            EnemyModelInstance.Shields = Mathf.Max(0, EnemyModelInstance.Shields - card.damage);
+            EnemyModelInstance.CurrentHealth -= shieldBreakthroughDamage;
+            return EnemyModelInstance.CurrentHealth <= 0;
         }
     }
 }

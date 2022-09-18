@@ -30,21 +30,24 @@ namespace Enemies
         public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyModel[] enemies, EnemyModelInstance[] passives, int myEnemyIndex)
         {
             var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
-            foreach (var (i, buff) in applied)
-            {
-                passives[i].AddBuff(buff);
-            }
+            foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
         }
     }
 
     public class EnemyModelInstance
     {
         private readonly List<IEnemyPassiveEffect> buffs;
-        private float maxHealth;
         private float currentHealth;
+        private float maxHealth;
         private float shields;
-        public event Action<float, float, float> HealthChanged;
-        public event Action<IEnumerable<IEnemyPassiveEffect>> BuffsChanged;
+
+        public EnemyModelInstance(EnemyModel model)
+        {
+            MaxHealth = model.Health;
+            CurrentHealth = model.Health;
+            Shields = 0;
+            buffs = new List<IEnemyPassiveEffect>();
+        }
 
         public float MaxHealth {
             get => maxHealth;
@@ -69,15 +72,11 @@ namespace Enemies
         }
 
         public IEnumerable<IEnemyPassiveEffect> Buffs => buffs;
+        public Attack SelectedAttack { get; private set; }
+        public event Action<float, float, float> HealthChanged;
+        public event Action<IEnumerable<IEnemyPassiveEffect>> BuffsChanged;
+        public event Action<Attack> AttackChanged;
 
-        public EnemyModelInstance(EnemyModel model)
-        {
-            MaxHealth = model.Health;
-            CurrentHealth = model.Health;
-            Shields = 0;
-            buffs = new List<IEnemyPassiveEffect>();
-        }
-        
         public void AddBuff(IEnemyPassiveEffect passive)
         {
             buffs.Add(passive);
@@ -87,6 +86,16 @@ namespace Enemies
         public void ClearBuffs()
         {
             buffs.Clear();
+        }
+
+        public void SelectAttack(Attack attack)
+        {
+            SelectedAttack = attack;
+            OnAttackChanged();
+        }
+        private void OnAttackChanged()
+        {
+            AttackChanged?.Invoke(SelectedAttack);
         }
 
         private void OnHealthChanged()

@@ -24,6 +24,8 @@ namespace Players
 
         public void AttackPlayer(Attack selectedAttack)
         {
+            if (selectedAttack == null) return;
+
             Health -= selectedAttack.Damage;
         }
     }

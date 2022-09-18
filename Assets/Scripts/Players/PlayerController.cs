@@ -10,6 +10,8 @@ namespace Players
 
         [SerializeField] [SceneObjectsOnly] private PlayerModel model;
 
+        public PlayerModel Model => model;
+
         public void Init()
         {
             view.Init(model);

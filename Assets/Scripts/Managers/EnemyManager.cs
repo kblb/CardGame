@@ -16,7 +16,7 @@ namespace Managers
         public void SpawnEnemy(EnemyModel enemy)
         {
             var instance = new EnemyModelInstance(enemy);
-            enemyQueue.AddEnemy(enemy, instance);
+            enemyQueue.AddEnemy(enemy, instance, playerManager.PlayerModel);
         }
 
         public void AttackEnemies(List<Card> cards)
@@ -27,7 +27,7 @@ namespace Managers
         public void AttackPlayer(PlayerModel playerModel)
         {
             var attack = enemyQueue.AttackPlayer(playerModel);
-            playerManager.AttackPlayer(attack);
+            if (attack != null) playerManager.AttackPlayer(attack);
         }
 
         public void PrepareNextRound(PlayerModel playerModel)
