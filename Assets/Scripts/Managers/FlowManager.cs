@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Players;
 using Sirenix.OdinInspector;
@@ -17,9 +18,9 @@ namespace Managers
             cardsManager.AddOnCommitListener(CommitPlayerAttack);
         }
 
-        private void CommitPlayerAttack(List<Card> cards)
+        private void CommitPlayerAttack(List<(int, Card)> cards)
         {
-            enemyManager.AttackEnemies(cards);
+            enemyManager.AttackEnemies(cards.Select(e => e.Item2).ToList());
             enemyManager.AttackPlayer(playerModel);
             enemyManager.PrepareNextRound(playerModel);
         }

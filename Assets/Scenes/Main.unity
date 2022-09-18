@@ -1472,6 +1472,17 @@ MonoBehaviour:
   handView: {fileID: 584709093}
   cardQueue: {fileID: 703122707}
   cardDropArea: {fileID: 703122704}
+  deck:
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
 --- !u!1 &1590653522
 GameObject:
   m_ObjectHideFlags: 0
