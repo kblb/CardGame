@@ -18,9 +18,9 @@ namespace Managers
             cardsManager.AddOnCommitListener(CommitPlayerAttack);
         }
 
-        private void CommitPlayerAttack(List<(int, Card)> cards)
+        private void CommitPlayerAttack(List<CardModelWrapper> cards)
         {
-            enemyManager.AttackEnemies(cards.Select(e => e.Item2).ToList());
+            enemyManager.AttackEnemies(cards.Select(e => e.Model).ToList());
             enemyManager.AttackPlayer(playerModel);
             enemyManager.PrepareNextRound(playerModel);
         }

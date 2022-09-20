@@ -18,62 +18,39 @@ namespace Managers
 
         [SerializeField]
         private List<Card> deck;
-        private List<Card> _drawPile;
-        private List<Card> _playerHand;
-        private List<Card> _discardPile;
+        
+        [SerializeField, SceneObjectsOnly]
+        private DeckModel deckModel;
 
         private void Start()
         {
-            _drawPile = new List<Card>(deck);
-            _playerHand = new List<Card>();
-            _discardPile = new List<Card>();
-            
+            deckModel.Init(deck);
+            deckModel.NewCardDrawn += OnCardDraw;
+
             AdvanceRound(null);
             cardQueue.AddOnCommitListener(AdvanceRound);
         }
         
-        private void AdvanceRound(List<(int, Card)> cardsUsed)
+        private void AdvanceRound(List<CardModelWrapper> cardsUsed)
         {
-            if (cardsUsed != null)
-            {
-                cardsUsed.Sort((a, b) => b.Item1.CompareTo(a.Item1));
-                foreach (var (index, card) in cardsUsed)
-                {
-                    _playerHand.RemoveAt(index);
-                    _discardPile.Add(card);
-                }
-            }
-
-            while (_playerHand.Count < 5)
-            {
-                if (_drawPile.Count == 0)
-                {
-                    _drawPile = new List<Card>(_discardPile);
-                    _discardPile.Clear();
-                }
-                
-                var card = _drawPile[0];
-                _drawPile.RemoveAt(0);
-                _playerHand.Add(card);
-                DrawCard(card, _playerHand.Count - 1);
-            }
+            deckModel.AdvanceTurn(cardsUsed);
         }
 
-        private void DrawCard(Card card, int cardId)
+        public void OnCardDraw(CardModelWrapper card)
         {
             var cardObject = Instantiate(cardPrefab);
-            cardObject.Init(card, (c) => HandleEndDrag(c, cardId));
+            cardObject.Init(card, HandleEndDrag);
             handView.AddCard(cardObject);
         }
 
-        public void AddOnCommitListener(Action<List<(int, Card)>> listener)
+        public void AddOnCommitListener(Action<List<CardModelWrapper>> listener)
         {
             cardQueue.AddOnCommitListener(listener);
         }
 
-        private bool HandleEndDrag(Card card, int cardId)
+        private bool HandleEndDrag(CardModelWrapper card)
         {
-            return cardDropArea.IsHovering && cardQueue.AddCard(card, cardId);
+            return cardDropArea.IsHovering && cardQueue.AddCard(card);
         }
     }
 }

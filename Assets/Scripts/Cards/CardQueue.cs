@@ -12,26 +12,26 @@ namespace Cards
         private const int MaxCards = 2;
         [SerializeField] [SceneObjectsOnly] private Button cardCommitButton;
         private CardQueueView _cardQueueView;
-        private List<(int, Card)> _cards;
+        private List<CardModelWrapper> _cards;
 
-        private event Action<List<(int, Card)>> OnCommit;
+        private event Action<List<CardModelWrapper>> OnCommit;
 
         private void Awake()
         {
-            _cards = new List<(int, Card)>();
+            _cards = new List<CardModelWrapper>();
             _cardQueueView = GetComponent<CardQueueView>();
             cardCommitButton.onClick.AddListener(Commit);
         }
 
-        public bool AddCard(Card card, int cardId)
+        public bool AddCard(CardModelWrapper card)
         {
             if (_cards.Count >= MaxCards) return false;
-            _cards.Add((cardId, card));
-            _cardQueueView.AddCard(card);
+            _cards.Add(card);
+            _cardQueueView.AddCard(card.Model);
             return true;
         }
 
-        public void AddOnCommitListener(Action<List<(int, Card)>> action)
+        public void AddOnCommitListener(Action<List<CardModelWrapper>> action)
         {
             OnCommit += action;
         }

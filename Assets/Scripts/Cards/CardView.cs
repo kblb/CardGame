@@ -9,9 +9,9 @@ namespace Cards
     public class CardView : MonoBehaviour, IDragEventHandler
     {
         [SerializeField] private Image cardIcon;
-        private Card _card;
+        private CardModelWrapper _card;
         private DraggableImage _draggableImage;
-        private Func<Card, bool> _onDragEnd;
+        private Func<CardModelWrapper, bool> _onDragEnd;
 
         private void Awake()
         {
@@ -26,10 +26,10 @@ namespace Cards
             return true;
         }
 
-        public void Init(Card card, Func<Card, bool> onDragEnd)
+        public void Init(CardModelWrapper card, Func<CardModelWrapper, bool> onDragEnd)
         {
             _card = card;
-            cardIcon.sprite = card.icon;
+            cardIcon.sprite = card.Model.icon;
             _onDragEnd = onDragEnd;
             _draggableImage.Init(this);
         }
