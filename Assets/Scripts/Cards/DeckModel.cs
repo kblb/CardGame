@@ -23,6 +23,8 @@ namespace Cards
         private List<CardModelWrapper> _drawPile;
         private List<CardModelWrapper> _playerHand;
         private List<CardModelWrapper> _discardPile;
+        
+        public IEnumerable<CardModelWrapper> DrawPile => _drawPile;
 
         public event Action<CardModelWrapper> NewCardDrawn;
         public event Action<CardModelWrapper> NewCardDiscarded;

@@ -22,20 +22,26 @@ namespace Managers
         [SerializeField, SceneObjectsOnly]
         private DeckModel deckModel;
 
+        [SerializeField, SceneObjectsOnly]
+        private DeckController deckController;
+        
         private void Start()
         {
             deckModel.Init(deck);
             deckModel.NewCardDrawn += OnCardDraw;
 
-            AdvanceRound(null);
-            cardQueue.AddOnCommitListener(AdvanceRound);
+            deckController.Init();
+
+            AdvanceTurn(null);
+            cardQueue.AddOnCommitListener(AdvanceTurn);
         }
         
-        private void AdvanceRound(List<CardModelWrapper> cardsUsed)
+        private void AdvanceTurn(List<CardModelWrapper> cardsUsed)
         {
             deckModel.AdvanceTurn(cardsUsed);
         }
 
+        // TODO: Move this to DeckController
         public void OnCardDraw(CardModelWrapper card)
         {
             var cardObject = Instantiate(cardPrefab);
