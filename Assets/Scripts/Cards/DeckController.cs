@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -8,10 +7,10 @@ namespace Cards
 {
     public class DeckController : MonoBehaviour
     {
-        [SerializeField, SceneObjectsOnly] private HandView handView;
-        [SerializeField, SceneObjectsOnly] private DrawPileView drawPileView;
-        [SerializeField, SceneObjectsOnly] private DiscardPileView discardPileView;
-        [SerializeField, SceneObjectsOnly] private DeckModel deckModel;
+        [SerializeField] [SceneObjectsOnly] private HandView handView;
+        [SerializeField] [SceneObjectsOnly] private DrawPileView drawPileView;
+        [SerializeField] [SceneObjectsOnly] private DiscardPileView discardPileView;
+        [SerializeField] [SceneObjectsOnly] private DeckModel deckModel;
 
         public void Init()
         {
@@ -27,7 +26,7 @@ namespace Cards
             discardPileView.Zero();
             drawPileView.Recount(cards.Count);
         }
-        
+
         private void OnDiscardCard(CardModelWrapper card)
         {
             discardPileView.AddCard();

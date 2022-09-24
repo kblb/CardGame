@@ -11,28 +11,29 @@ namespace Enemies
     {
         [SerializeField] [SceneObjectsOnly] private List<Transform> slots;
         [SerializeField] [AssetsOnly] private EnemyController enemyControllerPrefab;
-        private List<EnemyController> enemies;
+        private List<EnemyController> _enemies;
+        public IEnumerable<EnemyController> Enemies => _enemies;
 
         private void Awake()
         {
-            enemies = new List<EnemyController>();
+            _enemies = new List<EnemyController>();
         }
 
         public EnemyController AddEnemy(EnemyModel enemy, EnemyModelInstance enemyModelInstance, PlayerModel playerModel)
         {
             var enemyController = AddToNextFreeSlot(enemy, enemyModelInstance);
-            if (enemyController != null) enemyController.SelectNextAttack(playerModel, enemies.Select(x => x.RawEnemy).ToArray(), enemies.Count - 1);
+            if (enemyController != null) enemyController.SelectNextAttack(playerModel, _enemies.Select(x => x.RawEnemy).ToArray(), _enemies.Count - 1);
             return enemyController;
 
         }
 
         private EnemyController AddToNextFreeSlot(EnemyModel enemy, EnemyModelInstance enemyModelInstance)
         {
-            if (enemies.Count >= slots.Count) return null;
+            if (_enemies.Count >= slots.Count) return null;
 
-            var instance = Instantiate(enemyControllerPrefab, slots[enemies.Count]);
+            var instance = Instantiate(enemyControllerPrefab, slots[_enemies.Count]);
             instance.Init(enemy, enemyModelInstance);
-            enemies.Add(instance);
+            _enemies.Add(instance);
 
             return instance;
         }
@@ -42,10 +43,10 @@ namespace Enemies
             for (var i = 0; i < cards.Count; i++)
             {
                 var card = cards[i];
-                var enemy = enemies.First();
+                var enemy = _enemies.First();
                 if (!enemy.AttackEnemy(card)) continue;
 
-                enemies.RemoveAt(0);
+                _enemies.RemoveAt(0);
                 Destroy(enemy.gameObject);
             }
             Redraw();
@@ -53,33 +54,33 @@ namespace Enemies
 
         private void Redraw()
         {
-            for (var i = 0; i < enemies.Count; i++)
+            for (var i = 0; i < _enemies.Count; i++)
             {
-                enemies[i].transform.SetParent(slots[i]);
-                enemies[i].transform.localPosition = Vector3.zero;
+                _enemies[i].transform.SetParent(slots[i]);
+                _enemies[i].transform.localPosition = Vector3.zero;
             }
         }
 
         public Attack AttackPlayer(PlayerModel playerModel)
         {
-            var enemy = enemies.First();
+            var enemy = _enemies.First();
             var attack = enemy.SelectedAttack;
-            enemy.SelectNextAttack(playerModel, enemies.Select(e => e.RawEnemy).ToArray(), 0);
+            enemy.SelectNextAttack(playerModel, _enemies.Select(e => e.RawEnemy).ToArray(), 0);
             return attack;
         }
 
         public void PrepareNextRound(PlayerModel playerModel)
         {
-            enemies.First().SelectNextAttack(playerModel, enemies.Select(e => e.RawEnemy).ToArray(), 0);
+            _enemies.First().SelectNextAttack(playerModel, _enemies.Select(e => e.RawEnemy).ToArray(), 0);
 
-            for (var i = 0; i < enemies.Count; i++)
+            for (var i = 0; i < _enemies.Count; i++)
             {
-                var e = enemies[i];
+                var e = _enemies[i];
                 foreach (var buff in e.EnemyModelInstance.Buffs) buff.ApplyEffect(e);
                 e.EnemyModelInstance.ClearBuffs();
             }
 
-            for (var i = 0; i < enemies.Count; i++) enemies[i].ApplyPassiveToQueue(playerModel, enemies.ToArray(), i);
+            for (var i = 0; i < _enemies.Count; i++) _enemies[i].ApplyPassiveToQueue(playerModel, _enemies.ToArray(), i);
         }
     }
 }

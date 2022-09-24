@@ -1,7 +1,6 @@
 ﻿using Enemies.Attacks.Effects;
 using Players;
 using Registries;
-using UnityEngine;
 
 namespace Enemies.Attacks
 {

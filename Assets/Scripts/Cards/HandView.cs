@@ -7,8 +7,8 @@ namespace Cards
     public class HandView : MonoBehaviour
     {
         [SerializeField] private float spacing = 30f;
+        [SerializeField] [AssetsOnly] private CardView cardViewPrefab;
         private Transform _thisTransform;
-        [SerializeField, AssetsOnly] private CardView cardViewPrefab;
 
         private void Awake()
         {

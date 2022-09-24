@@ -16,15 +16,12 @@ namespace Managers
         [SerializeField] [SceneObjectsOnly] private CardQueue cardQueue;
         [SerializeField] [SceneObjectsOnly] private CardDropArea cardDropArea;
 
-        [SerializeField]
-        private List<Card> deck;
-        
-        [SerializeField, SceneObjectsOnly]
-        private DeckModel deckModel;
+        [SerializeField] private List<Card> deck;
 
-        [SerializeField, SceneObjectsOnly]
-        private DeckController deckController;
-        
+        [SerializeField] [SceneObjectsOnly] private DeckModel deckModel;
+
+        [SerializeField] [SceneObjectsOnly] private DeckController deckController;
+
         private void Start()
         {
             deckModel.Init(deck);
@@ -35,7 +32,7 @@ namespace Managers
             AdvanceTurn(null);
             cardQueue.AddOnCommitListener(AdvanceTurn);
         }
-        
+
         private void AdvanceTurn(List<CardModelWrapper> cardsUsed)
         {
             deckModel.AdvanceTurn(cardsUsed);

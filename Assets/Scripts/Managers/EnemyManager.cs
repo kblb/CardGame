@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Enemies;
 using Players;
@@ -21,6 +22,10 @@ namespace Managers
 
         public void AttackEnemies(List<Card> cards)
         {
+            foreach (var card in cards)
+            {
+                card.effect?.Apply(playerManager.PlayerModel, enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+            }
             enemyQueue.AttackEnemies(cards);
         }
 

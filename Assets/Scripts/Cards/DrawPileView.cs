@@ -6,8 +6,8 @@ namespace Cards
 {
     public class DrawPileView : MonoBehaviour
     {
-        [SerializeField, SceneObjectsOnly] private TMP_Text statusText;
-        private int count = 0;
+        [SerializeField] [SceneObjectsOnly] private TMP_Text statusText;
+        private int count;
         public void RemoveCard()
         {
             count--;

@@ -7,23 +7,23 @@ namespace Cards
 {
     public class CardModelWrapper
     {
-        public Card Model { get; }
-        public int Id { get; }
-        
+
         public CardModelWrapper(Card model, int id)
         {
             Model = model;
             Id = id;
         }
+        public Card Model { get; }
+        public int Id { get; }
     }
 
     public class DeckModel : MonoBehaviour
     {
-        private int _nextId;
-        private List<CardModelWrapper> _drawPile;
-        private List<CardModelWrapper> _playerHand;
         private List<CardModelWrapper> _discardPile;
-        
+        private List<CardModelWrapper> _drawPile;
+        private int _nextId;
+        private List<CardModelWrapper> _playerHand;
+
         public IEnumerable<CardModelWrapper> DrawPile => _drawPile;
 
         public event Action<CardModelWrapper> NewCardDrawn;
@@ -41,10 +41,7 @@ namespace Cards
 
         public void DrawCard()
         {
-            if (_drawPile.Count == 0)
-            {
-                ReshuffleDeck();
-            }
+            if (_drawPile.Count == 0) ReshuffleDeck();
             var card = _drawPile[0];
             _drawPile.RemoveAt(0);
             _playerHand.Add(card);
@@ -69,17 +66,10 @@ namespace Cards
         public void AdvanceTurn(List<CardModelWrapper> cardsUsed)
         {
             if (cardsUsed != null)
-            {
                 foreach (var card in cardsUsed)
-                {
                     DiscardCard(card.Id);
-                }
-            }
-            
-            while (_playerHand.Count < 5)
-            {
-                DrawCard();
-            }
+
+            while (_playerHand.Count < 5) DrawCard();
         }
     }
 }

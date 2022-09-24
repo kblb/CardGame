@@ -2,7 +2,6 @@
 using Enemies.Passives.Effects;
 using Players;
 using Registries;
-using UnityEngine;
 
 namespace Enemies.Passives
 {

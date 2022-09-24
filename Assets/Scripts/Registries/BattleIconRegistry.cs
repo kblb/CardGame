@@ -1,4 +1,3 @@
-using System;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,7 +5,22 @@ namespace Registries
 {
     public class BattleIconRegistry : MonoBehaviour
     {
+
+        [SerializeField] [AssetsOnly] private Sprite shieldIcon;
+
+        [SerializeField] [AssetsOnly] private Sprite swordIcon;
+
+        [SerializeField] [AssetsOnly] private Sprite healIcon;
+
+        [SerializeField] [AssetsOnly] private Sprite fireIcon;
+
+        [SerializeField] [AssetsOnly] private Sprite unknownIcon;
         private static BattleIconRegistry Instance { get; set; }
+        public static Sprite ShieldIcon => Instance.shieldIcon;
+        public static Sprite SwordIcon => Instance.swordIcon;
+        public static Sprite HealIcon => Instance.healIcon;
+        public static Sprite FireIcon => Instance.fireIcon;
+        public static Sprite UnknownIcon => Instance.unknownIcon;
 
         private void Awake()
         {
@@ -17,27 +31,6 @@ namespace Registries
             }
 
             Instance = this;
-            DontDestroyOnLoad(gameObject);
         }
-
-        [SerializeField, AssetsOnly]
-        private Sprite shieldIcon;
-        public static Sprite ShieldIcon => Instance.shieldIcon;
-        
-        [SerializeField, AssetsOnly]
-        private Sprite swordIcon;
-        public static Sprite SwordIcon => Instance.swordIcon;
-        
-        [SerializeField, AssetsOnly]
-        private Sprite healIcon;
-        public static Sprite HealIcon => Instance.healIcon;
-        
-        [SerializeField, AssetsOnly]
-        private Sprite fireIcon;
-        public static Sprite FireIcon => Instance.fireIcon;
-        
-        [SerializeField, AssetsOnly]
-        private Sprite unknownIcon;
-        public static Sprite UnknownIcon => Instance.unknownIcon;
     }
 }

@@ -9,41 +9,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aa0f7101334a15a29fd3e1203946d3, type: 3}
-  m_Name: Demon
+  m_Script: {fileID: 11500000, guid: 1bcceff161da48218cb5e3c796beb97d, type: 3}
+  m_Name: Execute
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects:
-    - {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
+    ReferencedUnityObjects: []
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _attack
+    - Name: effect
       Entry: 7
-      Data: 0|Enemies.Attacks.BasicHit, Assembly-CSharp
-    - Name: Damage
+      Data: 0|Cards.Effects.Execute, Assembly-CSharp
+    - Name: HealthThreshold
       Entry: 4
-      Data: 10
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: _enemyPrefab
-      Entry: 10
-      Data: 0
-    - Name: _passive
-      Entry: 7
-      Data: 1|Enemies.Passives.ShieldFront, Assembly-CSharp
-    - Name: Amount
-      Entry: 3
       Data: 5
-    - Name: Count
-      Entry: 3
-      Data: 1
     - Name: 
       Entry: 8
       Data: 
-  health: 12
+  displayName: Execute
+  description: Kill anyone below 5 HP
+  icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  damage: 0

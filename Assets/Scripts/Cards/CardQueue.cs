@@ -14,8 +14,6 @@ namespace Cards
         private CardQueueView _cardQueueView;
         private List<CardModelWrapper> _cards;
 
-        private event Action<List<CardModelWrapper>> OnCommit;
-
         private void Awake()
         {
             _cards = new List<CardModelWrapper>();
@@ -23,6 +21,8 @@ namespace Cards
             cardCommitButton.onClick.AddListener(Commit);
             cardCommitButton.interactable = false;
         }
+
+        private event Action<List<CardModelWrapper>> OnCommit;
 
         public bool AddCard(CardModelWrapper card)
         {

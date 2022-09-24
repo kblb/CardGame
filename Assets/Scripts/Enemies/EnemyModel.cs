@@ -36,42 +36,42 @@ namespace Enemies
 
     public class EnemyModelInstance
     {
-        private readonly List<IEnemyPassiveEffect> buffs;
-        private float currentHealth;
-        private float maxHealth;
-        private float shields;
+        private readonly List<IEnemyPassiveEffect> _buffs;
+        private float _currentHealth;
+        private float _maxHealth;
+        private float _shields;
 
         public EnemyModelInstance(EnemyModel model)
         {
             MaxHealth = model.Health;
             CurrentHealth = model.Health;
             Shields = 0;
-            buffs = new List<IEnemyPassiveEffect>();
+            _buffs = new List<IEnemyPassiveEffect>();
         }
 
         public float MaxHealth {
-            get => maxHealth;
+            get => _maxHealth;
             set {
-                maxHealth = value;
+                _maxHealth = value;
                 OnHealthChanged();
             }
         }
         public float CurrentHealth {
-            get => currentHealth;
+            get => _currentHealth;
             set {
-                currentHealth = value;
+                _currentHealth = value;
                 OnHealthChanged();
             }
         }
         public float Shields {
-            get => shields;
+            get => _shields;
             set {
-                shields = value;
+                _shields = value;
                 OnHealthChanged();
             }
         }
 
-        public IEnumerable<IEnemyPassiveEffect> Buffs => buffs;
+        public IEnumerable<IEnemyPassiveEffect> Buffs => _buffs;
         public Attack SelectedAttack { get; private set; }
         public event Action<float, float, float> HealthChanged;
         public event Action<IEnumerable<IEnemyPassiveEffect>> BuffsChanged;
@@ -79,13 +79,13 @@ namespace Enemies
 
         public void AddBuff(IEnemyPassiveEffect passive)
         {
-            buffs.Add(passive);
+            _buffs.Add(passive);
             OnBuffsChanged();
         }
 
         public void ClearBuffs()
         {
-            buffs.Clear();
+            _buffs.Clear();
         }
 
         public void SelectAttack(Attack attack)
@@ -100,12 +100,12 @@ namespace Enemies
 
         private void OnHealthChanged()
         {
-            HealthChanged?.Invoke(maxHealth, currentHealth, shields);
+            HealthChanged?.Invoke(_maxHealth, _currentHealth, _shields);
         }
 
         private void OnBuffsChanged()
         {
-            BuffsChanged?.Invoke(buffs);
+            BuffsChanged?.Invoke(_buffs);
         }
     }
 
