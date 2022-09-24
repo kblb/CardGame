@@ -41,12 +41,9 @@ namespace Managers
             deckModel.AdvanceTurn(cardsUsed);
         }
 
-        // TODO: Move this to DeckController
-        public void OnCardDraw(CardModelWrapper card)
+        private void OnCardDraw(CardModelWrapper card)
         {
-            var cardObject = Instantiate(cardPrefab);
-            cardObject.Init(card, HandleEndDrag);
-            handView.AddCard(cardObject);
+            handView.AddCard(card, HandleEndDrag);
         }
 
         public void AddOnCommitListener(Action<List<CardModelWrapper>> listener)

@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Cards
@@ -7,15 +8,17 @@ namespace Cards
     {
         [SerializeField] private float spacing = 30f;
         private Transform _thisTransform;
+        [SerializeField, AssetsOnly] private CardView cardViewPrefab;
 
         private void Awake()
         {
             _thisTransform = transform;
         }
 
-        public void AddCard(CardView cardObject)
+        public void AddCard(CardModelWrapper card, Func<CardModelWrapper, bool> onEndDrag)
         {
-            cardObject.transform.SetParent(_thisTransform);
+            var cardObject = Instantiate(cardViewPrefab, _thisTransform);
+            cardObject.Init(card, onEndDrag);
             cardObject.SetOnExitDragNotificationListener(Redraw);
             Redraw();
         }
@@ -23,7 +26,7 @@ namespace Cards
         /// <summary>
         ///     Places all children in horizontal layout starting from the center
         /// </summary>
-        public void Redraw()
+        private void Redraw()
         {
             var i = 0;
             var childCount = _thisTransform.childCount;

@@ -21,6 +21,7 @@ namespace Cards
             _cards = new List<CardModelWrapper>();
             _cardQueueView = GetComponent<CardQueueView>();
             cardCommitButton.onClick.AddListener(Commit);
+            cardCommitButton.interactable = false;
         }
 
         public bool AddCard(CardModelWrapper card)
@@ -28,6 +29,7 @@ namespace Cards
             if (_cards.Count >= MaxCards) return false;
             _cards.Add(card);
             _cardQueueView.AddCard(card.Model);
+            if (_cards.Count == MaxCards) cardCommitButton.interactable = true;
             return true;
         }
 
@@ -38,6 +40,8 @@ namespace Cards
 
         private void Clear()
         {
+            cardCommitButton.interactable = false;
+
             _cards.Clear();
             _cardQueueView.Clear();
         }

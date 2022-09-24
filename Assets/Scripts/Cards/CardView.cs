@@ -34,9 +34,9 @@ namespace Cards
             _draggableImage.Init(this);
         }
 
-        public void SetOnExitDragNotificationListener(Action redraw)
+        public void SetOnExitDragNotificationListener(Action action)
         {
-            _draggableImage.OnExitDragNotification += redraw;
+            _draggableImage.OnExitDragNotification += action;
         }
     }
 }

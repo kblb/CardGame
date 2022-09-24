@@ -29,7 +29,7 @@ MonoBehaviour:
       Data: 0|Enemies.Attacks.BasicHit, Assembly-CSharp
     - Name: Damage
       Entry: 4
-      Data: 10
+      Data: 121
     - Name: Icon
       Entry: 10
       Data: 0
