@@ -34,8 +34,10 @@ namespace Managers
 
         public void AttackPlayer(PlayerModel playerModel)
         {
-            var attack = enemyQueue.AttackPlayer(playerModel);
-            if (attack != null) playerManager.AttackPlayer(attack);
+            var attacks = enemyQueue.GetEnemyAttacks(playerModel);
+            foreach (var attack in attacks)
+                if (attack != null)
+                    playerManager.AttackPlayer(attack);
         }
 
         public void PrepareNextRound(PlayerModel playerModel)

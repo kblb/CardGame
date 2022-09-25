@@ -66,12 +66,14 @@ namespace Enemies
             }
         }
 
-        public Attack AttackPlayer(PlayerModel playerModel)
+        public List<Attack> GetEnemyAttacks(PlayerModel playerModel)
         {
-            var enemy = _enemies.First();
-            var attack = enemy.SelectedAttack;
-            enemy.SelectNextAttack(playerModel, _enemies.Select(e => e.RawEnemy).ToArray(), 0);
-            return attack;
+            return _enemies.Select((enemy, idx) =>
+            {
+                var attack = enemy.SelectedAttack;
+                enemy.SelectNextAttack(playerModel, _enemies.Select(e => e.RawEnemy).ToArray(), idx);
+                return attack;
+            }).ToList();
         }
 
         public void PrepareNextRound(PlayerModel playerModel)
