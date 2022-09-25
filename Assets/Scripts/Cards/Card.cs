@@ -10,7 +10,6 @@ namespace Cards
         public string displayName;
         [TextArea] public string description;
         public Sprite icon;
-        public float damage;
-        public ICardEffect effect;
+        public ICardEffect[] effects;
     }
 }

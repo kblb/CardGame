@@ -69,12 +69,16 @@ namespace Enemies
 
         public void OnHealthChanged(float maxHealth, float currentHealth, float shields)
         {
-            if (Mathf.Abs(_oldHealth - currentHealth) <= Mathf.Epsilon && Mathf.Abs(_oldShield - shields) <= Mathf.Epsilon) return;
+            Debug.Log($"Redrawing health bar for {currentHealth}/{maxHealth} with {shields} shields");
+            if (Mathf.Abs(_oldHealth - currentHealth) <= Mathf.Epsilon &&
+                Mathf.Abs(_oldShield - shields) <= Mathf.Epsilon) return;
 
             _oldHealth = currentHealth;
             _oldShield = shields;
 
-            healthText.text = currentHealth.ToString(CultureInfo.InvariantCulture) + (shields > 0 ? $"(+{shields})" : "") + "/" + maxHealth.ToString(CultureInfo.InvariantCulture);
+            healthText.text = currentHealth.ToString(CultureInfo.InvariantCulture) +
+                              (shields > 0 ? $"(+{shields})" : "") + "/" +
+                              maxHealth.ToString(CultureInfo.InvariantCulture);
 
             var width = Mathf.Max(shields + currentHealth, maxHealth);
             var drawHp = Mathf.FloorToInt(currentHealth / width * ImageWidth);

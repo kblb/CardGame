@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Cards;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -19,10 +18,15 @@ namespace Enemies
             _enemies = new List<EnemyController>();
         }
 
-        public EnemyController AddEnemy(EnemyModel enemy, EnemyModelInstance enemyModelInstance, PlayerModel playerModel)
+        public EnemyController AddEnemy(
+            EnemyModel enemy,
+            EnemyModelInstance enemyModelInstance,
+            PlayerModel playerModel)
         {
             var enemyController = AddToNextFreeSlot(enemy, enemyModelInstance);
-            if (enemyController != null) enemyController.SelectNextAttack(playerModel, _enemies.Select(x => x.RawEnemy).ToArray(), _enemies.Count - 1);
+            if (enemyController != null)
+                enemyController.SelectNextAttack(playerModel, _enemies.Select(x => x.RawEnemy).ToArray(),
+                    _enemies.Count - 1);
             return enemyController;
 
         }
@@ -38,18 +42,19 @@ namespace Enemies
             return instance;
         }
 
-        public void AttackEnemies(List<Card> cards)
+        public void CheckDeadEnemies()
         {
-            for (var i = 0; i < cards.Count; i++)
-            {
-                var card = cards[i];
-                var enemy = _enemies.First();
-                if (!enemy.AttackEnemy(card)) continue;
+            var changed = false;
+            for (var i = _enemies.Count - 1; i >= 0; i--)
+                if (_enemies[i].EnemyModelInstance.IsDead)
+                {
+                    changed = true;
+                    Destroy(_enemies[i].gameObject);
+                    _enemies.RemoveAt(i);
+                    Debug.Log($"Destroyed enemy at {i}");
+                }
 
-                _enemies.RemoveAt(0);
-                Destroy(enemy.gameObject);
-            }
-            Redraw();
+            if (changed) Redraw();
         }
 
         private void Redraw()
@@ -80,7 +85,8 @@ namespace Enemies
                 e.EnemyModelInstance.ClearBuffs();
             }
 
-            for (var i = 0; i < _enemies.Count; i++) _enemies[i].ApplyPassiveToQueue(playerModel, _enemies.ToArray(), i);
+            for (var i = 0; i < _enemies.Count; i++)
+                _enemies[i].ApplyPassiveToQueue(playerModel, _enemies.ToArray(), i);
         }
     }
 }

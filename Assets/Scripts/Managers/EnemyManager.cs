@@ -24,9 +24,12 @@ namespace Managers
         {
             foreach (var card in cards)
             {
-                card.effect?.Apply(playerManager.PlayerModel, enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+                if (card.effects == null) continue;
+                foreach (var effect in card.effects)
+                    effect.Apply(playerManager.PlayerModel,
+                        enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
             }
-            enemyQueue.AttackEnemies(cards);
+            enemyQueue.CheckDeadEnemies();
         }
 
         public void AttackPlayer(PlayerModel playerModel)

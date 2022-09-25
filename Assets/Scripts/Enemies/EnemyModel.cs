@@ -27,13 +27,18 @@ namespace Enemies
             return _attack.NextAttack(playerModel, allEnemies, myEnemyIndex);
         }
 
-        public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyModel[] enemies, EnemyModelInstance[] passives, int myEnemyIndex)
+        public void ApplyPassiveToQueue(
+            PlayerModel playerModel,
+            EnemyModel[] enemies,
+            EnemyModelInstance[] passives,
+            int myEnemyIndex)
         {
             var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
             foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
         }
     }
 
+    [Serializable]
     public class EnemyModelInstance
     {
         private readonly List<IEnemyPassiveEffect> _buffs;
@@ -73,6 +78,7 @@ namespace Enemies
 
         public IEnumerable<IEnemyPassiveEffect> Buffs => _buffs;
         public Attack SelectedAttack { get; private set; }
+        public bool IsDead => CurrentHealth <= 0.0;
         public event Action<float, float, float> HealthChanged;
         public event Action<IEnumerable<IEnemyPassiveEffect>> BuffsChanged;
         public event Action<Attack> AttackChanged;
@@ -93,6 +99,17 @@ namespace Enemies
             SelectedAttack = attack;
             OnAttackChanged();
         }
+
+        public void Damage(float amount)
+        {
+            Debug.Log(
+                $"Dealing damage to an enemy (damage: {amount}), current health: {CurrentHealth}, shields: {Shields})");
+            var shieldBreakthroughDamage = Mathf.Max(0, amount - Shields);
+            _shields = Mathf.Max(0, Shields - amount);
+            _currentHealth -= shieldBreakthroughDamage;
+            OnHealthChanged();
+        }
+
         private void OnAttackChanged()
         {
             AttackChanged?.Invoke(SelectedAttack);

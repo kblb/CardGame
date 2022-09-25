@@ -23,7 +23,8 @@ namespace Helpers
         {
             OnExitDragNotification?.Invoke();
 
-            if (_dragEventHandler != null && _dragEventHandler.HandleEndDrag(_startPosition, transform.position)) return;
+            if (_dragEventHandler != null &&
+                _dragEventHandler.HandleEndDrag(_startPosition, transform.position)) return;
         }
 
         public event Action OnExitDragNotification;

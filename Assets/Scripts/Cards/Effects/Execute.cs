@@ -5,16 +5,16 @@ namespace Cards.Effects
 {
     public class Execute : ICardEffect
     {
-        public float HealthThreshold;
-        
+        public float[] HealthThreshold;
+
         public void Apply(PlayerModel player, EnemyModelInstance[] enemies)
         {
-            foreach (var enemy in enemies)
+            for (var i = 0; i < enemies.Length && i < HealthThreshold.Length; i++)
             {
-                if (enemy.CurrentHealth <= HealthThreshold)
-                {
-                    enemy.CurrentHealth = 0;
-                }
+                if (HealthThreshold[i] < 0) continue;
+
+                var enemy = enemies[i];
+                if (enemy.CurrentHealth <= HealthThreshold[i]) enemy.CurrentHealth = 0;
             }
         }
     }

@@ -10,10 +10,14 @@ namespace Enemies.Passives
         public readonly int Amount = 5;
         public readonly int Count = 1;
 
-        public Dictionary<int, IEnemyPassiveEffect> Passive(PlayerModel playerModel, EnemyModel[] enemies, int myEnemyIndex)
+        public Dictionary<int, IEnemyPassiveEffect> Passive(
+            PlayerModel playerModel,
+            EnemyModel[] enemies,
+            int myEnemyIndex)
         {
             var effects = new Dictionary<int, IEnemyPassiveEffect>();
-            for (var i = myEnemyIndex - 1; i >= 0 && i >= myEnemyIndex - Count; i--) effects.Add(i, new ShieldBuffEffect(Amount, BattleIconRegistry.ShieldIcon));
+            for (var i = myEnemyIndex - 1; i >= 0 && i >= myEnemyIndex - Count; i--)
+                effects.Add(i, new ShieldBuffEffect(Amount, BattleIconRegistry.ShieldIcon));
             return effects;
         }
     }

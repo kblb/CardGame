@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Cards;
 using Players;
 using UnityEngine;
 
@@ -29,9 +28,10 @@ namespace Enemies
             EnemyModelInstance.SelectAttack(RawEnemy.GetNextAttack(playerModel, allEnemies, myEnemyIndex));
         }
 
-        public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyController[] queue, int i)
+        public void ApplyPassiveToQueue(PlayerModel playerModel, EnemyController[] queue, int myEnemyIndex)
         {
-            RawEnemy.ApplyPassiveToQueue(playerModel, queue.Select(e => e.RawEnemy).ToArray(), queue.Select(e => e.EnemyModelInstance).ToArray(), i);
+            RawEnemy.ApplyPassiveToQueue(playerModel, queue.Select(e => e.RawEnemy).ToArray(),
+                queue.Select(e => e.EnemyModelInstance).ToArray(), myEnemyIndex);
         }
 
         public void Shield(float amount)
@@ -41,15 +41,8 @@ namespace Enemies
 
         public void Heal(float flatHealAmount)
         {
-            EnemyModelInstance.CurrentHealth = Mathf.Min(EnemyModelInstance.CurrentHealth + flatHealAmount, EnemyModelInstance.MaxHealth);
-        }
-
-        public bool AttackEnemy(Card card)
-        {
-            var shieldBreakthroughDamage = Mathf.Max(0, card.damage - EnemyModelInstance.Shields);
-            EnemyModelInstance.Shields = Mathf.Max(0, EnemyModelInstance.Shields - card.damage);
-            EnemyModelInstance.CurrentHealth -= shieldBreakthroughDamage;
-            return EnemyModelInstance.CurrentHealth <= 0;
+            EnemyModelInstance.CurrentHealth = Mathf.Min(EnemyModelInstance.CurrentHealth + flatHealAmount,
+                EnemyModelInstance.MaxHealth);
         }
     }
 }
