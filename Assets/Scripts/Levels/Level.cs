@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Enemies;
+using Sirenix.OdinInspector;
+using UnityEngine;
 
 namespace Levels
 {
-    [Serializable]
-    public class Level
+    [CreateAssetMenu(menuName = "Create/Level")]
+    public class Level : SerializedScriptableObject
     {
-        public List<EnemyModel> listOfEnemies = new List<EnemyModel>();
+        public List<EnemyModel> listOfEnemies = new();
+        public EnemyModel Get(int index) => listOfEnemies[index];
     }
 }

@@ -90,5 +90,7 @@ namespace Enemies
             for (var i = 0; i < _enemies.Count; i++)
                 _enemies[i].ApplyPassiveToQueue(playerModel, _enemies.ToArray(), i);
         }
+        
+        public int Count() => _enemies.Count;
     }
 }

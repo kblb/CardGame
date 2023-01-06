@@ -44,5 +44,7 @@ namespace Managers
         {
             enemyQueue.PrepareNextRound(playerModel);
         }
+        
+        public int EnemyCount() => enemyQueue.Count();
     }
 }
