@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Players;
 using Sirenix.OdinInspector;
@@ -12,6 +13,7 @@ namespace Enemies
         [SerializeField] [AssetsOnly] private EnemyController enemyControllerPrefab;
         private List<EnemyController> _enemies;
         public IEnumerable<EnemyController> Enemies => _enemies;
+        public event Action OnEnemyKilled;
 
         private void Awake()
         {
@@ -54,7 +56,10 @@ namespace Enemies
                     Debug.Log($"Destroyed enemy at {i}");
                 }
 
-            if (changed) Redraw();
+            if (!changed) return;
+            
+            Redraw();
+            OnEnemyKilled?.Invoke();
         }
 
         private void Redraw()

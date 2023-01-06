@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Cards;
 using Enemies;
@@ -12,6 +13,7 @@ namespace Managers
     {
         [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
         [SerializeField] [SceneObjectsOnly] private PlayerManager playerManager;
+
 
         [Button]
         public void SpawnEnemy(EnemyModel enemy)
@@ -46,5 +48,10 @@ namespace Managers
         }
         
         public int EnemyCount() => enemyQueue.Count();
+
+        public void RegisterOnEnemyKilled(Action onEnemyKilled)
+        {
+            enemyQueue.OnEnemyKilled += onEnemyKilled;
+        }
     }
 }

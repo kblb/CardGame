@@ -1,4 +1,5 @@
-﻿using Levels;
+﻿using System;
+using Levels;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -15,12 +16,26 @@ namespace Managers
 
         private void Start()
         {
+            ReplenishEnemies();
+            enemyManager.RegisterOnEnemyKilled(ReplenishEnemies);
+        }
+        
+        private void ReplenishEnemies()
+        {
             var toSpawn = 5 - enemyManager.EnemyCount();
-            for (int i = 0; i < toSpawn; i++)
+            for (var i = 0 ; i < toSpawn; i++)
             {
                 var enemy = currentLevel.Get(i + currentEnemyIndex);
-                enemyManager.SpawnEnemy(enemy);
+                if (enemy != null)
+                {
+                    enemyManager.SpawnEnemy(enemy);
+                }
+                else
+                {
+                    Debug.LogWarning("Could not spawn enemy at index " + (i + currentEnemyIndex));
+                }
             }
+            currentEnemyIndex += toSpawn;
         }
     }
 }

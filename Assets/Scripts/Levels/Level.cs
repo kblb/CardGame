@@ -9,6 +9,13 @@ namespace Levels
     public class Level : SerializedScriptableObject
     {
         public List<EnemyModel> listOfEnemies = new();
-        public EnemyModel Get(int index) => listOfEnemies[index];
+        public EnemyModel Get(int index)
+        {
+            if (index < 0 || index >= listOfEnemies.Count)
+            {
+                return null;
+            }
+            return listOfEnemies[index];
+        }
     }
 }
