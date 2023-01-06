@@ -1,5 +1,6 @@
 ﻿using System;
 using Helpers;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,8 @@ namespace Cards
     public class CardView : MonoBehaviour, IDragEventHandler
     {
         [SerializeField] private Image cardIcon;
+        [SerializeField] private TMP_Text titleText;
+        [SerializeField] private TMP_Text descriptionText;
         private CardModelWrapper _card;
         private DraggableImage _draggableImage;
         private Func<CardModelWrapper, bool> _onDragEnd;
@@ -30,6 +33,8 @@ namespace Cards
         {
             _card = card;
             cardIcon.sprite = card.Model.icon;
+            titleText.text = card.Model.displayName;
+            descriptionText.text = card.Model.description;
             _onDragEnd = onDragEnd;
             _draggableImage.Init(this);
         }
