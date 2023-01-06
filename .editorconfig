@@ -1,0 +1,54 @@
+
+[*.{c,c++,cc,cginc,compute,cp,cpp,cu,cuh,cxx,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,hxx,inc,inl,ino,ipp,ixx,mpp,mq4,mq5,mqh,tpp,usf,ush}]
+indent_style = tab
+indent_size = tab
+tab_width = 4
+
+[*]
+
+# Microsoft .NET properties
+csharp_indent_braces = false
+csharp_new_line_before_open_brace = anonymous_methods,anonymous_types,control_blocks,lambdas,local_functions,methods,object_collection_array_initalizers,types
+csharp_preferred_modifier_order = protected, private, public, sealed, file, new, abstract, internal, virtual, override, static, readonly, extern, unsafe, volatile, async, required:suggestion
+dotnet_style_qualification_for_event = false:suggestion
+dotnet_style_qualification_for_field = false:suggestion
+dotnet_style_qualification_for_method = false:suggestion
+dotnet_style_qualification_for_property = true:suggestion
+
+# ReSharper properties
+resharper_align_multiline_statement_conditions = false
+resharper_blank_lines_after_block_statements = 0
+resharper_blank_lines_around_property = 0
+resharper_blank_lines_around_single_line_property = 1
+resharper_blank_lines_around_single_line_type = 0
+resharper_blank_lines_before_single_line_comment = 1
+resharper_braces_redundant = false
+resharper_continuous_line_indent = none
+resharper_cpp_indent_style = tab
+resharper_cpp_int_align_comments = true
+resharper_cpp_space_after_keywords_in_control_flow_statements = false
+resharper_cpp_type_declaration_braces = end_of_line
+resharper_csharp_blank_lines_around_field = 0
+resharper_csharp_blank_lines_around_invocable = 0
+resharper_csharp_blank_lines_around_namespace = 0
+resharper_csharp_blank_lines_around_single_line_invocable = 1
+resharper_csharp_empty_block_style = together_same_line
+resharper_csharp_max_line_length = 424
+resharper_csharp_remove_blank_lines_near_braces_in_declarations = false
+resharper_csharp_wrap_after_declaration_lpar = true
+resharper_csharp_wrap_parameters_style = chop_if_long
+resharper_indent_preprocessor_directives = do_not_change
+resharper_instance_members_qualify_declared_in = base_class
+resharper_int_align_declaration_names = true
+resharper_keep_existing_attribute_arrangement = true
+resharper_parentheses_redundancy_style = remove
+resharper_place_expr_accessor_on_single_line = true
+resharper_place_expr_method_on_single_line = true
+resharper_place_expr_property_on_single_line = true
+resharper_place_simple_accessorholder_on_single_line = true
+resharper_place_simple_anonymousmethod_on_single_line = false
+resharper_remove_blank_lines_near_braces_in_code = false
+resharper_simple_embedded_statement_style = on_single_line
+resharper_toplevel_function_definition_return_type_style = on_single_line
+resharper_wrap_after_expression_lbrace = false
+resharper_wrap_before_expression_rbrace = false
