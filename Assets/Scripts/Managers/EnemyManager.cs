@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using DG.Tweening;
 using Enemies;
 using Players;
 using Sirenix.OdinInspector;
@@ -24,14 +25,25 @@ namespace Managers
 
         public void AttackEnemies(List<Card> cards)
         {
+            DG.Tweening.Sequence sequence = DOTween.Sequence();
             foreach (var card in cards)
             {
                 if (card.effects == null) continue;
                 foreach (var effect in card.effects)
-                    effect.Apply(playerManager.PlayerModel,
-                        enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+                {
+                    sequence.Append(
+                        transform.DOScale(Vector3.zero, 1)
+                            .OnComplete(() =>
+                            {
+                                effect.Apply(
+                                    playerManager.PlayerModel,
+                                    enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+                                enemyQueue.CheckDeadEnemies();
+                            })
+                    );
+                }
             }
-            enemyQueue.CheckDeadEnemies();
+            sequence.Play();
         }
 
         public void AttackPlayer(PlayerModel playerModel)

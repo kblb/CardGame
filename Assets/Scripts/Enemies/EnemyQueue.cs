@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -66,8 +67,9 @@ namespace Enemies
         {
             for (var i = 0; i < _enemies.Count; i++)
             {
+                
                 _enemies[i].transform.SetParent(slots[i]);
-                _enemies[i].transform.localPosition = Vector3.zero;
+                _enemies[i].transform.DOLocalMove(Vector3.zero, 0.5f);
             }
         }
 
