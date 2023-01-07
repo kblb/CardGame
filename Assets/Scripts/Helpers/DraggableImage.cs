@@ -16,7 +16,7 @@ namespace Helpers
 
         public void OnDrag(PointerEventData eventData)
         {
-            transform.position = eventData.position;
+            this.transform.position = eventData.position;
         }
 
         public void OnEndDrag(PointerEventData eventData)
@@ -24,7 +24,7 @@ namespace Helpers
             OnExitDragNotification?.Invoke();
 
             if (_dragEventHandler != null &&
-                _dragEventHandler.HandleEndDrag(_startPosition, transform.position)) return;
+                _dragEventHandler.HandleEndDrag(_startPosition, this.transform.position)) return;
         }
 
         public event Action OnExitDragNotification;

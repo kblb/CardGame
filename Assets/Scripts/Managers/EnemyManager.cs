@@ -46,8 +46,11 @@ namespace Managers
         {
             enemyQueue.PrepareNextRound(playerModel);
         }
-        
-        public int EnemyCount() => enemyQueue.Count();
+
+        public int EnemyCount()
+        {
+            return enemyQueue.Count();
+        }
 
         public void RegisterOnEnemyKilled(Action onEnemyKilled)
         {

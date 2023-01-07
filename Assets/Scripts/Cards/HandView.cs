@@ -12,7 +12,7 @@ namespace Cards
 
         private void Awake()
         {
-            _thisTransform = transform;
+            _thisTransform = this.transform;
         }
 
         public void AddCard(CardModelWrapper card, Func<CardModelWrapper, bool> onEndDrag)

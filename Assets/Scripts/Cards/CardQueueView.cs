@@ -16,7 +16,7 @@ namespace Cards
         private void Awake()
         {
             _cardViews = new List<CardSmallView>();
-            _transform = transform;
+            _transform = this.transform;
         }
 
         public void AddCard(Card card)

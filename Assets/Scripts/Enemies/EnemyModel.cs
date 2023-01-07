@@ -33,6 +33,8 @@ namespace Enemies
             EnemyModelInstance[] passives,
             int myEnemyIndex)
         {
+            if (_passive == null)
+                return;
             var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
             foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
         }

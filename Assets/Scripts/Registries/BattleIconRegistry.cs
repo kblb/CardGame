@@ -26,7 +26,7 @@ namespace Registries
         {
             if (Instance != null)
             {
-                Destroy(gameObject);
+                Destroy(this.gameObject);
                 return;
             }
 

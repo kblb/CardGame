@@ -13,12 +13,12 @@ namespace Enemies
         [SerializeField] [AssetsOnly] private EnemyController enemyControllerPrefab;
         private List<EnemyController> _enemies;
         public IEnumerable<EnemyController> Enemies => _enemies;
-        public event Action OnEnemyKilled;
 
         private void Awake()
         {
             _enemies = new List<EnemyController>();
         }
+        public event Action OnEnemyKilled;
 
         public EnemyController AddEnemy(
             EnemyModel enemy,
@@ -57,7 +57,7 @@ namespace Enemies
                 }
 
             if (!changed) return;
-            
+
             Redraw();
             OnEnemyKilled?.Invoke();
         }
@@ -95,7 +95,10 @@ namespace Enemies
             for (var i = 0; i < _enemies.Count; i++)
                 _enemies[i].ApplyPassiveToQueue(playerModel, _enemies.ToArray(), i);
         }
-        
-        public int Count() => _enemies.Count;
+
+        public int Count()
+        {
+            return _enemies.Count;
+        }
     }
 }

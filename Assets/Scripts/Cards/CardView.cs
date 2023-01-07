@@ -25,7 +25,7 @@ namespace Cards
         {
             if (_onDragEnd == null || !_onDragEnd(_card)) return false;
 
-            Destroy(gameObject);
+            Destroy(this.gameObject);
             return true;
         }
 

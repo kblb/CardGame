@@ -18,7 +18,7 @@ namespace Enemies
         {
             RawEnemy = enemy;
             EnemyModelInstance = enemyModelInstance;
-            Instantiate(enemy.GetModel, transform);
+            Instantiate(enemy.GetModel, this.transform);
 
             statsView.SetModel(EnemyModelInstance);
         }

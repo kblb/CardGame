@@ -1,5 +1,4 @@
-﻿using System;
-using Levels;
+﻿using Levels;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -9,9 +8,9 @@ namespace Managers
     {
         [SerializeField]
         private Level currentLevel;
-        [ReadOnly, SerializeField]
+        [ReadOnly] [SerializeField]
         private int currentEnemyIndex;
-        [SerializeField, SceneObjectsOnly]
+        [SerializeField] [SceneObjectsOnly]
         private EnemyManager enemyManager;
 
         private void Start()
@@ -19,11 +18,11 @@ namespace Managers
             ReplenishEnemies();
             enemyManager.RegisterOnEnemyKilled(ReplenishEnemies);
         }
-        
+
         private void ReplenishEnemies()
         {
             var toSpawn = 5 - enemyManager.EnemyCount();
-            for (var i = 0 ; i < toSpawn; i++)
+            for (var i = 0; i < toSpawn; i++)
             {
                 var enemy = currentLevel.Get(i + currentEnemyIndex);
                 if (enemy != null)
