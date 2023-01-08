@@ -33,23 +33,26 @@ namespace Enemies
             EnemyModelInstance[] passives,
             int myEnemyIndex)
         {
-            if (_passive == null)
-                return;
-            var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
-            foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
+            if (_passive != null)
+            {
+                var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
+                foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
+            }
         }
     }
 
     [Serializable]
     public class EnemyModelInstance
     {
+        public readonly string name;
         private readonly List<IEnemyPassiveEffect> _buffs;
         private float _currentHealth;
         private float _maxHealth;
         private float _shields;
 
-        public EnemyModelInstance(EnemyModel model)
+        public EnemyModelInstance(EnemyModel model, string name)
         {
+            this.name = name;
             MaxHealth = model.Health;
             CurrentHealth = model.Health;
             Shields = 0;
@@ -104,11 +107,12 @@ namespace Enemies
 
         public void Damage(float amount)
         {
-            Debug.Log(
-                $"Dealing damage to an enemy (damage: {amount}), current health: {CurrentHealth}, shields: {Shields})");
-            var shieldBreakthroughDamage = Mathf.Max(0, amount - Shields);
+            int healthDamage = (int)Mathf.Max(0, amount - Shields);
+            int shieldDamage = (int)Mathf.Max(0, Shields - amount);
+            
+            Debug.Log($"Dealing damage ({healthDamage}) to enemy ({name}). Shields reduced {shieldDamage} dmg");
             _shields = Mathf.Max(0, Shields - amount);
-            _currentHealth -= shieldBreakthroughDamage;
+            _currentHealth -= healthDamage;
             OnHealthChanged();
         }
 

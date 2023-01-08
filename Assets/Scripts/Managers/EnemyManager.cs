@@ -15,17 +15,18 @@ namespace Managers
         [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
         [SerializeField] [SceneObjectsOnly] private PlayerManager playerManager;
 
+        private int enemyCreatedSinceStart;
 
         [Button]
         public void SpawnEnemy(EnemyModel enemy)
         {
-            var instance = new EnemyModelInstance(enemy);
+            var instance = new EnemyModelInstance(enemy, "Monster " + (++enemyCreatedSinceStart));
             enemyQueue.AddEnemy(enemy, instance, playerManager.PlayerModel);
         }
 
         public void AttackEnemies(List<Card> cards)
         {
-            DG.Tweening.Sequence sequence = DOTween.Sequence();
+            Sequence sequence = DOTween.Sequence();
             foreach (var card in cards)
             {
                 if (card.effects == null) continue;
@@ -48,10 +49,17 @@ namespace Managers
 
         public void AttackPlayer(PlayerModel playerModel)
         {
-            var attacks = enemyQueue.GetEnemyAttacks(playerModel);
-            foreach (var attack in attacks)
+            int i = 0;
+            foreach (EnemyController enemy in enemyQueue.Enemies)
+            {
+                Attack attack = enemy.SelectedAttack;
                 if (attack != null)
+                {
+                    enemy.SelectNextAttack(playerModel, enemyQueue.Enemies.Select(e => e.RawEnemy).ToArray(), i++);
+                    Debug.Log($"Monster ({enemy.EnemyModelInstance.name}) attacking player with ({attack.GetType().Name})");
                     playerManager.AttackPlayer(attack);
+                }
+            }
         }
 
         public void PrepareNextRound(PlayerModel playerModel)

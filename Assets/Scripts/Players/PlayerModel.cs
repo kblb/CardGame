@@ -24,8 +24,7 @@ namespace Players
 
         public void AttackPlayer(Attack selectedAttack)
         {
-            if (selectedAttack == null) return;
-
+            Debug.Log($"Player receiving {selectedAttack.Damage} damage");
             Health -= selectedAttack.Damage;
         }
     }

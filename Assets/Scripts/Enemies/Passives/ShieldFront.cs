@@ -2,6 +2,7 @@
 using Enemies.Passives.Effects;
 using Players;
 using Registries;
+using UnityEngine;
 
 namespace Enemies.Passives
 {
@@ -17,7 +18,10 @@ namespace Enemies.Passives
         {
             var effects = new Dictionary<int, IEnemyPassiveEffect>();
             for (var i = myEnemyIndex - 1; i >= 0 && i >= myEnemyIndex - Count; i--)
+            {
                 effects.Add(i, new ShieldBuffEffect(Amount, BattleIconRegistry.ShieldIcon));
+                Debug.Log($"Applying passive shield {Amount} to player {i}");
+            }
             return effects;
         }
     }

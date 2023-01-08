@@ -67,9 +67,8 @@ namespace Enemies
             }
         }
 
-        public void OnHealthChanged(float maxHealth, float currentHealth, float shields)
+        private void OnHealthChanged(float maxHealth, float currentHealth, float shields)
         {
-            Debug.Log($"Redrawing health bar for {currentHealth}/{maxHealth} with {shields} shields");
             if (Mathf.Abs(_oldHealth - currentHealth) <= Mathf.Epsilon &&
                 Mathf.Abs(_oldShield - shields) <= Mathf.Epsilon) return;
 
