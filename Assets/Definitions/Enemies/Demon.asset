@@ -37,4 +37,4 @@ MonoBehaviour:
     - Name: _passive
       Entry: 6
       Data: 
-  health: 12
+  health: 20
