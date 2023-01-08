@@ -1280,7 +1280,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 817054893}
-  - component: {fileID: 817054894}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1308,23 +1307,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &817054894
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 817054892}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c8b3d53409cc45d399658de09a1e4714, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardsManager: {fileID: 1531420985}
-  enemyManager: {fileID: 1637871783}
-  playerManager: {fileID: 596295814}
-  flowManager: {fileID: 2041985958}
-  levelManager: {fileID: 914726542}
 --- !u!1 &914726540
 GameObject:
   m_ObjectHideFlags: 0
