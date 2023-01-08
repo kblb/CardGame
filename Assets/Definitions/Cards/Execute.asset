@@ -67,5 +67,5 @@ MonoBehaviour:
       Entry: 8
       Data: 
   displayName: Execute
-  description: Kill anyone below 5 HP
+  description: Kill any enemy who's below 5 HP
   icon: {fileID: 21300000, guid: 9d08d5734eca6a64ba892308fd5edb01, type: 3}

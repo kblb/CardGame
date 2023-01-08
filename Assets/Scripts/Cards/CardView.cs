@@ -12,6 +12,7 @@ namespace Cards
         [SerializeField] private Image cardIcon;
         [SerializeField] private TMP_Text titleText;
         [SerializeField] private TMP_Text descriptionText;
+        [SerializeField] private DamageIndicatorsView damageIndicators;
         private CardModelWrapper _card;
         private DraggableImage _draggableImage;
         private Func<CardModelWrapper, bool> _onDragEnd;
@@ -37,6 +38,7 @@ namespace Cards
             descriptionText.text = card.Model.description;
             _onDragEnd = onDragEnd;
             _draggableImage.Init(this);
+            damageIndicators.SetEffects(card.Model);
         }
 
         public void SetOnExitDragNotificationListener(Action action)

@@ -23,9 +23,9 @@ MonoBehaviour:
     SerializationNodes: []
   listOfEnemies:
   - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}
+  - {fileID: 11400000, guid: bd83c7a882445914aad806bc37ab1760, type: 2}

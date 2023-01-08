@@ -17,5 +17,22 @@ namespace Cards.Effects
                 if (enemy.CurrentHealth <= HealthThreshold[i]) enemy.CurrentHealth = 0;
             }
         }
+
+        public Intent Intents()
+        {
+            return new Intent
+            {
+                PlayerEffect = PlayerEffect.None,
+                EnemyEffects = new[]
+                {
+                    EnemyEffect.Other,
+                    EnemyEffect.Other,
+                    EnemyEffect.Other,
+                    EnemyEffect.Other,
+                    EnemyEffect.Other
+
+                }
+            };
+        }
     }
 }
