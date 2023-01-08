@@ -6,30 +6,29 @@ namespace Cards
 {
     public class DamageIndicatorsView : MonoBehaviour
     {
-        public static readonly Color DefaultColor = Color.white;
-        public static readonly Color[] playerColors =
+        private static readonly Color[] playerColors =
         {
             Color.black, // 00
             Color.green, // 01
             Color.blue, // 10
-            new Color(0.0f, 0.5f, 0.5f, 1.0f) // 11
+            new(0.0f, 0.5f, 0.5f, 1.0f) // 11
         };
-        public static readonly Color[] enemyColors =
+        private static readonly Color[] enemyColors =
         {
             Color.black, // 000
             Color.red, // 001
             Color.yellow, // 010
-            new Color(1.0f, 0.5f, 0.0f, 1.0f), // 011
+            new(1.0f, 0.5f, 0.0f, 1.0f), // 011
             Color.cyan, // 100
-            new Color(0.5f, 0.0f, 1.0f, 1.0f), // 101
-            new Color(0.5f, 0.0f, 1.0f, 1.0f), // 110
-            new Color(0.5f, 0.0f, 1.0f, 1.0f), // 111
+            new(0.5f, 0.0f, 1.0f, 1.0f), // 101
+            new(0.5f, 0.0f, 1.0f, 1.0f), // 110
+            new(0.5f, 0.0f, 1.0f, 1.0f), // 111
         };
 
         [SerializeField] [SceneObjectsOnly] private Image playerEffectIndicator;
         [SerializeField] [SceneObjectsOnly] private Image[] enemyEffectIndicators;
 
-        public void SetEffects(Intent intent)
+        public void SetIntents(Intent intent)
         {
             playerEffectIndicator.color = playerColors[(byte) intent.PlayerEffect];
             for (var i = 0; i < enemyEffectIndicators.Length; i++)
@@ -38,9 +37,9 @@ namespace Cards
             }
         }
 
-        public void SetEffects(Card card)
+        public void SetIntents(Card card)
         {
-            SetEffects(card.GetIntent());
+            SetIntents(card.GetIntent());
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Cards
             descriptionText.text = card.Model.description;
             _onDragEnd = onDragEnd;
             _draggableImage.Init(this);
-            damageIndicators.SetEffects(card.Model);
+            damageIndicators.SetIntents(card.Model);
         }
 
         public void SetOnExitDragNotificationListener(Action action)
