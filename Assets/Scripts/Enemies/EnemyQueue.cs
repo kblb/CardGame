@@ -40,6 +40,7 @@ namespace Enemies
 
             var instance = Instantiate(enemyControllerPrefab, slots[_enemies.Count]);
             instance.Init(enemy, enemyModelInstance);
+            Debug.Log($"Spawned enemy {enemyModelInstance.name}");
             _enemies.Add(instance);
 
             return instance;
@@ -52,9 +53,9 @@ namespace Enemies
                 if (_enemies[i].EnemyModelInstance.IsDead)
                 {
                     changed = true;
+                    Debug.Log($"Enemy ({_enemies[i].EnemyModelInstance.name}) at {i} died");
                     Destroy(_enemies[i].gameObject);
                     _enemies.RemoveAt(i);
-                    Debug.Log($"Destroyed enemy at {i}");
                 }
 
             if (!changed) return;
@@ -71,16 +72,6 @@ namespace Enemies
                 _enemies[i].transform.SetParent(slots[i]);
                 _enemies[i].transform.DOLocalMove(Vector3.zero, 0.5f);
             }
-        }
-
-        public List<Attack> GetEnemyAttacks(PlayerModel playerModel)
-        {
-            return _enemies.Select((enemy, idx) =>
-            {
-                var attack = enemy.SelectedAttack;
-                enemy.SelectNextAttack(playerModel, _enemies.Select(e => e.RawEnemy).ToArray(), idx);
-                return attack;
-            }).ToList();
         }
 
         public void PrepareNextRound(PlayerModel playerModel)

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cards;
 using Sirenix.OdinInspector;
 using UnityEngine;
-
-// TODO:
-// - Add player stats/hp & enemy attack
 
 namespace Managers
 {
@@ -26,11 +24,29 @@ namespace Managers
         {
             deckModel.Init(deck);
             deckModel.NewCardDrawn += OnCardDraw;
+            deckModel.NewCardDrawn += OnCardDrawLog;
+            deckModel.NewCardDiscarded += OnNewCardDiscardedLog;
+            deckModel.DrawPileReshuffled += OnDrawPileReshuffledLog;
 
             deckController.Init();
 
             AdvanceTurn(null);
             cardQueue.AddOnCommitListener(AdvanceTurn);
+        }
+
+        private void OnDrawPileReshuffledLog(List<CardModelWrapper> obj)
+        {
+            Debug.Log($"Draw pile reshuffled {obj.Select(t => t.Model.displayName).Aggregate((t,y) => t + ", " + y)}");
+        }
+
+        private void OnNewCardDiscardedLog(CardModelWrapper obj)
+        {
+            Debug.Log($"Card discarded {obj.Model.displayName}");
+        }
+
+        private void OnCardDrawLog(CardModelWrapper obj)
+        {
+            Debug.Log($"Card draw {obj.Model.displayName}");
         }
 
         private void AdvanceTurn(List<CardModelWrapper> cardsUsed)

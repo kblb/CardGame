@@ -15,6 +15,7 @@ namespace Enemies.Passives.Effects
 
         public void ApplyEffect(EnemyController enemy)
         {
+            Debug.Log($"Applying shield buff to {enemy.RawEnemy.name}");
             enemy.Shield(_amount);
         }
     }

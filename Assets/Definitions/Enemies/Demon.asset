@@ -35,15 +35,6 @@ MonoBehaviour:
       Entry: 10
       Data: 0
     - Name: _passive
-      Entry: 7
-      Data: 1|Enemies.Passives.ShieldFront, Assembly-CSharp
-    - Name: Amount
-      Entry: 3
-      Data: 5
-    - Name: Count
-      Entry: 3
-      Data: 1
-    - Name: 
-      Entry: 8
+      Entry: 6
       Data: 
-  health: 12
+  health: 20
