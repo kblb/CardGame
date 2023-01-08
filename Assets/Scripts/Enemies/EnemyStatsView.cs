@@ -67,7 +67,7 @@ namespace Enemies
             }
         }
 
-        private void OnHealthChanged(float maxHealth, float currentHealth, float shields)
+        public void OnHealthChanged(float maxHealth, float currentHealth, float shields)
         {
             if (Mathf.Abs(_oldHealth - currentHealth) <= Mathf.Epsilon &&
                 Mathf.Abs(_oldShield - shields) <= Mathf.Epsilon) return;

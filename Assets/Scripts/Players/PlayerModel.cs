@@ -6,6 +6,7 @@ namespace Players
 {
     public class PlayerModel : MonoBehaviour
     {
+        public float maxHealth { get; private set; }
         [SerializeField] private float health;
 
         public float Health {
@@ -18,6 +19,7 @@ namespace Players
 
         private void Start()
         {
+            maxHealth = health;
             OnHealthChanged?.Invoke(Health);
         }
         public event Action<float> OnHealthChanged;
