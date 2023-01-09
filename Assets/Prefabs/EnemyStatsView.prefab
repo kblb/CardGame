@@ -111,8 +111,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -382.80606, y: -161.8262}
-  m_SizeDelta: {x: -1146.2498, y: -379.7824}
+  m_AnchoredPosition: {x: -725.635, y: -175.81921}
+  m_SizeDelta: {x: -460.5917, y: -407.7684}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &658798556636757252
 MonoBehaviour:
@@ -127,3 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthBar: {fileID: 658798555822381381}
+  healthText: {fileID: 0}
+  buffBar: {fileID: 0}
+  intentBar: {fileID: 0}
+  buffBarImagePrefab: {fileID: 0}
