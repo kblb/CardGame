@@ -12,12 +12,7 @@ namespace Managers
         private int currentEnemyIndex;
         [SerializeField] [SceneObjectsOnly]
         private EnemyManager enemyManager;
-
-        private void Start()
-        {
-            ReplenishEnemies();
-            enemyManager.RegisterOnEnemyKilled(ReplenishEnemies);
-        }
+        private AnimationQueue animationQueue;
 
         private void ReplenishEnemies()
         {
@@ -27,7 +22,10 @@ namespace Managers
                 var enemy = currentLevel.Get(i + currentEnemyIndex);
                 if (enemy != null)
                 {
-                    enemyManager.SpawnEnemy(enemy);
+                    animationQueue.AddElement(() =>
+                    {
+                        enemyManager.SpawnEnemy(enemy);
+                    });
                 }
                 else
                 {
@@ -35,6 +33,13 @@ namespace Managers
                 }
             }
             currentEnemyIndex += toSpawn;
+        }
+
+        public void Init(AnimationQueue animationQueue1)
+        {
+            this.animationQueue = animationQueue1;
+            ReplenishEnemies();
+            enemyManager.RegisterOnEnemyKilled(ReplenishEnemies);
         }
     }
 }

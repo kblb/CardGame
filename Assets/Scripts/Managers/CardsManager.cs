@@ -20,8 +20,12 @@ namespace Managers
 
         [SerializeField] [SceneObjectsOnly] private DeckController deckController;
 
-        private void Start()
+        private AnimationQueue _animationQueue;
+        private const int HandCardCount = 5;
+
+        public void Init(AnimationQueue animationQueue)
         {
+            _animationQueue = animationQueue;
             deckModel.Init(deck);
             deckModel.NewCardDrawn += OnCardDraw;
             deckModel.NewCardDrawn += OnCardDrawLog;
@@ -36,7 +40,7 @@ namespace Managers
 
         private void OnDrawPileReshuffledLog(List<CardModelWrapper> obj)
         {
-            Debug.Log($"Draw pile reshuffled {obj.Select(t => t.Model.displayName).Aggregate((t,y) => t + ", " + y)}");
+            Debug.Log($"Draw pile reshuffled {obj.Select(t => t.Model.displayName).Aggregate((t, y) => t + ", " + y)}");
         }
 
         private void OnNewCardDiscardedLog(CardModelWrapper obj)
@@ -51,7 +55,22 @@ namespace Managers
 
         private void AdvanceTurn(List<CardModelWrapper> cardsUsed)
         {
-            deckModel.AdvanceTurn(cardsUsed);
+            if (cardsUsed != null)
+            {
+                foreach (var card in cardsUsed)
+                {
+                    deckModel.DiscardCard(card.Id);
+                }
+            }
+
+            int numberToPull = HandCardCount - deckModel.playerHand.Count;
+            for (int i = 0; i < numberToPull; i++)
+            {
+                _animationQueue.AddElement(() =>
+                {
+                    deckModel.DrawCard();
+                });
+            }
         }
 
         private void OnCardDraw(CardModelWrapper card)

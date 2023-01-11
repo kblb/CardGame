@@ -34,7 +34,7 @@ MonoBehaviour:
     - Name: _enemyPrefab
       Entry: 10
       Data: 0
-    - Name: _passive
+    - Name: passive
       Entry: 6
       Data: 
   health: 20

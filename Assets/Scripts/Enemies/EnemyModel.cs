@@ -17,7 +17,7 @@ namespace Enemies
 
         [OdinSerialize] private IEnemyAttack _attack;
         [OdinSerialize] private GameObject _enemyPrefab;
-        [OdinSerialize] private IEnemyPassive _passive;
+        [OdinSerialize] public IEnemyPassive passive;
 
         public GameObject GetModel => _enemyPrefab;
         public float Health => health;
@@ -27,18 +27,6 @@ namespace Enemies
             return _attack.NextAttack(playerModel, allEnemies, myEnemyIndex);
         }
 
-        public void ApplyPassiveToQueue(
-            PlayerModel playerModel,
-            EnemyModel[] enemies,
-            EnemyModelInstance[] passives,
-            int myEnemyIndex)
-        {
-            if (_passive != null)
-            {
-                var applied = _passive.Passive(playerModel, enemies, myEnemyIndex);
-                foreach (var (i, buff) in applied) passives[i].AddBuff(buff);
-            }
-        }
     }
 
     [Serializable]
@@ -109,7 +97,7 @@ namespace Enemies
         {
             int healthDamage = (int)Mathf.Max(0, amount - Shields);
             int shieldDamage = (int)Mathf.Max(0, Shields - amount);
-            
+
             Debug.Log($"Dealing damage ({healthDamage}) to enemy ({name}). Shields reduced {shieldDamage} dmg");
             _shields = Mathf.Max(0, Shields - amount);
             _currentHealth -= healthDamage;

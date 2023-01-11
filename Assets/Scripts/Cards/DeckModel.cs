@@ -22,7 +22,7 @@ namespace Cards
         private List<CardModelWrapper> _discardPile;
         private List<CardModelWrapper> _drawPile;
         private int _nextId;
-        private List<CardModelWrapper> _playerHand;
+        public List<CardModelWrapper> playerHand;
 
         public IEnumerable<CardModelWrapper> DrawPile => _drawPile;
 
@@ -33,7 +33,7 @@ namespace Cards
         public void Init(IEnumerable<Card> deck)
         {
             _drawPile = deck.Select((c, i) => new CardModelWrapper(c, i)).ToList();
-            _playerHand = new List<CardModelWrapper>();
+            playerHand = new List<CardModelWrapper>();
             _discardPile = new List<CardModelWrapper>();
             _nextId = _drawPile.Count;
             DrawPileReshuffled?.Invoke(_drawPile);
@@ -44,7 +44,7 @@ namespace Cards
             if (_drawPile.Count == 0) ReshuffleDeck();
             var card = _drawPile[0];
             _drawPile.RemoveAt(0);
-            _playerHand.Add(card);
+            playerHand.Add(card);
             NewCardDrawn?.Invoke(card);
         }
 
@@ -57,19 +57,11 @@ namespace Cards
 
         public void DiscardCard(int id)
         {
-            var card = _playerHand.First(c => c.Id == id);
-            _playerHand.Remove(card);
+            var card = playerHand.First(c => c.Id == id);
+            playerHand.Remove(card);
             _discardPile.Add(card);
             NewCardDiscarded?.Invoke(card);
         }
 
-        public void AdvanceTurn(List<CardModelWrapper> cardsUsed)
-        {
-            if (cardsUsed != null)
-                foreach (var card in cardsUsed)
-                    DiscardCard(card.Id);
-
-            while (_playerHand.Count < 5) DrawCard();
-        }
     }
 }

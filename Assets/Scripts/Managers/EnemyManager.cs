@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cards;
+using Cards.Effects;
 using DG.Tweening;
 using Enemies;
 using Players;
@@ -12,10 +13,16 @@ namespace Managers
 {
     public class EnemyManager : MonoBehaviour
     {
-        [SerializeField] [SceneObjectsOnly] private EnemyQueue enemyQueue;
+        [SerializeField] [SceneObjectsOnly] public EnemyQueue enemyQueue;
         [SerializeField] [SceneObjectsOnly] private PlayerManager playerManager;
 
         private int enemyCreatedSinceStart;
+        private AnimationQueue _animationQueue;
+
+        public void Init(AnimationQueue animationQueue)
+        {
+            this._animationQueue = animationQueue;
+        }
 
         [Button]
         public void SpawnEnemy(EnemyModel enemy)
@@ -26,18 +33,29 @@ namespace Managers
 
         public void AttackEnemies(List<Card> cards)
         {
-            foreach (var card in cards)
+            _animationQueue.AddElement(() =>
             {
-                if (card.effects == null) continue;
-                foreach (var effect in card.effects)
+                playerManager.playerController.view.ShowAttackAnimation();
+            });
+
+            foreach (Card card in cards)
+            {
+                if (card.effects != null)
                 {
-                    // TODO: Revert delaying this with DOTween
-                    effect.Apply(
-                        playerManager.PlayerModel,
-                        enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+                    foreach (ICardEffect effect in card.effects)
+                    {
+                        _animationQueue.AddElement(() =>
+                        {
+                            effect.Apply(playerManager.PlayerModel, enemyQueue.Enemies.Select(e => e.EnemyModelInstance).ToArray());
+                            enemyQueue.CheckDeadEnemies();
+                        });
+                    }
                 }
             }
-            enemyQueue.CheckDeadEnemies();
+            _animationQueue.AddElement(() =>
+            {
+                playerManager.playerController.view.HideAttackAnimation();
+            });
         }
 
         public void AttackPlayer(PlayerModel playerModel)
@@ -46,18 +64,34 @@ namespace Managers
             foreach (EnemyController enemy in enemyQueue.Enemies)
             {
                 Attack attack = enemy.SelectedAttack;
-                if (attack != null)
+                if (attack is { Damage: > 0f })
                 {
-                    enemy.SelectNextAttack(playerModel, enemyQueue.Enemies.Select(e => e.RawEnemy).ToArray(), i++);
-                    Debug.Log($"Monster ({enemy.EnemyModelInstance.name}) attacking player with ({attack.GetType().Name} with {attack.Effect?.GetType().Name})");
-                    playerManager.AttackPlayer(attack);
+                    _animationQueue.AddElement(() =>
+                    {
+                        if (enemy != null)
+                        {
+                            enemy.ShowAttackAnimation();
+                        }
+                    });
+
+                    _animationQueue.AddElement(() =>
+                    {
+                        if (enemy != null)
+                        {
+                            enemy.SelectNextAttack(playerModel, enemyQueue.Enemies.Select(e => e.RawEnemy).ToArray(), i++);
+                            Debug.Log($"Monster ({enemy.EnemyModelInstance.name}) attacking player with ({attack.GetType().Name} with {attack.Effect?.GetType().Name})");
+                            playerManager.AttackPlayer(attack);
+                        }
+                    });
+                    _animationQueue.AddElement(() =>
+                    {
+                        if (enemy != null)
+                        {
+                            enemy.HideAttackAnimation();
+                        }
+                    });
                 }
             }
-        }
-
-        public void PrepareNextRound(PlayerModel playerModel)
-        {
-            enemyQueue.PrepareNextRound(playerModel);
         }
 
         public int EnemyCount()
