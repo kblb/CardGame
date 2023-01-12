@@ -5,6 +5,7 @@ using Cards;
 using Cards.Effects;
 using DG.Tweening;
 using Enemies;
+using Enemies.Passives.Effects;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -31,7 +32,7 @@ namespace Managers
             enemyQueue.AddEnemy(enemy, instance, playerManager.PlayerModel);
         }
 
-        public void AttackEnemies(List<Card> cards)
+        public void PlayerAct(List<Card> cards)
         {
             _animationQueue.AddElement(() =>
             {
@@ -58,7 +59,7 @@ namespace Managers
             });
         }
 
-        public void AttackPlayer(PlayerModel playerModel)
+        public void EnemiesAct(PlayerModel playerModel)
         {
             int i = 0;
             foreach (EnemyController enemy in enemyQueue.Enemies)
@@ -102,6 +103,54 @@ namespace Managers
         public void RegisterOnEnemyKilled(Action onEnemyKilled)
         {
             enemyQueue.OnEnemyKilled += onEnemyKilled;
+        }
+
+        public void ApplyBuffs()
+        {
+            foreach (EnemyController e in enemyQueue.enemies)
+            {
+                EnemyController enemy = e;
+                if (enemy.EnemyModelInstance.Buffs.Any())
+                {
+                    _animationQueue.AddElement(() =>
+                    {
+                        enemy.ShowBuffApplyAnimation();
+                        foreach (IEnemyPassiveEffect buff in enemy.EnemyModelInstance.Buffs)
+                        {
+                            buff.ApplyEffect(e);
+                        }
+                    });
+                    _animationQueue.AddElement(() =>
+                    {
+                        if (enemy != null)
+                        {
+                            enemy.HideBuffApplyAnimation();
+                            e.EnemyModelInstance.ClearBuffs();
+                        }
+                    });
+                }
+            }
+        }
+
+        public void EnemiesApplyPassives()
+        {
+            for (var i = 0; i < enemyQueue.enemies.Count; i++)
+            {
+                int index = i;
+                EnemyController currentEnemy = enemyQueue.enemies[index];
+                if (currentEnemy.CanApplyPassive())
+                {
+                    _animationQueue.AddElement(() =>
+                    {
+                        currentEnemy.ShowAttackAnimation();
+                    });
+                    _animationQueue.AddElement(() =>
+                    {
+                        currentEnemy.ApplyPassiveToQueue(playerManager.PlayerModel, enemyQueue.enemies.ToArray());
+                        currentEnemy.HideAttackAnimation();
+                    });
+                }
+            }
         }
     }
 }

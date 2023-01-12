@@ -2,6 +2,7 @@
 using System.Linq;
 using Cards;
 using Enemies;
+using Enemies.Passives.Effects;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -24,37 +25,14 @@ namespace Managers
 
         private void CommitPlayerAttack(List<CardModelWrapper> cards)
         {
-            enemyManager.AttackEnemies(cards.Select(e => e.Model).ToList());
-            enemyManager.AttackPlayer(playerModel);
-            
+            enemyManager.PlayerAct(cards.Select(e => e.Model).ToList());
+            enemyManager.EnemiesAct(playerModel);
+
             enemyManager.enemyQueue.enemies.First().SelectNextAttack(playerModel, enemyManager.enemyQueue.enemies.Select(e => e.RawEnemy).ToArray(), 0);
 
-            foreach (var e in enemyManager.enemyQueue.enemies)
-            {
-                foreach (var buff in e.EnemyModelInstance.Buffs)
-                {
-                    buff.ApplyEffect(e);
-                }
-                e.EnemyModelInstance.ClearBuffs();
-            }
+            enemyManager.ApplyBuffs();
 
-            for (var i = 0; i < enemyManager.enemyQueue.enemies.Count; i++)
-            {
-                int index = i;
-                EnemyController currentEnemy = enemyManager.enemyQueue.enemies[index];
-                if (currentEnemy.CanApplyPassive())
-                {
-                    _animationQueue.AddElement(() =>
-                    {
-                        currentEnemy.ShowAttackAnimation();
-                    });
-                    _animationQueue.AddElement(() =>
-                    {
-                        currentEnemy.ApplyPassiveToQueue(playerModel, enemyManager.enemyQueue.enemies.ToArray());
-                        currentEnemy.HideAttackAnimation();
-                    });
-                }
-            }
+            enemyManager.EnemiesApplyPassives();
         }
 
         public void Init(AnimationQueue animationQueue)

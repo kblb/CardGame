@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using DG.Tweening;
 using Players;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -65,12 +66,22 @@ namespace Enemies
 
         public void ShowAttackAnimation()
         {
-            modelPrefab.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
+            modelPrefab.transform.DOScale(Vector3.one * originalScale * AttackScaleFactor, 0.5f);
         }
 
         public void HideAttackAnimation()
         {
-            modelPrefab.transform.localScale = Vector3.one * originalScale;
+            modelPrefab.transform.DOScale(Vector3.one, 0.2f);
+        }
+
+        public void ShowBuffApplyAnimation()
+        {
+            statsView.buffBar.DOScale(Vector3.one * 1.2f, 0.5f);
+        }
+
+        public void HideBuffApplyAnimation()
+        {
+            statsView.buffBar.transform.DOScale(Vector3.one, 0.2f);
         }
     }
 }

@@ -14,9 +14,8 @@ namespace Enemies
 
         [SerializeField] private Image healthBar;
         [SerializeField] private TMP_Text healthText;
-        [SerializeField] private Transform buffBar;
-        [SerializeField] private Transform intentBar;
-
+        [SerializeField] public Transform buffBar;
+        [SerializeField] public Transform intentBar;
 
         [SerializeField] [AssetsOnly] private Image buffBarImagePrefab;
 
