@@ -4,37 +4,29 @@ using System.Linq;
 public class GamePhaseFight : IGamePhase
 {
     private readonly IFightPhase[] _fightPhases;
-    private readonly IFightPhaseActor _player;
-    private readonly IFightPhaseActor[] _enemies;
+    public Action OnFinish { get; set; }
 
-    public GamePhaseFight(IFightPhaseActor player, IFightPhaseActor[] enemies, IFightPhase[] fightPhases)
+    public GamePhaseFight(IFightPhase[] fightPhases)
     {
         _fightPhases = fightPhases;
-        _player = player;
-        _enemies = enemies;
+
+        for (int i = 0; i < fightPhases.Length; i++)
+        {
+            if (i < fightPhases.Length - 1)
+            {
+                fightPhases[i].OnFinish += fightPhases[i + 1].Start;
+            }
+
+            if (i == fightPhases.Length - 1)
+            {
+                fightPhases[i].OnFinish += fightPhases[0].Start;
+            }
+        }
 
     }
     public void Start()
     {
-        bool hasStarted = false;
-        foreach (IFightPhase gamePhase in _fightPhases)
-        {
-            if (gamePhase.IsFinished() == false)
-            {
-                gamePhase.Start();
-                hasStarted = true;
-                break;
-            }
-        }
-
-        if (hasStarted == false)
-        {
-            throw new Exception("Game phase collection can not start. All elements are finished.");
-        }
+        _fightPhases.First().Start();
     }
 
-    public bool IsFinished()
-    {
-        return _fightPhases.All(t => t.IsFinished());
-    }
 }

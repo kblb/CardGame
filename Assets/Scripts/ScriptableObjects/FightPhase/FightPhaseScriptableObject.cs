@@ -6,4 +6,5 @@ using UnityEngine;
 public class FightPhaseScriptableObject : SerializedScriptableObject
 {
     public List<ActorScriptableObject> enemies;
+    public int enemySlots;
 }

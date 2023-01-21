@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
-using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine;
 
 [RequireComponent(typeof(CardQueueView))]
 public class CardCommitAreaView : MonoBehaviour

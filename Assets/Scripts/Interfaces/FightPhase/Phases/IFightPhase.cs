@@ -1,8 +1,7 @@
 ﻿using System;
 
-public interface IGamePhase
+public interface IFightPhase
 {
     void Start();
-    
     Action OnFinish { get; set; }
 }

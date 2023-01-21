@@ -2,12 +2,14 @@
 using DG.Tweening;
 using UnityEngine;
 
-public class AnimationQueue : MonoBehaviour
+public class AnimationQueue 
 {
-    Sequence sequence;
+    private Sequence sequence;
+    private Transform transform;
 
-    public void Init()
+    public AnimationQueue(Transform transform)
     {
+        this.transform = transform;
         sequence = DOTween.Sequence();
     }
 

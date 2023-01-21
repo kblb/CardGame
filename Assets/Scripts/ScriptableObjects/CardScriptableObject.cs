@@ -7,5 +7,5 @@ public class CardScriptableObject : SerializedScriptableObject
     public string displayName;
     [TextArea] public string description;
     public Sprite icon;
-    public IFightPhaseAction action;
+    public ICardAction cardAction;
 }

@@ -1,37 +1,29 @@
 ﻿using System;
-using System.Linq;
 
 public class GamePhaseCollection : IGamePhase
 {
-    private readonly IGamePhase[] _collection;
+    private readonly IGamePhase[] gamePhases;
+    public Action OnFinish { get; set; }
 
-    public GamePhaseCollection(IGamePhase[] collection)
+    public GamePhaseCollection(IGamePhase[] gamePhases)
     {
-        _collection = collection;
-
+        this.gamePhases = gamePhases;
     }
 
     public void Start()
     {
-        bool hasStarted = false;
-        foreach (IGamePhase gamePhase in _collection)
+        for (int i = 0; i < gamePhases.Length; i++)
         {
-            if (gamePhase.IsFinished() == false)
+            if (i < gamePhases.Length - 1)
             {
-                gamePhase.Start();
-                hasStarted = true;
-                break;
+                gamePhases[i].OnFinish += gamePhases[i + 1].Start;
+            }
+
+            if (i == gamePhases.Length - 1)
+            {
+                gamePhases[i].OnFinish += gamePhases[0].Start;
             }
         }
-
-        if (hasStarted == false)
-        {
-            throw new Exception("Game phase collection can not start. All elements are finished.");
-        }
     }
 
-    public bool IsFinished()
-    {
-        return _collection.All(t => t.IsFinished());
-    }
 }

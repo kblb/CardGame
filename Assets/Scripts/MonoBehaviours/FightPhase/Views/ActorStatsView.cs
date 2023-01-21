@@ -19,6 +19,13 @@ public class ActorStatsView : MonoBehaviour
     private float _oldHealth = float.NegativeInfinity;
     private float _oldShield = float.NegativeInfinity;
 
+    public void Init(FightPhaseActorInstance actor)
+    {
+        SetHealth(actor.scriptableObject.health, actor.Health, 0);
+        SetBuffs(actor.buffs);
+        SetIntent(actor.intents);
+    }
+    
     private void Awake()
     {
         _healthBarImage = new Texture2D(ImageWidth, 1);
@@ -29,26 +36,28 @@ public class ActorStatsView : MonoBehaviour
 
         _healthBarImage.Apply();
         healthBar.sprite = Sprite.Create(_healthBarImage, new Rect(0, 0, ImageWidth, 1), Vector2.zero);
-
-        SetHealth(100, 100, 0);
-        SetBuffs(null);
-        SetIntent(null);
     }
 
-    private void SetIntent(ActionIntentInstance intent)
+    private void SetIntent(IEnumerable<ActionIntentInstance> intents)
     {
         foreach (Transform t in intentBar)
         {
             Destroy(t.gameObject);
         }
 
-        Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-        intentImage.sprite = intent.scriptableObject.icon;
+        foreach (ActionIntentInstance intent in intents)
+        {
+            Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
+            intentImage.sprite = intent.scriptableObject.icon;
+        }
     }
 
     private void SetBuffs(IEnumerable<BuffInstance> buffs)
     {
-        foreach (Transform t in buffBar) Destroy(t.gameObject);
+        foreach (Transform t in buffBar)
+        {
+            Destroy(t.gameObject);
+        }
 
         foreach (BuffInstance buff in buffs)
         {
