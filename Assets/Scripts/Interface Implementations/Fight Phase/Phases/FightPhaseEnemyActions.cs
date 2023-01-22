@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class FightPhaseEnemyActions : IFightPhase
 {
@@ -15,11 +16,15 @@ public class FightPhaseEnemyActions : IFightPhase
     }
 
     public Action OnFinish { get; set; }
+
     public void Start()
     {
         foreach (FightPhaseActorInstance enemy in enemies)
         {
+            foreach (CardInstance cardInstance in enemy.deck.intents)
+            {
+                logicQueue.AddElement(() => { cardInstance.CastOn(player); });
+            }
         }
     }
-
 }

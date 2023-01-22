@@ -20,7 +20,10 @@ public class FightPhasePlayerActions : IFightPhase
     {
         foreach (CardInstance cardInstance in player.deck.intents)
         {
-            logicQueue.AddElement(() => { cardInstance.CastOn(fightEnemies.First()); });
+            logicQueue.AddElement(() =>
+            {
+                cardInstance.CastOn(fightEnemies.First());
+            });
         }
     }
 }
