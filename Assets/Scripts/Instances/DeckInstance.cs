@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 public class DeckInstance
 {
-    public List<CardInstance> discardPile = new();
-    public List<CardInstance> drawPile = new();
-    public List<CardInstance> hand = new();
-    public List<CardInstance> commitArea = new();
+    public readonly List<CardInstance> discardPile = new();
+    public readonly List<CardInstance> drawPile = new();
+    public readonly List<CardInstance> hand = new();
+    public readonly List<CardInstance> intent = new();
 
     public event Action<CardInstance> NewCardDrawn;
     public event Action<CardInstance> NewCardDiscarded;
     public event Action DrawPileReshuffled;
-    public event Action<CardInstance> OnCardAddedToCommitArea;
     public event Action<CardInstance> OnCardAddedToHand;
+    public event Action OnIntentUpdated;
 
     public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
@@ -22,12 +22,13 @@ public class DeckInstance
         }
     }
 
-    public void DrawCard()
+    public CardInstance DrawCard()
     {
         CardInstance card = drawPile[0];
         drawPile.RemoveAt(0);
         hand.Add(card);
         NewCardDrawn?.Invoke(card);
+        return card;
     }
 
     public void ReshuffleDeck()
@@ -51,14 +52,19 @@ public class DeckInstance
     public void AddCardToCommitArea(CardInstance cardInstance)
     {
         hand.Remove(cardInstance);
-        commitArea.Add(cardInstance);
-        OnCardAddedToCommitArea?.Invoke(cardInstance);
+        intent.Add(cardInstance);
+        OnIntentUpdated?.Invoke();
     }
 
-    public void AddCardToHand(CardInstance cardInstance)
+    public void RemoveCardFromCommitArea(CardInstance cardInstance)
     {
-        commitArea.Remove(cardInstance);
+        intent.Remove(cardInstance);
         hand.Add(cardInstance);
         OnCardAddedToHand?.Invoke(cardInstance);
+    }
+
+    public void OnIntentReadyInvoke()
+    {
+        OnIntentUpdated?.Invoke();
     }
 }

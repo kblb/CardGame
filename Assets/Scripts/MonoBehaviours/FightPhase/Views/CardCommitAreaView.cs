@@ -13,6 +13,7 @@ public class CardCommitAreaView : MonoBehaviour
     private void Awake()
     {
         cardCommitButton.interactable = false;
+        cardCommitButton.onClick.AddListener(() => OnCommitClicked?.Invoke());
     }
 
     public void Highlight(bool isHovering)

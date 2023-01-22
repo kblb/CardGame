@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class ActorView : MonoBehaviour
 {
-    [SerializeField] [SceneObjectsOnly] private ActorStatsView statsView;
+    [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
     [SerializeField] private GameObject modelPrefab;
     private GameObject model;
+    public FightPhaseActorInstance actorInstance;
     
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
 
     public void Init(FightPhaseActorInstance actor)
     {
+        this.actorInstance = actor;
         transform.localScale = Vector3.zero;
         statsView.Init(actor);
         model = Instantiate(modelPrefab, transform);

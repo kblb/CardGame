@@ -5,7 +5,7 @@ public class FightView : MonoBehaviour
     [SerializeField] public SlotsView slotsView;
     [SerializeField] public UIView uiView;
     
-    public void OnEnemySpawned(int slotIndex, SlotInstance slotInstance)
+    public void SpawnEnemyAt(int slotIndex, SlotInstance slotInstance)
     {
         slotsView.SpawnEnemyAt(slotIndex, slotInstance);
     }

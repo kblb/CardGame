@@ -4,13 +4,13 @@ using System.Collections.Generic;
 public class FightPhaseInstance
 {
     public readonly FightPhaseScriptableObject scriptableObject;
-    public List<FightPhaseActorInstance> enemies = new List<FightPhaseActorInstance>();
-    public readonly List<SlotInstance> slots = new List<SlotInstance>();
-    public int spawnedCount = 0;
-    
+    public readonly List<FightPhaseActorInstance> enemies = new();
+    public readonly FightPhaseActorInstance player;
+    public readonly List<SlotInstance> slots = new();
+
     public Action<int, SlotInstance> OnEnemySpawned;
 
-    public FightPhaseInstance(FightPhaseScriptableObject scriptableObject)
+    public FightPhaseInstance(FightPhaseScriptableObject scriptableObject, ActorScriptableObject playerScriptableObject)
     {
         this.scriptableObject = scriptableObject;
 
@@ -18,17 +18,28 @@ public class FightPhaseInstance
         {
             slots.Add(new SlotInstance());
         }
+
+        player = new FightPhaseActorInstance(playerScriptableObject);
     }
 
     public void SpawnEnemyAtSlotIndex(int index)
     {
-        FightPhaseActorInstance enemy = new(scriptableObject.enemies[spawnedCount++]);
+        FightPhaseActorInstance enemy = new(scriptableObject.enemies[enemies.Count]);
         enemies.Add(enemy);
         if (slots[index].IsFree() == false)
         {
             throw new Exception($"Will not spawn enemy at slot {index}, because it is already occupied");
         }
+
         slots[index].actor = enemy;
         OnEnemySpawned?.Invoke(index, slots[index]);
+    }
+
+    public List<FightPhaseActorInstance> GetAllActors()
+    {
+        return new List<FightPhaseActorInstance>(enemies)
+        {
+            player
+        };
     }
 }

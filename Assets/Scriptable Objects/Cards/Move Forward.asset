@@ -30,3 +30,4 @@ MonoBehaviour:
   displayName: Move forward
   description: Moves forward
   icon: {fileID: 21300000, guid: 2b19869f324acc848832aa5bd7136884, type: 3}
+  intentIcon: {fileID: 21300000, guid: 2b19869f324acc848832aa5bd7136884, type: 3}

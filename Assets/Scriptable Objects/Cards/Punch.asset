@@ -33,3 +33,4 @@ MonoBehaviour:
   displayName: Punch
   description: Deal 8 dmg to first enemy in Queue
   icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  intentIcon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Game : MonoBehaviour
 {
@@ -14,74 +12,85 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        //initialization
-        FightPhasePlayerAction fightPhasePlayerAction = new();
-        FightPhaseActorInstance player = new(playerScriptableObject);
-        IEnumerable<FightPhaseActorInstance> enemies = fightPhaseScriptableObject.enemies.Select(t => new FightPhaseActorInstance(t));
-        FightPhaseInstance fight = new(fightPhaseScriptableObject);
-        List<FightPhaseActorInstance> allActors = new(enemies)
+        FightPhaseInstance fight = new(fightPhaseScriptableObject, playerScriptableObject);
+        FightPhaseActorInstance player = fight.player;
+
+        fight.OnEnemySpawned += (int slotIndex, SlotInstance slot) =>
         {
-            player
+            fightView.SpawnEnemyAt(slotIndex, slot);
+            slot.actor.deck.OnIntentUpdated += () => fightView.slotsView.UpdateIntent(slot);
+        };
+        player.deck.NewCardDrawn += (card) =>
+        {
+            CreateNewCardView(card, player);
+            fightView.uiView.ShowHand(player.deck.hand);
         };
 
-        //hooking events to view
-        fight.OnEnemySpawned += fightView.OnEnemySpawned;
-        player.deck.NewCardDrawn += (CardInstance cardInstance) =>
-        {
-            CardView cardView = fightView.uiView.CreateCardView(cardInstance);
-            cardView.draggableImage.OnDragNotification += () =>
-            {
-                fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering);
-                fightView.uiView.handView.Highlight(fightView.uiView.handView.isMouseHoveringOverMe.IsHovering);
-            };
-            cardView.draggableImage.OnExitDragNotification += () =>
-            {
-                if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering)
-                {
-                    player.deck.AddCardToCommitArea(cardInstance);
-                }
-                else
-                {
-                    player.deck.AddCardToHand(cardInstance);
-                }
-            };
-            fightView.uiView.ShowHand(player.deck.hand);
-        };
-        player.deck.OnCardAddedToCommitArea += (CardInstance CardInstance) =>
-        {
-            fightView.uiView.ShowHand(player.deck.hand);
-            fightView.uiView.ShowCommitArea(player.deck.commitArea);
-        };
         player.deck.OnCardAddedToHand += instance =>
         {
             fightView.uiView.ShowHand(player.deck.hand);
-            fightView.uiView.ShowCommitArea(player.deck.commitArea);
+            fightView.uiView.ShowCommitArea(player.deck.intent);
         };
-        
-        //hooking view to events
-        fightView.uiView.cardCommitAreaView.OnCommitClicked += fightPhasePlayerAction.OnFinish;
-        //fightView.uiView.OnCardDraggedIntoCommitArea += 
+        player.deck.OnIntentUpdated += () =>
+        {
+            fightView.uiView.ShowHand(player.deck.hand);
+            fightView.uiView.ShowCommitArea(player.deck.intent);
+            fightView.uiView.CommitButtonEnable(player.deck.intent.Count == 2);
+        };
 
-        //configuration
+        FightPhasePlayerAction fightPhasePlayerAction = new();
+        fightView.uiView.cardCommitAreaView.OnCommitClicked += fightPhasePlayerAction.InvokeFinish;
+
         game = new GamePhaseCollection(new IGamePhase[]
         {
             new GamePhaseFight(
                 new IFightPhase[]
                 {
-                    new FightPhaseCustomAction(() =>  fightView.SpawnPlayer(player), logicQueue)
+                    new FightPhaseCustomAction(() => fightView.SpawnPlayer(player), logicQueue)
                 }),
             new GamePhaseFight(
                 new IFightPhase[]
                 {
                     new FightPhasePullCardsFromHand(player.deck, 5, logicQueue),
-                    new FightPhaseBuffsApply(allActors),
+                    new FightPhaseBuffsApply(fight.GetAllActors()),
                     new FightPhaseSpawnOneEnemyInLastSlotIfEmpty(fight, logicQueue),
+                    new FightPhaseEnemiesDecideOnIntent(fight.slots),
                     fightPhasePlayerAction,
-                    new FightPhaseEnemyActions(),
+                    new FightPhaseEnemyActions(fight.enemies, player, logicQueue),
                 }
             )
         });
 
         game.Start();
+    }
+
+    private void CreateNewCardView(CardInstance cardInstance, FightPhaseActorInstance player)
+    {
+        CardView cardView = fightView.uiView.CreateCardView(cardInstance);
+        cardView.draggableImage.OnDragNotification += () =>
+        {
+            fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering);
+            fightView.uiView.handView.Highlight(fightView.uiView.handView.isMouseHoveringOverMe.IsHovering);
+        };
+        cardView.draggableImage.OnExitDragNotification += () =>
+        {
+            if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering
+                && player.deck.hand.Contains(cardInstance)
+                && player.deck.intent.Count < 2)
+            {
+                player.deck.AddCardToCommitArea(cardInstance);
+            }
+
+            else if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering == false
+                     && player.deck.intent.Contains(cardInstance))
+            {
+                player.deck.RemoveCardFromCommitArea(cardInstance);
+            }
+            else
+            {
+                fightView.uiView.ShowHand(player.deck.hand);
+                fightView.uiView.ShowCommitArea(player.deck.intent);
+            }
+        };
     }
 }

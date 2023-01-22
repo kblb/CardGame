@@ -23,9 +23,9 @@ public class ActorStatsView : MonoBehaviour
     {
         SetHealth(actor.scriptableObject.health, actor.currentHealth, 0);
         SetBuffs(actor.buffs);
-        SetIntent(actor.intents);
+        SetIntent(actor.deck.intent);
     }
-    
+
     private void Awake()
     {
         _healthBarImage = new Texture2D(ImageWidth, 1);
@@ -38,17 +38,17 @@ public class ActorStatsView : MonoBehaviour
         healthBar.sprite = Sprite.Create(_healthBarImage, new Rect(0, 0, ImageWidth, 1), Vector2.zero);
     }
 
-    private void SetIntent(IEnumerable<ActionIntentInstance> intents)
+    public void SetIntent(List<CardInstance> intents)
     {
         foreach (Transform t in intentBar)
         {
             Destroy(t.gameObject);
         }
 
-        foreach (ActionIntentInstance intent in intents)
+        foreach (CardInstance intent in intents)
         {
             Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-            intentImage.sprite = intent.scriptableObject.icon;
+            intentImage.sprite = intent.scriptableObject.intentIcon;
         }
     }
 

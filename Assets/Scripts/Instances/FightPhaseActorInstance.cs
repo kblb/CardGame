@@ -6,9 +6,7 @@ public class FightPhaseActorInstance
     public readonly ActorScriptableObject scriptableObject;
     public float currentHealth;
     public List<BuffInstance> buffs = new();
-    public List<ActionIntentInstance> intents = new();
     public DeckInstance deck;
-    
 
     public FightPhaseActorInstance(ActorScriptableObject scriptableObject)
     {

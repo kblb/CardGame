@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SlotView : MonoBehaviour
 {
-    private ActorView actorView;
+    public ActorView actorView;
     
     public void SpawnActor(FightPhaseActorInstance actor, ActorView prefab)
     {
