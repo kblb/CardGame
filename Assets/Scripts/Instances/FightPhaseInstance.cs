@@ -8,7 +8,7 @@ public class FightPhaseInstance
     public readonly FightPhaseActorInstance player;
     public readonly List<SlotInstance> slots = new();
 
-    public Action<int, SlotInstance> OnEnemySpawned;
+    public Action<int, FightPhaseActorInstance> OnEnemySpawned;
 
     public FightPhaseInstance(FightPhaseScriptableObject scriptableObject, ActorScriptableObject playerScriptableObject)
     {
@@ -32,7 +32,7 @@ public class FightPhaseInstance
         }
 
         slots[index].actor = enemy;
-        OnEnemySpawned?.Invoke(index, slots[index]);
+        OnEnemySpawned?.Invoke(index, enemy);
     }
 
     public List<FightPhaseActorInstance> GetAllActors()

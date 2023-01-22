@@ -6,4 +6,9 @@
     {
         this.scriptableObject = scriptableObject;
     }
+
+    public void CastOn(FightPhaseActorInstance first)
+    {
+        scriptableObject.cardAction.CastOn(first);
+    }
 }

@@ -8,6 +8,8 @@ public class FightPhaseActorInstance
     public List<BuffInstance> buffs = new();
     public DeckInstance deck;
 
+    public event Action OnHealthChanged;
+
     public FightPhaseActorInstance(ActorScriptableObject scriptableObject)
     {
         this.scriptableObject = scriptableObject;
@@ -31,5 +33,15 @@ public class FightPhaseActorInstance
         }
 
         buffs.RemoveAll(t => t.amount <= 0);
+    }
+
+    public void ReceiveDamage(int amount)
+    {
+        if (amount < 1)
+        {
+            throw new Exception("Amount should be bigger than 0");
+        }
+        currentHealth -= amount;
+        OnHealthChanged?.Invoke();
     }
 }

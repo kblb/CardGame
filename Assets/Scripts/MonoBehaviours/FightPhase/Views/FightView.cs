@@ -5,9 +5,9 @@ public class FightView : MonoBehaviour
     [SerializeField] public SlotsView slotsView;
     [SerializeField] public UIView uiView;
     
-    public void SpawnEnemyAt(int slotIndex, SlotInstance slotInstance)
+    public ActorView SpawnEnemyAt(int slotIndex, FightPhaseActorInstance actor)
     {
-        slotsView.SpawnEnemyAt(slotIndex, slotInstance);
+        return slotsView.SpawnEnemyAt(slotIndex, actor);
     }
 
     public void SpawnPlayer(FightPhaseActorInstance playerActor)

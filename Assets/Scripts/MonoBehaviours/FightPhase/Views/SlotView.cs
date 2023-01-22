@@ -4,8 +4,8 @@ using UnityEngine;
 public class SlotView : MonoBehaviour
 {
     public ActorView actorView;
-    
-    public void SpawnActor(FightPhaseActorInstance actor, ActorView prefab)
+
+    public ActorView SpawnActor(FightPhaseActorInstance actor, ActorView prefab)
     {
         if (this.actorView != null)
         {
@@ -14,5 +14,6 @@ public class SlotView : MonoBehaviour
 
         this.actorView = Instantiate(prefab, transform);
         this.actorView.Init(actor);
+        return actorView;
     }
 }

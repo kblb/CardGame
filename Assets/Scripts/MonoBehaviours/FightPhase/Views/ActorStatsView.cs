@@ -21,9 +21,9 @@ public class ActorStatsView : MonoBehaviour
 
     public void Init(FightPhaseActorInstance actor)
     {
-        SetHealth(actor.scriptableObject.health, actor.currentHealth, 0);
+        SetHealth(actor.scriptableObject.health, actor.currentHealth);
         SetBuffs(actor.buffs);
-        SetIntent(actor.deck.intent);
+        SetIntent(actor.deck.intents);
     }
 
     private void Awake()
@@ -66,8 +66,9 @@ public class ActorStatsView : MonoBehaviour
         }
     }
 
-    public void SetHealth(float maxHealth, float currentHealth, float shields)
+    public void SetHealth(float maxHealth, float currentHealth)
     {
+        float shields = 0;
         if (Mathf.Abs(_oldHealth - currentHealth) > Mathf.Epsilon ||
             Mathf.Abs(_oldShield - shields) > Mathf.Epsilon)
         {
@@ -100,10 +101,5 @@ public class ActorStatsView : MonoBehaviour
 
             _healthBarImage.Apply();
         }
-    }
-
-    public void ChangeCurrentHealth(int currentHealth)
-    {
-        throw new System.NotImplementedException();
     }
 }

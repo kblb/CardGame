@@ -6,7 +6,7 @@ public class DeckInstance
     public readonly List<CardInstance> discardPile = new();
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
-    public readonly List<CardInstance> intent = new();
+    public readonly List<CardInstance> intents = new();
 
     public event Action<CardInstance> NewCardDrawn;
     public event Action<CardInstance> NewCardDiscarded;
@@ -52,13 +52,13 @@ public class DeckInstance
     public void AddCardToCommitArea(CardInstance cardInstance)
     {
         hand.Remove(cardInstance);
-        intent.Add(cardInstance);
+        intents.Add(cardInstance);
         OnIntentUpdated?.Invoke();
     }
 
     public void RemoveCardFromCommitArea(CardInstance cardInstance)
     {
-        intent.Remove(cardInstance);
+        intents.Remove(cardInstance);
         hand.Add(cardInstance);
         OnCardAddedToHand?.Invoke(cardInstance);
     }

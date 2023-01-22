@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections.Generic;
+using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -22,11 +23,6 @@ public class ActorView : MonoBehaviour
         transform.DOScale(Vector3.one, 0.5f);
     }
 
-    private void ChangeCurrentHealth(int currentHealth)
-    {
-        statsView.ChangeCurrentHealth(currentHealth);
-    }
-
     public void ShowAttackAnimation()
     {
         modelPrefab.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
@@ -35,5 +31,10 @@ public class ActorView : MonoBehaviour
     public void HideAttackAnimation()
     {
         modelPrefab.transform.localScale = Vector3.one * originalScale;
+    }
+
+    public void UpdateIntent(List<CardInstance> intents)
+    {
+        statsView.SetIntent(intents);
     }
 }

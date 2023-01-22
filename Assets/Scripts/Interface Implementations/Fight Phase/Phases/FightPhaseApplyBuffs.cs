@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-internal class FightPhaseBuffsApply : IFightPhase
+internal class FightPhaseApplyBuffs : IFightPhase
 {
     public IEnumerable<FightPhaseActorInstance> allActors;
 
     public Action OnFinish { get; set; }
-    public FightPhaseBuffsApply(IEnumerable<FightPhaseActorInstance> allActors)
+    public FightPhaseApplyBuffs(IEnumerable<FightPhaseActorInstance> allActors)
     {
         this.allActors = allActors;
     }
