@@ -3,11 +3,13 @@
 public class FightPhaseSpawnOneEnemyInLastSlotIfEmpty : IFightPhase
 {
     private readonly FightPhaseInstance fight;
+    private readonly LogicQueue logicQueue;
     public Action OnFinish { get; set; }
 
-    public FightPhaseSpawnOneEnemyInLastSlotIfEmpty(FightPhaseInstance fight)
+    public FightPhaseSpawnOneEnemyInLastSlotIfEmpty(FightPhaseInstance fight, LogicQueue logicQueue)
     {
         this.fight = fight;
+        this.logicQueue = logicQueue;
     }
 
     public void Start()
@@ -15,8 +17,9 @@ public class FightPhaseSpawnOneEnemyInLastSlotIfEmpty : IFightPhase
         SlotInstance lastSlot = fight.slots[^1];
         if (lastSlot.IsFree())
         {
-            fight.SpawnEnemyAtLastSlot();
+            logicQueue.AddElement(() => { fight.SpawnEnemyAtSlotIndex(fight.slots.Count - 1); });
         }
-        OnFinish?.Invoke();
+
+        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
     }
 }

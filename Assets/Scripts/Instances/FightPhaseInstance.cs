@@ -20,12 +20,15 @@ public class FightPhaseInstance
         }
     }
 
-    public void SpawnEnemyAtLastSlot()
+    public void SpawnEnemyAtSlotIndex(int index)
     {
-        FightPhaseActorInstance enemy = new FightPhaseActorInstance(scriptableObject.enemies[spawnedCount++]);
+        FightPhaseActorInstance enemy = new(scriptableObject.enemies[spawnedCount++]);
         enemies.Add(enemy);
-        int slotIndex = slots.Count - 1;
-        slots[slotIndex].actor = enemy;
-        OnEnemySpawned?.Invoke(slotIndex, slots[slotIndex]);
+        if (slots[index].IsFree() == false)
+        {
+            throw new Exception($"Will not spawn enemy at slot {index}, because it is already occupied");
+        }
+        slots[index].actor = enemy;
+        OnEnemySpawned?.Invoke(index, slots[index]);
     }
 }

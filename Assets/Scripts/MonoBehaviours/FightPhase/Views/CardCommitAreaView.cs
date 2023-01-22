@@ -3,11 +3,10 @@ using Sirenix.OdinInspector;
 using UnityEngine.UI;
 using UnityEngine;
 
-[RequireComponent(typeof(CardQueueView))]
 public class CardCommitAreaView : MonoBehaviour
 {
     [SerializeField] [SceneObjectsOnly] public Button cardCommitButton;
-    [SerializeField] [SceneObjectsOnly] public CardQueueView cardQueueView;
+    [SerializeField] public IsMouseHoveringOverMe isMouseHoveringOverMe;
 
     public event Action OnCommitClicked;
 
@@ -16,15 +15,8 @@ public class CardCommitAreaView : MonoBehaviour
         cardCommitButton.interactable = false;
     }
 
-    public void AddCard(CardInstance card)
+    public void Highlight(bool isHovering)
     {
-        cardQueueView.AddCard(card);
-        cardCommitButton.interactable = true;
-    }
-
-    private void Clear()
-    {
-        cardCommitButton.interactable = false;
-        cardQueueView.Clear();
+        transform.localScale = Vector3.one * (isHovering ? 1.2f : 1.0f);
     }
 }

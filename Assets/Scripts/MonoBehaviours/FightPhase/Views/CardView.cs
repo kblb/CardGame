@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,22 +8,21 @@ public class CardView : MonoBehaviour
     [SerializeField] private Image cardIcon;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
-    private DraggableImage _draggableImage;
+
+    public CardInstance cardInstance;
+
+    public DraggableImage draggableImage;
 
     private void Awake()
     {
-        _draggableImage = GetComponent<DraggableImage>();
+        draggableImage = GetComponent<DraggableImage>();
     }
 
     public void Init(CardInstance card)
     {
+        this.cardInstance = card;
         cardIcon.sprite = card.scriptableObject.icon;
         titleText.text = card.scriptableObject.displayName;
         descriptionText.text = card.scriptableObject.description;
-    }
-
-    public void SetOnExitDragNotificationListener(Action action)
-    {
-        _draggableImage.OnExitDragNotification += action;
     }
 }

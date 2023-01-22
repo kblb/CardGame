@@ -180,9 +180,10 @@ GameObject:
   m_Component:
   - component: {fileID: 346675354}
   - component: {fileID: 346675360}
+  - component: {fileID: 346675361}
   - component: {fileID: 346675359}
   m_Layer: 5
-  m_Name: DropArea
+  m_Name: Card Commit Area View
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,6 +249,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 346675353}
   m_CullTransparentMesh: 1
+--- !u!114 &346675361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346675353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fffcd21773834d81a769773765c43804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardCommitButton: {fileID: 1370245999}
+  isMouseHoveringOverMe: {fileID: 703122704}
 --- !u!1 &475156614
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +876,8 @@ GameObject:
   m_Component:
   - component: {fileID: 584709092}
   - component: {fileID: 584709093}
+  - component: {fileID: 584709095}
+  - component: {fileID: 584709094}
   m_Layer: 5
   m_Name: Hand
   m_TagString: Untagged
@@ -885,8 +902,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -232, y: 100}
-  m_SizeDelta: {x: 0, y: 200}
+  m_AnchoredPosition: {x: -295.64606, y: 82.88536}
+  m_SizeDelta: {x: -920.9346, y: 117.1395}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &584709093
 MonoBehaviour:
@@ -901,7 +918,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spacing: 30
-  cardViewPrefab: {fileID: 259155284801848706, guid: dc534474f03f90248ad9f0e9443d143c, type: 3}
+  isMouseHoveringOverMe: {fileID: 0}
+--- !u!114 &584709094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584709091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.2}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &584709095
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584709091}
+  m_CullTransparentMesh: 1
 --- !u!1 &668796255
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,8 +1098,6 @@ GameObject:
   - component: {fileID: 703122703}
   - component: {fileID: 703122706}
   - component: {fileID: 703122704}
-  - component: {fileID: 703122708}
-  - component: {fileID: 703122707}
   - component: {fileID: 703122709}
   m_Layer: 5
   m_Name: DropArea
@@ -1093,33 +1146,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 703122702}
   m_CullTransparentMesh: 1
---- !u!114 &703122707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 703122702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fffcd21773834d81a769773765c43804, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardCommitButton: {fileID: 1370245999}
-  cardQueueView: {fileID: 703122708}
---- !u!114 &703122708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 703122702}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2eaadaffc1a4b109ff2b0f9fcb0d464, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cardPrefab: {fileID: -7355446213875422226, guid: f5e1acb2451ab884aa7fd0a5e72d3401, type: 3}
 --- !u!114 &703122709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,7 +1223,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSlot: {fileID: 1110270361}
-  actorViewPrefab: {fileID: 6919366547317327218, guid: 79fe493a4ad657c4fa964fc4d03a4e15, type: 3}
   enemySlots:
   - {fileID: 2079748647}
   - {fileID: 2100931336}
@@ -1417,8 +1442,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4284227aee0f4e3ca63aa801235e81db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardCommitAreaView: {fileID: 703122707}
+  cardCommitAreaView: {fileID: 346675361}
   handView: {fileID: 584709093}
+  cardViewPrefab: {fileID: 259155284801848706, guid: dc534474f03f90248ad9f0e9443d143c, type: 3}
 --- !u!1 &1370245997
 GameObject:
   m_ObjectHideFlags: 0

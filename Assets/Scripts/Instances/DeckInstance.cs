@@ -6,10 +6,13 @@ public class DeckInstance
     public List<CardInstance> discardPile = new();
     public List<CardInstance> drawPile = new();
     public List<CardInstance> hand = new();
+    public List<CardInstance> commitArea = new();
 
     public event Action<CardInstance> NewCardDrawn;
     public event Action<CardInstance> NewCardDiscarded;
     public event Action DrawPileReshuffled;
+    public event Action<CardInstance> OnCardAddedToCommitArea;
+    public event Action<CardInstance> OnCardAddedToHand;
 
     public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
@@ -21,11 +24,6 @@ public class DeckInstance
 
     public void DrawCard()
     {
-        if (drawPile.Count == 0)
-        {
-            throw new Exception("Can not draw cards, draw pile is empty. Reshuffle is needed.");
-        }
-
         CardInstance card = drawPile[0];
         drawPile.RemoveAt(0);
         hand.Add(card);
@@ -48,5 +46,19 @@ public class DeckInstance
         hand.Remove(cardInstance);
         discardPile.Add(cardInstance);
         NewCardDiscarded?.Invoke(cardInstance);
+    }
+
+    public void AddCardToCommitArea(CardInstance cardInstance)
+    {
+        hand.Remove(cardInstance);
+        commitArea.Add(cardInstance);
+        OnCardAddedToCommitArea?.Invoke(cardInstance);
+    }
+
+    public void AddCardToHand(CardInstance cardInstance)
+    {
+        commitArea.Remove(cardInstance);
+        hand.Add(cardInstance);
+        OnCardAddedToHand?.Invoke(cardInstance);
     }
 }

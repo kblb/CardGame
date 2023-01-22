@@ -1,31 +1,18 @@
-﻿using Sirenix.OdinInspector;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
 public class HandView : MonoBehaviour
 {
-    [SerializeField] private float spacing = 30f;
-    [SerializeField] [AssetsOnly] private CardView cardViewPrefab;
+    [SerializeField] public float spacing = 30f;
+    public IsMouseHoveringOverMe isMouseHoveringOverMe;
 
-    public void AddCard(CardInstance card)
+    private void Awake()
     {
-        CardView cardView = Instantiate(cardViewPrefab, transform);
-        cardView.Init(card);
-        cardView.SetOnExitDragNotificationListener(Redraw);
-        Redraw();
+        isMouseHoveringOverMe = transform.AddComponent<IsMouseHoveringOverMe>();
     }
 
-    /// <summary>
-    ///     Places all children in horizontal layout starting from the center
-    /// </summary>
-    private void Redraw()
+    public void Highlight(bool isHovering)
     {
-        int i = 0;
-        int childCount = transform.childCount;
-        float offset = (childCount - 1) * spacing / 2;
-        foreach (Transform child in transform)
-        {
-            child.localPosition = new Vector3(i * spacing - offset, 0, 0);
-            i++;
-        }
+        transform.localScale = Vector3.one * (isHovering ? 1.2f : 1.0f);
     }
 }
