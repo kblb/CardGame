@@ -168,7 +168,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &346675353
 GameObject:
@@ -999,7 +999,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}
 --- !u!1 &680513709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1198,44 +1197,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerSlot: {fileID: 1110270361}
+  actorViewPrefab: {fileID: 6919366547317327218, guid: 79fe493a4ad657c4fa964fc4d03a4e15, type: 3}
   enemySlots:
   - {fileID: 2079748647}
   - {fileID: 2100931336}
   - {fileID: 668796258}
   - {fileID: 1950100958}
   - {fileID: 1455073002}
---- !u!1 &1013090223
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1013090224}
-  m_Layer: 0
-  m_Name: Registries
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1013090224
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1013090223}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1222544137}
-  m_Father: {fileID: 0}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1110270359
 GameObject:
   m_ObjectHideFlags: 0
@@ -1245,8 +1213,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1110270360}
-  - component: {fileID: 1110270362}
   - component: {fileID: 1110270361}
+  - component: {fileID: 1110270362}
   m_Layer: 0
   m_Name: Player Slot
   m_TagString: Untagged
@@ -1281,7 +1249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}
 --- !u!212 &1110270362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1343,6 +1310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1143227280}
+  - component: {fileID: 1143227281}
   - component: {fileID: 1143227279}
   - component: {fileID: 1143227278}
   - component: {fileID: 1143227277}
@@ -1437,55 +1405,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!1 &1222544136
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1222544137}
-  - component: {fileID: 1222544138}
-  m_Layer: 0
-  m_Name: BattleIconRegistry
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1222544137
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222544136}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1013090224}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1222544138
+--- !u!114 &1143227281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1222544136}
+  m_GameObject: {fileID: 1143227276}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78a99f0e9dd41d7a16f35999bd2797b, type: 3}
+  m_Script: {fileID: 11500000, guid: 4284227aee0f4e3ca63aa801235e81db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldIcon: {fileID: 21300000, guid: ba386ec0ff427f04ca2c58eb88d4dccb, type: 3}
-  swordIcon: {fileID: 21300000, guid: 41e9dd85d2f1702478984f831d77dd82, type: 3}
-  healIcon: {fileID: 21300000, guid: 049a769a83d5063478c1320f70206cac, type: 3}
-  fireIcon: {fileID: 21300000, guid: 9d08d5734eca6a64ba892308fd5edb01, type: 3}
-  unknownIcon: {fileID: 21300000, guid: fbaf15e00c97991469cb99eda3724ff4, type: 3}
+  cardCommitAreaView: {fileID: 703122707}
+  handView: {fileID: 584709093}
 --- !u!1 &1370245997
 GameObject:
   m_ObjectHideFlags: 0
@@ -1638,6 +1571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slotsView: {fileID: 815632383}
+  uiView: {fileID: 1143227281}
 --- !u!4 &1429984711
 Transform:
   m_ObjectHideFlags: 0
@@ -1653,7 +1587,7 @@ Transform:
   - {fileID: 1143227280}
   - {fileID: 680513710}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1455072999
 GameObject:
@@ -1752,7 +1686,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}
 --- !u!1 &1590653522
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,7 +1935,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}
 --- !u!1 &2079748644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2100,7 +2032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}
 --- !u!1 &2100931333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2198,4 +2129,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorViewPrefab: {fileID: 0}

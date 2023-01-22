@@ -4,26 +4,17 @@ using System.Collections.Generic;
 public class FightPhaseActorInstance
 {
     public readonly ActorScriptableObject scriptableObject;
-    private float currentHealth;
+    public float currentHealth;
     public List<BuffInstance> buffs = new();
     public List<ActionIntentInstance> intents = new();
-
-    public event Action<float> OnHealthChanged;
-
-    public float Health
-    {
-        get => currentHealth;
-        set
-        {
-            currentHealth = value;
-            OnHealthChanged?.Invoke(value);
-        }
-    }
+    public DeckInstance deck;
+    
 
     public FightPhaseActorInstance(ActorScriptableObject scriptableObject)
     {
         this.scriptableObject = scriptableObject;
-        OnHealthChanged?.Invoke(Health);
+        deck = new DeckInstance(scriptableObject.deck);
+        currentHealth = scriptableObject.health;
     }
 
     public void ApplyBuffs()

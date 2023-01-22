@@ -2,7 +2,8 @@
 
 public class FightView : MonoBehaviour
 {
-    [SerializeField] private SlotsView slotsView;
+    [SerializeField] public SlotsView slotsView;
+    [SerializeField] public UIView uiView;
     
     public void OnEnemySpawned(int slotIndex, SlotInstance slotInstance)
     {
@@ -11,6 +12,6 @@ public class FightView : MonoBehaviour
 
     public void SpawnPlayer(FightPhaseActorInstance playerActor)
     {
-        slotsView.playerSlot.SpawnActor(playerActor);
+        slotsView.playerSlot.SpawnActor(playerActor, playerActor.scriptableObject.prefab);
     }
 }

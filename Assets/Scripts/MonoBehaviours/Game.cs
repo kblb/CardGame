@@ -8,7 +8,7 @@ public class Game : MonoBehaviour
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
 
-    private AnimationQueue _animationQueue ;
+    private AnimationQueue _animationQueue;
 
     private IGamePhase game;
 
@@ -16,29 +16,35 @@ public class Game : MonoBehaviour
     {
         _animationQueue = new AnimationQueue(transform);
 
-        FightPhaseActorInstance playerActor = new FightPhaseActorInstance(playerScriptableObject);
+        FightPhaseActorInstance player = new FightPhaseActorInstance(playerScriptableObject);
         IEnumerable<FightPhaseActorInstance> enemies = fightPhaseScriptableObject.enemies.Select(t => new FightPhaseActorInstance(t));
-        
+
         FightPhaseInstance fight = new FightPhaseInstance(fightPhaseScriptableObject);
 
         List<FightPhaseActorInstance> allActors = new(enemies)
         {
-            playerActor
+            player
         };
 
         FightPhaseSpawnOneEnemyInLastSlotIfEmpty fightPhaseSpawnOneEnemyInLastSlotIfEmpty = new FightPhaseSpawnOneEnemyInLastSlotIfEmpty(fight);
-        
+
         fight.OnEnemySpawned += fightView.OnEnemySpawned;
-        fightView.SpawnPlayer(playerActor);
+        fightView.SpawnPlayer(player);
+
+        FightPhasePlayerAction fightPhasePlayerAction = new FightPhasePlayerAction();
+        fightView.uiView.cardCommitAreaView.OnCommitClicked += fightPhasePlayerAction.OnFinish;
+
+        player.deck.NewCardDrawn += fightView.uiView.handView.AddCard;
 
         game = new GamePhaseCollection(new IGamePhase[]
         {
             new GamePhaseFight(
                 new IFightPhase[]
                 {
+                    new FightPhasePullCardsFromHand(player.deck, 5),
                     new FightPhaseBuffsApply(allActors),
                     fightPhaseSpawnOneEnemyInLastSlotIfEmpty,
-                    new FightPhasePlayerAction(),
+                    fightPhasePlayerAction,
                     new FightPhaseEnemyActions(),
                 }
             )

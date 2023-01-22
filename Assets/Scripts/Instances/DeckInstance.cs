@@ -11,7 +11,7 @@ public class DeckInstance
     public event Action<CardInstance> NewCardDiscarded;
     public event Action DrawPileReshuffled;
 
-    public void Init(IEnumerable<CardScriptableObject> cards)
+    public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
         foreach (CardScriptableObject cardScriptableObject in cards)
         {

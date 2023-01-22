@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 public class GamePhaseCollection : IGamePhase
 {
@@ -8,10 +9,6 @@ public class GamePhaseCollection : IGamePhase
     public GamePhaseCollection(IGamePhase[] gamePhases)
     {
         this.gamePhases = gamePhases;
-    }
-
-    public void Start()
-    {
         for (int i = 0; i < gamePhases.Length; i++)
         {
             if (i < gamePhases.Length - 1)
@@ -21,9 +18,19 @@ public class GamePhaseCollection : IGamePhase
 
             if (i == gamePhases.Length - 1)
             {
-                gamePhases[i].OnFinish += gamePhases[0].Start;
+                gamePhases[i].OnFinish += InvokeFinish;
             }
         }
+    }
+
+    private void InvokeFinish()
+    {
+        OnFinish?.Invoke();
+    }
+
+    public void Start()
+    {
+        gamePhases.First().Start();
     }
 
 }

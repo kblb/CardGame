@@ -21,7 +21,7 @@ public class ActorStatsView : MonoBehaviour
 
     public void Init(FightPhaseActorInstance actor)
     {
-        SetHealth(actor.scriptableObject.health, actor.Health, 0);
+        SetHealth(actor.scriptableObject.health, actor.currentHealth, 0);
         SetBuffs(actor.buffs);
         SetIntent(actor.intents);
     }

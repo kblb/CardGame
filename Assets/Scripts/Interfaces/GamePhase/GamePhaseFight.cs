@@ -19,11 +19,16 @@ public class GamePhaseFight : IGamePhase
 
             if (i == fightPhases.Length - 1)
             {
-                fightPhases[i].OnFinish += fightPhases[0].Start;
+                fightPhases[i].OnFinish += InvokeFinish;
             }
         }
-
     }
+
+    private void InvokeFinish()
+    {
+        OnFinish?.Invoke();
+    }
+
     public void Start()
     {
         _fightPhases.First().Start();

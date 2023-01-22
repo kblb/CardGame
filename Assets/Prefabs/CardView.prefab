@@ -96,7 +96,6 @@ MonoBehaviour:
   cardIcon: {fileID: 259155285600722328}
   titleText: {fileID: 7551805940165843834}
   descriptionText: {fileID: 6102292917175688335}
-  damageIndicators: {fileID: 2259865830319106756}
 --- !u!114 &1583203186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -940,7 +939,6 @@ GameObject:
   - component: {fileID: 8449214762452196750}
   - component: {fileID: 3486524457374432736}
   - component: {fileID: 563998770351814692}
-  - component: {fileID: 2259865830319106756}
   m_Layer: 5
   m_Name: Damage Indicators
   m_TagString: Untagged
@@ -1007,25 +1005,6 @@ MonoBehaviour:
   m_Spacing: {x: 2, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &2259865830319106756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6245527195105600282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 091138b522264b6a9ccf31210484e2b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerEffectIndicator: {fileID: 5374980625662502543}
-  enemyEffectIndicators:
-  - {fileID: 9100413228452212660}
-  - {fileID: 99853224075096169}
-  - {fileID: 995598847028670390}
-  - {fileID: 6686818173190221437}
-  - {fileID: 1930372131814468924}
 --- !u!1 &8242135477710734877
 GameObject:
   m_ObjectHideFlags: 0

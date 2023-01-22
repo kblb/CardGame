@@ -4,9 +4,14 @@ public class FightPhasePlayerAction : IFightPhase
 {
     public Action OnFinish { get; set; }
 
+    public FightPhasePlayerAction()
+    {
+        
+    }
+
     public void Start()
     {
-        throw new System.NotImplementedException();
+        //we're doing nothing here, waiting for the commit button
     }
 
 }

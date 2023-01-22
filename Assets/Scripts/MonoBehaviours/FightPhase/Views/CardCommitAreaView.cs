@@ -6,14 +6,13 @@ using UnityEngine;
 [RequireComponent(typeof(CardQueueView))]
 public class CardCommitAreaView : MonoBehaviour
 {
-    [SerializeField] [SceneObjectsOnly] private Button cardCommitButton;
-    [SerializeField] [SceneObjectsOnly] private CardQueueView cardQueueView;
+    [SerializeField] [SceneObjectsOnly] public Button cardCommitButton;
+    [SerializeField] [SceneObjectsOnly] public CardQueueView cardQueueView;
 
-    private event Action OnCommitClicked;
+    public event Action OnCommitClicked;
 
     private void Awake()
     {
-        cardCommitButton.onClick.AddListener(() => OnCommitClicked?.Invoke());
         cardCommitButton.interactable = false;
     }
 
@@ -21,11 +20,6 @@ public class CardCommitAreaView : MonoBehaviour
     {
         cardQueueView.AddCard(card);
         cardCommitButton.interactable = true;
-    }
-
-    public void AddOnCommitListener(Action action)
-    {
-        OnCommitClicked += action;
     }
 
     private void Clear()
