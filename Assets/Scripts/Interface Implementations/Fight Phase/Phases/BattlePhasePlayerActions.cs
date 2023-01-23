@@ -1,29 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 public class BattlePhasePlayerActions : IBattlePhase
 {
-    private readonly ActorInstance player;
-    private readonly List<ActorInstance> fightEnemies;
+    private readonly BattleInstance battleInstance;
     private readonly LogicQueue logicQueue;
     public Action OnFinish { get; set; }
 
-    public BattlePhasePlayerActions(ActorInstance player, List<ActorInstance> fightEnemies, LogicQueue logicQueue)
+    public BattlePhasePlayerActions(BattleInstance battleInstance, LogicQueue logicQueue)
     {
-        this.player = player;
-        this.fightEnemies = fightEnemies;
+        this.battleInstance = battleInstance;
         this.logicQueue = logicQueue;
     }
 
     public void Start()
     {
-        foreach (CardInstance cardInstance in player.deck.intents)
+        foreach (CardInstance cardInstance in battleInstance.Player.deck.intents)
         {
             logicQueue.AddElement(() =>
             {
-                ActionInstance actionInstance = cardInstance.CreateActionInstance(fightEnemies.First());
-                actionInstance.Act();
+                cardInstance.scriptableObject.cardAction.Cast(battleInstance.Player, battleInstance);
             });
         }
 

@@ -12,7 +12,7 @@ public class CardCommitAreaView : MonoBehaviour
 
     private void Awake()
     {
-        cardCommitButton.interactable = false;
+        cardCommitButton.interactable = true;
         cardCommitButton.onClick.AddListener(() => OnCommitClicked?.Invoke());
     }
 

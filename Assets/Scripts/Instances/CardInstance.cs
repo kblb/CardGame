@@ -8,9 +8,4 @@ public class CardInstance
     {
         this.scriptableObject = scriptableObject;
     }
-
-    public ActionInstance CreateActionInstance(ActorInstance target)
-    {
-        return new ActionInstance(scriptableObject, target);
-    }
 }

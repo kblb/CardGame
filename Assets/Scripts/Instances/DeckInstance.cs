@@ -24,6 +24,10 @@ public class DeckInstance
 
     public CardInstance DrawCard()
     {
+        if (drawPile.Count == 0)
+        {
+            ReshuffleDeck();
+        }
         CardInstance card = drawPile[0];
         drawPile.RemoveAt(0);
         hand.Add(card);
@@ -33,6 +37,10 @@ public class DeckInstance
 
     public void ReshuffleDeck()
     {
+        if (discardPile.Count == 0)
+        {
+            throw new Exception("Can't reshuffle, because discard pile is empty");
+        }
         foreach (CardInstance cardInstance in discardPile)
         {
             drawPile.Add(cardInstance);

@@ -46,9 +46,4 @@ public class UIView : MonoBehaviour
             i++;
         }
     }
-
-    public void CommitButtonEnable(bool enable)
-    {
-        cardCommitAreaView.cardCommitButton.interactable = enable;
-    }
 }

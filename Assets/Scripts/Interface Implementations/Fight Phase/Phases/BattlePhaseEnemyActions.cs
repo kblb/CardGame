@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class BattlePhaseEnemyActions : IBattlePhase
 {
@@ -17,15 +15,11 @@ public class BattlePhaseEnemyActions : IBattlePhase
 
     public void Start()
     {
-        foreach (ActorInstance enemy in battleInstance.enemies)
+        foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {
-                logicQueue.AddElement(() =>
-                {
-                    ActionInstance actionInstance = cardInstance.CreateActionInstance(battleInstance.player);
-                    actionInstance.Act();
-                });
+                logicQueue.AddElement(() => { cardInstance.scriptableObject.cardAction.Cast(enemy, battleInstance); });
             }
         }
 

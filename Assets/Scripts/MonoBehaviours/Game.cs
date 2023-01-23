@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 
 public class Game : MonoBehaviour
 {
@@ -12,57 +13,52 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        BattleInstance battleInstance = new(battleScriptableObject, playerScriptableObject);
-        ActorInstance player = battleInstance.player;
+        BattleInstance battleInstance = new(battleScriptableObject);
 
-        battleInstance.OnEnemySpawned += (int slotIndex, ActorInstance enemy) =>
+        battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {
-            ActorView actorView = fightView.SpawnEnemyAt(slotIndex, enemy);
-
-            enemy.deck.OnIntentUpdated += () => actorView.UpdateIntent(enemy.deck.intents);
-            enemy.OnHealthChanged += () => { actorView.statsView.SetHealth(enemy.scriptableObject.health, enemy.currentHealth); };
+            fightView.slotsView.CreateNewActorView(actorInstance);
+            fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
 
-        player.deck.NewCardDrawn += (card) =>
+        foreach (SlotInstance slot in battleInstance.slots)
         {
-            CreateNewCardView(card, player);
-            fightView.uiView.ShowHand(player.deck.hand);
-        };
-
-        player.deck.OnCardAddedToHand += instance =>
-        {
-            fightView.uiView.ShowHand(player.deck.hand);
-            fightView.uiView.ShowCommitArea(player.deck.intents);
-        };
-        player.deck.OnIntentUpdated += () =>
-        {
-            fightView.uiView.ShowHand(player.deck.hand);
-            fightView.uiView.ShowCommitArea(player.deck.intents);
-            fightView.uiView.CommitButtonEnable(player.deck.intents.Count == 2);
-        };
-
-        player.OnHealthChanged += () => fightView.slotsView.playerSlot.actorView.statsView.SetHealth(player.scriptableObject.health, player.currentHealth);
-        player.deck.OnIntentUpdated += () => fightView.slotsView.playerSlot.actorView.UpdateIntent(player.deck.intents);
+            slot.OnActorMovedHere += () => { fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player); };
+        }
 
         BattlePhasePlayerAction battlePhasePlayerAction = new();
         fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
+        ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
+        playerInstance.deck.NewCardDrawn += (card) =>
+        {
+            CreateNewCardView(card, playerInstance);
+            fightView.uiView.ShowHand(playerInstance.deck.hand);
+        };
+
+        playerInstance.deck.OnCardAddedToHand += instance =>
+        {
+            fightView.uiView.ShowHand(playerInstance.deck.hand);
+            fightView.uiView.ShowCommitArea(playerInstance.deck.intents);
+        };
+        playerInstance.deck.OnIntentUpdated += () =>
+        {
+            fightView.uiView.ShowHand(playerInstance.deck.hand);
+            fightView.uiView.ShowCommitArea(playerInstance.deck.intents);
+        };
+
         game = new GamePhaseCollection(new IGamePhase[]
         {
-            new GamePhaseFight(false,
-                new IBattlePhase[]
-                {
-                    new BattlePhaseCustomAction(() => fightView.SpawnPlayer(player), logicQueue)
-                }),
             new GamePhaseFight(true,
                 new IBattlePhase[]
                 {
-                    new BattlePhasePullCardsFromHand(player.deck, 5, logicQueue),
+                    new BattlePhaseSmallDelay(logicQueue),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors()),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots),
                     battlePhasePlayerAction,
-                    new BattlePhasePlayerActions(player, battleInstance.enemies, logicQueue),
+                    new BattlePhasePlayerActions(battleInstance, logicQueue),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
                 }
             )

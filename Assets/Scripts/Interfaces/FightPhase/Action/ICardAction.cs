@@ -1,4 +1,4 @@
 ﻿public interface ICardAction
 {
-    void Act(ActorInstance target);
+    void Cast(ActorInstance owner, BattleInstance battleInstance);
 }

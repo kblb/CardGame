@@ -2,8 +2,8 @@
 
 public class CardActionMoveForward : ICardAction
 {
-    public void Act(ActorInstance target)
+    public void Cast(ActorInstance owner, BattleInstance battleInstance)
     {
-        throw new NotImplementedException();
+        battleInstance.MoveForward(owner);
     }
 }

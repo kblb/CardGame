@@ -19,6 +19,7 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
             ActorInstance enemy = slotInstance.actor;
             if (enemy != null)
             {
+                enemy.deck.ReshuffleDeck();
                 enemy.deck.AddCardToCommitArea(enemy.deck.DrawCard());
                 slotInstance.actor.deck.OnIntentReadyInvoke();
             }

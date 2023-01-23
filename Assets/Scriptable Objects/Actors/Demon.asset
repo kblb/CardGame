@@ -24,5 +24,4 @@ MonoBehaviour:
   health: 20
   prefab: {fileID: 6919366547317327218, guid: 79fe493a4ad657c4fa964fc4d03a4e15, type: 3}
   deck:
-  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
   - {fileID: 11400000, guid: 0d9604e9091f6c14cb4c1fa36da874a8, type: 2}
