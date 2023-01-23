@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class FightPhaseActorInstance
+public class ActorInstance
 {
     public readonly ActorScriptableObject scriptableObject;
     public float currentHealth;
@@ -10,7 +10,7 @@ public class FightPhaseActorInstance
 
     public event Action OnHealthChanged;
 
-    public FightPhaseActorInstance(ActorScriptableObject scriptableObject)
+    public ActorInstance(ActorScriptableObject scriptableObject)
     {
         this.scriptableObject = scriptableObject;
         deck = new DeckInstance(scriptableObject.deck);

@@ -1,11 +1,11 @@
 ﻿using System;
 
-public class FightPhaseCustomAction : IFightPhase
+public class BattlePhaseCustomAction : IBattlePhase
 {
     private readonly Action action;
     private readonly LogicQueue logicQueue;
 
-    public FightPhaseCustomAction(Action action, LogicQueue logicQueue)
+    public BattlePhaseCustomAction(Action action, LogicQueue logicQueue)
     {
         this.action = action;
         this.logicQueue = logicQueue;

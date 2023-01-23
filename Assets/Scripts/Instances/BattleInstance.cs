@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class FightPhaseInstance
+public class BattleInstance
 {
-    public readonly FightPhaseScriptableObject scriptableObject;
-    public readonly List<FightPhaseActorInstance> enemies = new();
-    public readonly FightPhaseActorInstance player;
+    public readonly BattleScriptableObject scriptableObject;
+    public readonly List<ActorInstance> enemies = new();
+    public readonly ActorInstance player;
     public readonly List<SlotInstance> slots = new();
 
-    public Action<int, FightPhaseActorInstance> OnEnemySpawned;
+    public Action<int, ActorInstance> OnEnemySpawned;
 
-    public FightPhaseInstance(FightPhaseScriptableObject scriptableObject, ActorScriptableObject playerScriptableObject)
+    public BattleInstance(BattleScriptableObject scriptableObject, ActorScriptableObject playerScriptableObject)
     {
         this.scriptableObject = scriptableObject;
 
@@ -19,12 +19,12 @@ public class FightPhaseInstance
             slots.Add(new SlotInstance());
         }
 
-        player = new FightPhaseActorInstance(playerScriptableObject);
+        player = new ActorInstance(playerScriptableObject);
     }
 
     public void SpawnEnemyAtSlotIndex(int index)
     {
-        FightPhaseActorInstance enemy = new(scriptableObject.enemies[enemies.Count]);
+        ActorInstance enemy = new(scriptableObject.enemies[enemies.Count]);
         enemies.Add(enemy);
         if (slots[index].IsFree() == false)
         {
@@ -35,9 +35,9 @@ public class FightPhaseInstance
         OnEnemySpawned?.Invoke(index, enemy);
     }
 
-    public List<FightPhaseActorInstance> GetAllActors()
+    public List<ActorInstance> GetAllActors()
     {
-        return new List<FightPhaseActorInstance>(enemies)
+        return new List<ActorInstance>(enemies)
         {
             player
         };

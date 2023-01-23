@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc437b2411804ed78887732b80139606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fightPhaseScriptableObject: {fileID: 11400000, guid: 7b452ee0405b1344396485666fe8ad0c, type: 2}
+  battleScriptableObject: {fileID: 11400000, guid: 7b452ee0405b1344396485666fe8ad0c, type: 2}
   playerScriptableObject: {fileID: 11400000, guid: 07d19e393bce33d43ba9dc541dc46008, type: 2}
   fightView: {fileID: 1429984710}
 --- !u!4 &248551507
@@ -1054,6 +1054,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}
 --- !u!1 &680513709
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,6 +1275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}
 --- !u!212 &1110270362
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1712,6 +1714,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}
 --- !u!1 &1590653522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1961,6 +1964,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}
 --- !u!1 &2079748644
 GameObject:
   m_ObjectHideFlags: 0
@@ -2058,6 +2062,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}
 --- !u!1 &2100931333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,3 +2160,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b94b76546d14a928a54ce42b488a358, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  actorView: {fileID: 0}

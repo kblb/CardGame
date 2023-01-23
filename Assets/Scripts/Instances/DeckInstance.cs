@@ -61,6 +61,7 @@ public class DeckInstance
         intents.Remove(cardInstance);
         hand.Add(cardInstance);
         OnCardAddedToHand?.Invoke(cardInstance);
+        OnIntentUpdated?.Invoke();
     }
 
     public void OnIntentReadyInvoke()

@@ -1,6 +1,6 @@
 ﻿using System;
 
-public interface IFightPhase
+public interface IBattlePhase
 {
     Action OnFinish { get; set; }
     void Start();

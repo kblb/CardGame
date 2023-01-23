@@ -1,12 +1,12 @@
 ﻿using System;
 
-public class FightPhaseSpawnOneEnemyInLastSlotIfEmpty : IFightPhase
+public class BattlePhaseSpawnOneEnemyInLastSlotIfEmpty : IBattlePhase
 {
-    private readonly FightPhaseInstance fight;
+    private readonly BattleInstance fight;
     private readonly LogicQueue logicQueue;
     public Action OnFinish { get; set; }
 
-    public FightPhaseSpawnOneEnemyInLastSlotIfEmpty(FightPhaseInstance fight, LogicQueue logicQueue)
+    public BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(BattleInstance fight, LogicQueue logicQueue)
     {
         this.fight = fight;
         this.logicQueue = logicQueue;

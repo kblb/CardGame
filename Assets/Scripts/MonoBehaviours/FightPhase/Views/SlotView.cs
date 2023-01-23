@@ -5,7 +5,7 @@ public class SlotView : MonoBehaviour
 {
     public ActorView actorView;
 
-    public ActorView SpawnActor(FightPhaseActorInstance actor, ActorView prefab)
+    public ActorView SpawnActor(ActorInstance actor, ActorView prefab)
     {
         if (this.actorView != null)
         {

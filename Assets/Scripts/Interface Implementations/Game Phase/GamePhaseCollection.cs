@@ -32,5 +32,4 @@ public class GamePhaseCollection : IGamePhase
     {
         gamePhases.First().Start();
     }
-
 }

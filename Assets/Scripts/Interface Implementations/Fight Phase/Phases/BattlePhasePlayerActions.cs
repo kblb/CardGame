@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class FightPhasePlayerActions : IFightPhase
+public class BattlePhasePlayerActions : IBattlePhase
 {
-    private readonly FightPhaseActorInstance player;
-    private readonly List<FightPhaseActorInstance> fightEnemies;
+    private readonly ActorInstance player;
+    private readonly List<ActorInstance> fightEnemies;
     private readonly LogicQueue logicQueue;
     public Action OnFinish { get; set; }
 
-    public FightPhasePlayerActions(FightPhaseActorInstance player, List<FightPhaseActorInstance> fightEnemies, LogicQueue logicQueue)
+    public BattlePhasePlayerActions(ActorInstance player, List<ActorInstance> fightEnemies, LogicQueue logicQueue)
     {
         this.player = player;
         this.fightEnemies = fightEnemies;
@@ -22,8 +22,11 @@ public class FightPhasePlayerActions : IFightPhase
         {
             logicQueue.AddElement(() =>
             {
-                cardInstance.CastOn(fightEnemies.First());
+                ActionInstance actionInstance = cardInstance.CreateActionInstance(fightEnemies.First());
+                actionInstance.Act();
             });
         }
+
+        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
     }
 }

@@ -1,7 +1,9 @@
-﻿public class CardActionMoveForward : ICardAction
+﻿using System;
+
+public class CardActionMoveForward : ICardAction
 {
-    public void CastOn(FightPhaseActorInstance actor)
+    public void Act(ActorInstance target)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }

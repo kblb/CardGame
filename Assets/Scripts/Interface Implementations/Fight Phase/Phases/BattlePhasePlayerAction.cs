@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class FightPhasePlayerAction : IFightPhase
+public class BattlePhasePlayerAction : IBattlePhase
 {
     public Action OnFinish { get; set; }
 

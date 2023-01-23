@@ -19,7 +19,7 @@ public class ActorStatsView : MonoBehaviour
     private float _oldHealth = float.NegativeInfinity;
     private float _oldShield = float.NegativeInfinity;
 
-    public void Init(FightPhaseActorInstance actor)
+    public void Init(ActorInstance actor)
     {
         SetHealth(actor.scriptableObject.health, actor.currentHealth);
         SetBuffs(actor.buffs);

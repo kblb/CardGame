@@ -1,12 +1,12 @@
 ﻿using System;
 
-public class FightPhasePullCardsFromHand : IFightPhase
+public class BattlePhasePullCardsFromHand : IBattlePhase
 {
     private readonly DeckInstance deck;
     private readonly int handSize;
     private readonly LogicQueue logicQueue;
 
-    public FightPhasePullCardsFromHand(DeckInstance deck, int handSize, LogicQueue logicQueue)
+    public BattlePhasePullCardsFromHand(DeckInstance deck, int handSize, LogicQueue logicQueue)
     {
         this.deck = deck;
         this.handSize = handSize;

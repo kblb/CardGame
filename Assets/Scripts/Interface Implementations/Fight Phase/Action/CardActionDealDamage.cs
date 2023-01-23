@@ -1,8 +1,9 @@
 ﻿public class CardActionDealDamage : ICardAction
 {
     public int amount;
-    public void CastOn(FightPhaseActorInstance actor)
+
+    public void Act(ActorInstance target)
     {
-        actor.ReceiveDamage(amount);
+        target.ReceiveDamage(amount);
     }
 }

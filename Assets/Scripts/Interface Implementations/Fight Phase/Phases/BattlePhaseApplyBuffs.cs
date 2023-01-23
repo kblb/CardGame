@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-internal class FightPhaseApplyBuffs : IFightPhase
+internal class BattlePhaseApplyBuffs : IBattlePhase
 {
-    public IEnumerable<FightPhaseActorInstance> allActors;
+    public IEnumerable<ActorInstance> allActors;
 
     public Action OnFinish { get; set; }
-    public FightPhaseApplyBuffs(IEnumerable<FightPhaseActorInstance> allActors)
+    public BattlePhaseApplyBuffs(IEnumerable<ActorInstance> allActors)
     {
         this.allActors = allActors;
     }
     
     public void Start()
     {
-        foreach (FightPhaseActorInstance phaseActor in allActors)
+        foreach (ActorInstance phaseActor in allActors)
         {
             phaseActor.ApplyBuffs();
             phaseActor.ReduceBuffAmount();

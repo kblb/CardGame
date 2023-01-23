@@ -1,6 +1,6 @@
 ﻿public class SlotInstance
 {
-    public FightPhaseActorInstance actor;
+    public ActorInstance actor;
 
     public bool IsFree()
     {

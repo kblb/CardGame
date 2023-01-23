@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private FightPhaseScriptableObject fightPhaseScriptableObject;
+    [SerializeField] private BattleScriptableObject battleScriptableObject;
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
 
@@ -13,10 +12,10 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        FightPhaseInstance fight = new(fightPhaseScriptableObject, playerScriptableObject);
-        FightPhaseActorInstance player = fight.player;
+        BattleInstance battleInstance = new(battleScriptableObject, playerScriptableObject);
+        ActorInstance player = battleInstance.player;
 
-        fight.OnEnemySpawned += (int slotIndex, FightPhaseActorInstance enemy) =>
+        battleInstance.OnEnemySpawned += (int slotIndex, ActorInstance enemy) =>
         {
             ActorView actorView = fightView.SpawnEnemyAt(slotIndex, enemy);
 
@@ -42,26 +41,29 @@ public class Game : MonoBehaviour
             fightView.uiView.CommitButtonEnable(player.deck.intents.Count == 2);
         };
 
-        FightPhasePlayerAction fightPhasePlayerAction = new();
-        fightView.uiView.cardCommitAreaView.OnCommitClicked += fightPhasePlayerAction.InvokeFinish;
+        player.OnHealthChanged += () => fightView.slotsView.playerSlot.actorView.statsView.SetHealth(player.scriptableObject.health, player.currentHealth);
+        player.deck.OnIntentUpdated += () => fightView.slotsView.playerSlot.actorView.UpdateIntent(player.deck.intents);
+
+        BattlePhasePlayerAction battlePhasePlayerAction = new();
+        fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
         game = new GamePhaseCollection(new IGamePhase[]
         {
-            new GamePhaseFight(
-                new IFightPhase[]
+            new GamePhaseFight(false,
+                new IBattlePhase[]
                 {
-                    new FightPhaseCustomAction(() => fightView.SpawnPlayer(player), logicQueue)
+                    new BattlePhaseCustomAction(() => fightView.SpawnPlayer(player), logicQueue)
                 }),
-            new GamePhaseFight(
-                new IFightPhase[]
+            new GamePhaseFight(true,
+                new IBattlePhase[]
                 {
-                    new FightPhasePullCardsFromHand(player.deck, 5, logicQueue),
-                    new FightPhaseApplyBuffs(fight.GetAllActors()),
-                    new FightPhaseSpawnOneEnemyInLastSlotIfEmpty(fight, logicQueue),
-                    new FightPhaseEnemiesDecideOnIntent(fight.slots),
-                    fightPhasePlayerAction,
-                    new FightPhasePlayerActions(player, fight.enemies, logicQueue),
-                    new FightPhaseEnemyActions(fight.enemies, player, logicQueue),
+                    new BattlePhasePullCardsFromHand(player.deck, 5, logicQueue),
+                    new BattlePhaseApplyBuffs(battleInstance.GetAllActors()),
+                    new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots),
+                    battlePhasePlayerAction,
+                    new BattlePhasePlayerActions(player, battleInstance.enemies, logicQueue),
+                    new BattlePhaseEnemyActions(battleInstance, logicQueue),
                 }
             )
         });
@@ -69,7 +71,7 @@ public class Game : MonoBehaviour
         game.Start();
     }
 
-    private void CreateNewCardView(CardInstance cardInstance, FightPhaseActorInstance player)
+    private void CreateNewCardView(CardInstance cardInstance, ActorInstance player)
     {
         CardView cardView = fightView.uiView.CreateCardView(cardInstance);
         cardView.draggableImage.OnDragNotification += () =>

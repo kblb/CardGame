@@ -8,12 +8,12 @@ public class ActorView : MonoBehaviour
     [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
     [SerializeField] private GameObject modelPrefab;
     private GameObject model;
-    public FightPhaseActorInstance actorInstance;
+    public ActorInstance actorInstance;
     
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
 
-    public void Init(FightPhaseActorInstance actor)
+    public void Init(ActorInstance actor)
     {
         this.actorInstance = actor;
         transform.localScale = Vector3.zero;

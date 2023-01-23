@@ -3,11 +3,13 @@ using System.Linq;
 
 public class GamePhaseFight : IGamePhase
 {
-    private readonly IFightPhase[] _fightPhases;
+    private readonly bool loop;
+    private readonly IBattlePhase[] _fightPhases;
     public Action OnFinish { get; set; }
 
-    public GamePhaseFight(IFightPhase[] fightPhases)
+    public GamePhaseFight(bool loop, IBattlePhase[] fightPhases)
     {
+        this.loop = loop;
         _fightPhases = fightPhases;
 
         for (int i = 0; i < fightPhases.Length; i++)
@@ -26,12 +28,18 @@ public class GamePhaseFight : IGamePhase
 
     private void InvokeFinish()
     {
-        OnFinish?.Invoke();
+        if (loop)
+        {
+            Start();
+        }
+        else
+        {
+            OnFinish?.Invoke();
+        }
     }
 
     public void Start()
     {
         _fightPhases.First().Start();
     }
-
 }

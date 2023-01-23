@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class FightPhaseEnemiesShowIntent : IFightPhase
+public class BattlePhaseEnemiesShowIntent : IBattlePhase
 {
     public Action OnFinish { get; set; }
     public void Start()

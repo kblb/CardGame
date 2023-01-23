@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class FightPhaseEnemiesDecideOnIntent : IFightPhase
+public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
 {
     private readonly List<SlotInstance> fightSlots;
     public Action OnFinish { get; set; }
 
-    public FightPhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots)
+    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots)
     {
         this.fightSlots = fightSlots;
     }
@@ -16,7 +16,7 @@ public class FightPhaseEnemiesDecideOnIntent : IFightPhase
     {
         foreach (SlotInstance slotInstance in fightSlots)
         {
-            FightPhaseActorInstance enemy = slotInstance.actor;
+            ActorInstance enemy = slotInstance.actor;
             if (enemy != null)
             {
                 enemy.deck.AddCardToCommitArea(enemy.deck.DrawCard());

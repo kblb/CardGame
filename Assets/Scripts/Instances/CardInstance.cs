@@ -4,16 +4,13 @@ public class CardInstance
 {
     public readonly CardScriptableObject scriptableObject;
 
-    public event Action OnCast;
-    
     public CardInstance(CardScriptableObject scriptableObject)
     {
         this.scriptableObject = scriptableObject;
     }
 
-    public void CastOn(FightPhaseActorInstance first)
+    public ActionInstance CreateActionInstance(ActorInstance target)
     {
-        scriptableObject.cardAction.CastOn(first);
-        OnCast?.Invoke();
+        return new ActionInstance(scriptableObject, target);
     }
 }

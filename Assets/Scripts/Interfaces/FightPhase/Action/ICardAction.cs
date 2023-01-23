@@ -1,4 +1,4 @@
 ﻿public interface ICardAction
 {
-    void CastOn(FightPhaseActorInstance actor);
+    void Act(ActorInstance target);
 }
