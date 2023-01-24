@@ -33,6 +33,7 @@ public class LogicQueue
                 catch (Exception e)
                 {
                     Debug.LogError(e);
+                    throw e;
                 }
             });
             sequence.AppendInterval(0.5f);

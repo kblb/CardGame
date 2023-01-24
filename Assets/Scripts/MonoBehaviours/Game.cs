@@ -28,14 +28,21 @@ public class Game : MonoBehaviour
         {
             slot.OnActorMovedHere += () => { fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player); };
         }
+        
+        ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
+
+        foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
+        {
+            CreateNewCardView(cardInstance, battleInstance.Player);
+        }
+        fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
 
         BattlePhasePlayerAction battlePhasePlayerAction = new();
         fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
-        ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
+        
         playerInstance.deck.OnNewCardDrawn += (card) =>
         {
-            CreateNewCardView(card, playerInstance);
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
             fightView.uiView.ShowHand(playerInstance.deck.hand);
         };
