@@ -7,6 +7,7 @@ using UnityEngine;
 public class UIView : MonoBehaviour
 {
     [SerializeField] public CardCommitAreaView cardCommitAreaView;
+    [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
     [SerializeField] public HandView handView;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
@@ -34,15 +35,28 @@ public class UIView : MonoBehaviour
         }
     }
 
-    public void ShowCommitArea(List<CardInstance> deckCommitArea)
+    public void ShowCommitArea(List<CardInstance> intents)
     {
-        IEnumerable<CardView> cardViewsInCommitArea = cardViews.Where(t => deckCommitArea.Any(y => y == t.cardInstance));
+        IEnumerable<CardView> cardViewsInCommitArea = cardViews.Where(t => intents.Any(y => y == t.cardInstance));
 
         int i = 0;
         float offset = (cardViewsInCommitArea.Count() - 1) * handView.spacing / 2;
         foreach (CardView cardView in cardViewsInCommitArea)
         {
             cardView.transform.DOMove(cardCommitAreaView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
+            i++;
+        }
+    }
+
+    public void ShowDiscardPile(List<CardInstance> discardPile)
+    {
+        IEnumerable<CardView> discardPileCards = cardViews.Where(t => discardPile.Any(y => y == t.cardInstance));
+
+        int i = 0;
+        float offset = (discardPileCards.Count() - 1) * handView.spacing / 2;
+        foreach (CardView cardView in discardPileCards)
+        {
+            cardView.transform.DOMove(discardPileView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
             i++;
         }
     }

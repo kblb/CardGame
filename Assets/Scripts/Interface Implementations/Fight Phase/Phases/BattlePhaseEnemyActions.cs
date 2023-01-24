@@ -19,7 +19,10 @@ public class BattlePhaseEnemyActions : IBattlePhase
         {
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {
-                logicQueue.AddElement(() => { cardInstance.scriptableObject.cardAction.Cast(enemy, battleInstance); });
+                logicQueue.AddElement(() =>
+                {
+                    enemy.deck.Cast(cardInstance, enemy, battleInstance);
+                });
             }
         }
 

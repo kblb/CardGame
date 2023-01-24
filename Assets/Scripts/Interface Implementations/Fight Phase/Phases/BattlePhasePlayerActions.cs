@@ -19,7 +19,7 @@ public class BattlePhasePlayerActions : IBattlePhase
         {
             logicQueue.AddElement(() =>
             {
-                cardInstance.scriptableObject.cardAction.Cast(battleInstance.Player, battleInstance);
+                battleInstance.Player.deck.Cast(cardInstance, battleInstance.Player, battleInstance);
             });
         }
 

@@ -8,9 +8,9 @@ public class DeckInstance
     public readonly List<CardInstance> hand = new();
     public readonly List<CardInstance> intents = new();
 
-    public event Action<CardInstance> NewCardDrawn;
-    public event Action<CardInstance> NewCardDiscarded;
-    public event Action DrawPileReshuffled;
+    public event Action<CardInstance> OnNewCardDrawn;
+    public event Action<CardInstance> OnCardDiscarded;
+    public event Action OnDrawPileReshuffled;
     public event Action<CardInstance> OnCardAddedToHand;
     public event Action OnIntentUpdated;
 
@@ -31,7 +31,7 @@ public class DeckInstance
         CardInstance card = drawPile[0];
         drawPile.RemoveAt(0);
         hand.Add(card);
-        NewCardDrawn?.Invoke(card);
+        OnNewCardDrawn?.Invoke(card);
         return card;
     }
 
@@ -47,14 +47,14 @@ public class DeckInstance
         }
 
         discardPile.Clear();
-        DrawPileReshuffled?.Invoke();
+        OnDrawPileReshuffled?.Invoke();
     }
 
     public void DiscardCard(CardInstance cardInstance)
     {
-        hand.Remove(cardInstance);
+        intents.Remove(cardInstance);
         discardPile.Add(cardInstance);
-        NewCardDiscarded?.Invoke(cardInstance);
+        OnCardDiscarded?.Invoke(cardInstance);
     }
 
     public void AddCardToCommitArea(CardInstance cardInstance)
@@ -75,5 +75,11 @@ public class DeckInstance
     public void OnIntentReadyInvoke()
     {
         OnIntentUpdated?.Invoke();
+    }
+
+    public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
+    {
+        cardInstance.scriptableObject.cardAction.Cast(owner, battleInstance);
+        DiscardCard(cardInstance);
     }
 }

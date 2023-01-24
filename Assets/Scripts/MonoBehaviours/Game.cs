@@ -17,7 +17,10 @@ public class Game : MonoBehaviour
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {
-            fightView.slotsView.CreateNewActorView(actorInstance);
+            ActorView newActorView = fightView.slotsView.CreateNewActorView(actorInstance);
+
+            actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
+
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
 
@@ -30,7 +33,7 @@ public class Game : MonoBehaviour
         fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
-        playerInstance.deck.NewCardDrawn += (card) =>
+        playerInstance.deck.OnNewCardDrawn += (card) =>
         {
             CreateNewCardView(card, playerInstance);
             fightView.uiView.ShowHand(playerInstance.deck.hand);

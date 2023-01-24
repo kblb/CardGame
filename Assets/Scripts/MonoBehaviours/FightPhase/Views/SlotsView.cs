@@ -11,15 +11,17 @@ public class SlotsView : MonoBehaviour
 
     private List<ActorView> actorViews = new();
 
-    public void CreateNewActorView(ActorInstance actor)
+    public ActorView CreateNewActorView(ActorInstance actor)
     {
         ActorView actorView = Instantiate(actor.scriptableObject.prefab, transform);
         actorView.Init(actor);
 
         actor.OnHealthChanged += () => actorView.statsView.SetHealth(actor.scriptableObject.health, actor.currentHealth);
         actor.deck.OnIntentUpdated += () => actorView.UpdateIntent(actor.deck.intents);
+        actor.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actor.deck.intents);
 
         actorViews.Add(actorView);
+        return actorView;
     }
 
     public void ShowActors(List<SlotInstance> battleInstanceSlots, ActorInstance playerInstance)

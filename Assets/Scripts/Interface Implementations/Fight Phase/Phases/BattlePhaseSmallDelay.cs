@@ -12,7 +12,6 @@ public class BattlePhaseSmallDelay : IBattlePhase
     public Action OnFinish { get; set; }
     public void Start()
     {
-        logicQueue.AddElement(() => { });
         logicQueue.AddElement(() => { OnFinish?.Invoke();});
     }
 }
