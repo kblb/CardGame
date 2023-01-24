@@ -86,16 +86,13 @@ public class Game : MonoBehaviour
             )
         });
 
-        logicQueue.AddElement(1f, () => { game.Start(); });
+        game.Start();
     }
 
     private void CreateNewCardView(CardInstance cardInstance, ActorInstance player)
     {
         CardView cardView = fightView.uiView.CreateCardView(cardInstance);
-        cardView.draggableImage.OnDragNotification += () =>
-        {
-            fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering);
-        };
+        cardView.draggableImage.OnDragNotification += () => { fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering); };
         cardView.draggableImage.OnExitDragNotification += () =>
         {
             if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering

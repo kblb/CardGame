@@ -61,7 +61,7 @@ public class UIView : MonoBehaviour
         {
             float currentAngle = -(i * angle - angleOffset);
             float currentX = i * spacing - offset;
-            float currentY = 0.1f * (i * spacing - offset);
+            float currentY = 0.2f * (i * spacing - offset);
             currentY *= i >= middleIndex ? -1 : 1;
 
             cardView.transform.SetSiblingIndex(cardView.transform.parent.childCount - 1);
