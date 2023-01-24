@@ -36,6 +36,7 @@ public class Game : MonoBehaviour
         playerInstance.deck.OnNewCardDrawn += (card) =>
         {
             CreateNewCardView(card, playerInstance);
+            fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
             fightView.uiView.ShowHand(playerInstance.deck.hand);
         };
 
@@ -48,6 +49,12 @@ public class Game : MonoBehaviour
         {
             fightView.uiView.ShowHand(playerInstance.deck.hand);
             fightView.uiView.ShowCommitArea(playerInstance.deck.intents);
+        };
+        playerInstance.deck.OnDrawPileReshuffled += () =>
+        {
+            fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
+            fightView.uiView.ShowDiscardPile(playerInstance.deck.discardPile);
+            
         };
 
         game = new GamePhaseCollection(new IGamePhase[]

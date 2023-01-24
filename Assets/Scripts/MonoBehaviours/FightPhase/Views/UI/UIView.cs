@@ -8,6 +8,7 @@ public class UIView : MonoBehaviour
 {
     [SerializeField] public CardCommitAreaView cardCommitAreaView;
     [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
+    [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
@@ -57,6 +58,19 @@ public class UIView : MonoBehaviour
         foreach (CardView cardView in discardPileCards)
         {
             cardView.transform.DOMove(discardPileView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
+            i++;
+        }
+    }
+
+    public void ShowDrawPile(List<CardInstance> drawPile)
+    {
+        IEnumerable<CardView> drawPileCards = cardViews.Where(t => drawPile.Any(y => y == t.cardInstance));
+
+        int i = 0;
+        float offset = (drawPileCards.Count() - 1) * handView.spacing / 2;
+        foreach (CardView cardView in drawPileCards)
+        {
+            cardView.transform.DOMove(drawPileView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
             i++;
         }
     }

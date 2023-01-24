@@ -17,7 +17,8 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
 
     public void Start()
     {
-        for (int i = deck.hand.Count; i < handSize; i++)
+        int count = handSize - deck.hand.Count;
+        for (int i = 0; i < count; i++)
         {
             logicQueue.AddElement(() => { deck.DrawCard(); });
         }
