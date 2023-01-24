@@ -17,12 +17,12 @@ public class BattlePhasePlayerActions : IBattlePhase
     {
         foreach (CardInstance cardInstance in battleInstance.Player.deck.intents)
         {
-            logicQueue.AddElement(() =>
+            logicQueue.AddElement(0.5f, () =>
             {
                 battleInstance.Player.deck.Cast(cardInstance, battleInstance.Player, battleInstance);
             });
         }
 
-        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0, () => { OnFinish?.Invoke(); });
     }
 }

@@ -6,11 +6,11 @@ using UnityEngine;
 public class LogicQueue
 {
     private Sequence sequence;
-    private readonly List<Action> actionsInQueue = new();
+    private readonly List<KeyValuePair<Action, float>> actionsInQueue = new();
 
-    public void AddElement(Action action)
+    public void AddElement(float delay, Action action)
     {
-        actionsInQueue.Add(action);
+        actionsInQueue.Add(new KeyValuePair<Action, float>(action, delay));
         if (sequence == null || sequence.IsPlaying() == false)
         {
             CreateNewSequence();
@@ -22,21 +22,20 @@ public class LogicQueue
         sequence = DOTween.Sequence();
         sequence.OnComplete(CreateNewSequence);
 
-        foreach (Action action in actionsInQueue)
+        foreach (KeyValuePair<Action, float> action in actionsInQueue)
         {
             sequence.AppendCallback(() =>
             {
                 try
                 {
-                    action();
+                    action.Key();
                 }
                 catch (Exception e)
                 {
-                    Debug.LogError(e);
-                    throw e;
+                    Debug.LogException(e);
                 }
             });
-            sequence.AppendInterval(0.5f);
+            sequence.AppendInterval(action.Value);
         }
 
         actionsInQueue.Clear();

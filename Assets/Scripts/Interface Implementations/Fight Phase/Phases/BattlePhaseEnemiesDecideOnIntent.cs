@@ -5,11 +5,13 @@ using System.Linq;
 public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
 {
     private readonly List<SlotInstance> fightSlots;
+    private readonly LogicQueue logicQueue;
     public Action OnFinish { get; set; }
 
-    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots)
+    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue)
     {
         this.fightSlots = fightSlots;
+        this.logicQueue = logicQueue;
     }
 
     public void Start()
@@ -19,9 +21,19 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
             ActorInstance enemy = slotInstance.actor;
             if (enemy != null)
             {
-                enemy.deck.AddCardToCommitArea(enemy.deck.DrawCard());
-                slotInstance.actor.deck.OnIntentReadyInvoke();
+                logicQueue.AddElement(0.5f, () =>
+                {
+                    if (enemy.deck.drawPile.Count == 0)
+                    {
+                        enemy.deck.ReshuffleDeck();
+                    }
+
+                    enemy.deck.AddCardToCommitArea(enemy.deck.DrawCard());
+                    slotInstance.actor.deck.OnIntentReadyInvoke();
+                });
             }
         }
+
+        logicQueue.AddElement(0, () => { OnFinish?.Invoke(); });
     }
 }

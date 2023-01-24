@@ -96,6 +96,7 @@ MonoBehaviour:
   cardIcon: {fileID: 259155285600722328}
   titleText: {fileID: 7551805940165843834}
   descriptionText: {fileID: 6102292917175688335}
+  draggableImage: {fileID: 0}
 --- !u!114 &1583203186
 MonoBehaviour:
   m_ObjectHideFlags: 0

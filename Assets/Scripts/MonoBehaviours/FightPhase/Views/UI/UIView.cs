@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -17,60 +18,55 @@ public class UIView : MonoBehaviour
 
     public CardView CreateCardView(CardInstance cardInstance)
     {
-        CardView cardView = Instantiate(cardViewPrefab, transform);
+        CardView cardView = Instantiate(cardViewPrefab, handView.transform);
         cardView.Init(cardInstance);
         cardViews.Add(cardView);
         return cardView;
     }
 
+    public void ShowDrawPile(List<CardInstance> drawPile)
+    {
+        ShowCardsIn(drawPile, cardViews, drawPileView.transform.position, 3, 2);
+    }
+
     public void ShowHand(List<CardInstance> cardInstances)
     {
-        IEnumerable<CardView> cardViewsInHand = cardViews.Where(t => cardInstances.Any(y => y == t.cardInstance));
-
-        int i = 0;
-        float offset = (cardViewsInHand.Count() - 1) * handView.spacing / 2;
-        foreach (CardView cardView in cardViewsInHand)
-        {
-            cardView.transform.DOMove( handView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
-            i++;
-        }
+        ShowCardsIn(cardInstances, cardViews, handView.transform.position, 40, 7);
     }
 
     public void ShowCommitArea(List<CardInstance> intents)
     {
-        IEnumerable<CardView> cardViewsInCommitArea = cardViews.Where(t => intents.Any(y => y == t.cardInstance));
-
-        int i = 0;
-        float offset = (cardViewsInCommitArea.Count() - 1) * handView.spacing / 2;
-        foreach (CardView cardView in cardViewsInCommitArea)
-        {
-            cardView.transform.DOMove(cardCommitAreaView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
-            i++;
-        }
+        ShowCardsIn(intents, cardViews, cardCommitAreaView.transform.position, 100, 5);
     }
 
     public void ShowDiscardPile(List<CardInstance> discardPile)
     {
-        IEnumerable<CardView> discardPileCards = cardViews.Where(t => discardPile.Any(y => y == t.cardInstance));
-
-        int i = 0;
-        float offset = (discardPileCards.Count() - 1) * handView.spacing / 2;
-        foreach (CardView cardView in discardPileCards)
-        {
-            cardView.transform.DOMove(discardPileView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
-            i++;
-        }
+        ShowCardsIn(discardPile, cardViews, discardPileView.transform.position, 3, 2);
     }
 
-    public void ShowDrawPile(List<CardInstance> drawPile)
+
+
+    private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)
     {
-        IEnumerable<CardView> drawPileCards = cardViews.Where(t => drawPile.Any(y => y == t.cardInstance));
+        IOrderedEnumerable<CardView> viewsOrdered = views
+            .Where(t => instances.Any(y => y == t.cardInstance))
+            .OrderBy(t => instances.IndexOf(t.cardInstance));
 
         int i = 0;
-        float offset = (drawPileCards.Count() - 1) * handView.spacing / 2;
-        foreach (CardView cardView in drawPileCards)
+        int middleIndex = viewsOrdered.Count() / 2;
+
+        float offset = (viewsOrdered.Count() - 1) * spacing / 2;
+        float angleOffset = (viewsOrdered.Count() - 1) * angle / 2;
+        foreach (CardView cardView in viewsOrdered)
         {
-            cardView.transform.DOMove(drawPileView.transform.position + new Vector3(i * handView.spacing - offset, 0, 0), 0.5f);
+            float currentAngle = -(i * angle - angleOffset);
+            float currentX = i * spacing - offset;
+            float currentY = 0.1f * (i * spacing - offset);
+            currentY *= i >= middleIndex ? -1 : 1;
+
+            cardView.transform.SetSiblingIndex(cardView.transform.parent.childCount - 1);
+            cardView.transform.DOMove(position + new Vector3(currentX, currentY, 0), 0.5f);
+            cardView.transform.DORotate(new Vector3(0, 0, currentAngle), 0.5f);
             i++;
         }
     }

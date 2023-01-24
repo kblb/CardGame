@@ -16,10 +16,6 @@ public class SlotsView : MonoBehaviour
         ActorView actorView = Instantiate(actor.scriptableObject.prefab, transform);
         actorView.Init(actor);
 
-        actor.OnHealthChanged += () => actorView.statsView.SetHealth(actor.scriptableObject.health, actor.currentHealth);
-        actor.deck.OnIntentUpdated += () => actorView.UpdateIntent(actor.deck.intents);
-        actor.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actor.deck.intents);
-
         actorViews.Add(actorView);
         return actorView;
     }
@@ -48,5 +44,12 @@ public class SlotsView : MonoBehaviour
 
             i++;
         }
+    }
+
+    public void DestroyActor(ActorInstance actorInstance)
+    {
+        ActorView actorView = actorViews.First(t => t.actorInstance == actorInstance);
+        actorViews.Remove(actorView);
+        Destroy(actorView.gameObject);
     }
 }

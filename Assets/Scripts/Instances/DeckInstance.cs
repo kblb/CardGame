@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class DeckInstance
 {
@@ -26,10 +27,13 @@ public class DeckInstance
     {
         if (drawPile.Count == 0)
         {
-            ReshuffleDeck();
+            throw new Exception("Hand is empty, can't draw");
         }
-        CardInstance card = drawPile[0];
-        drawPile.RemoveAt(0);
+
+        int indexToDraw = drawPile.Count - 1;
+
+        CardInstance card = drawPile[indexToDraw];
+        drawPile.RemoveAt(indexToDraw);
         hand.Add(card);
         OnNewCardDrawn?.Invoke(card);
         return card;
@@ -41,7 +45,9 @@ public class DeckInstance
         {
             throw new Exception("Can't reshuffle, because discard pile is empty");
         }
-        foreach (CardInstance cardInstance in discardPile)
+
+        IEnumerable<CardInstance> ienumerableDiscardPile = discardPile;
+        foreach (CardInstance cardInstance in ienumerableDiscardPile.Reverse())
         {
             drawPile.Add(cardInstance);
         }
@@ -50,7 +56,7 @@ public class DeckInstance
         OnDrawPileReshuffled?.Invoke();
     }
 
-    public void DiscardCard(CardInstance cardInstance)
+    private void DiscardCard(CardInstance cardInstance)
     {
         intents.Remove(cardInstance);
         discardPile.Add(cardInstance);

@@ -18,11 +18,22 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
     public void Start()
     {
         int count = handSize - deck.hand.Count;
-        for (int i = 0; i < count; i++)
+
+        int? reshuffleAtIndex = null;
+        if (count > deck.drawPile.Count)
         {
-            logicQueue.AddElement(() => { deck.DrawCard(); });
+            reshuffleAtIndex = deck.drawPile.Count;
         }
 
-        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
+        for (int i = 0; i < count; i++)
+        {
+            if (reshuffleAtIndex.HasValue && reshuffleAtIndex == i)
+            {
+                logicQueue.AddElement(0.5f, () => { deck.ReshuffleDeck(); });
+            }
+            logicQueue.AddElement(0.5f, () => { deck.DrawCard(); });
+        }
+
+        logicQueue.AddElement(0.5f, () => { OnFinish?.Invoke(); });
     }
 }

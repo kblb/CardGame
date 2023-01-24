@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Game : MonoBehaviour
 {
@@ -17,10 +16,17 @@ public class Game : MonoBehaviour
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {
-            ActorView newActorView = fightView.slotsView.CreateNewActorView(actorInstance);
-
             actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
+            actorInstance.OnDeath += () =>
+            {
+                fightView.slotsView.DestroyActor(actorInstance);
+                battleInstance.DestroyActor(actorInstance);
+            };
 
+            ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance);
+            actorInstance.OnHealthChanged += () => actorView.statsView.SetHealth(actorInstance.scriptableObject.health, actorInstance.currentHealth);
+            actorInstance.deck.OnIntentUpdated += () => actorView.UpdateIntent(actorInstance.deck.intents);
+            actorInstance.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.deck.intents);
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
 
@@ -28,19 +34,20 @@ public class Game : MonoBehaviour
         {
             slot.OnActorMovedHere += () => { fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player); };
         }
-        
+
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
 
         foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
         {
             CreateNewCardView(cardInstance, battleInstance.Player);
         }
+
         fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
 
         BattlePhasePlayerAction battlePhasePlayerAction = new();
         fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
-        
+
         playerInstance.deck.OnNewCardDrawn += (card) =>
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
@@ -61,7 +68,6 @@ public class Game : MonoBehaviour
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
             fightView.uiView.ShowDiscardPile(playerInstance.deck.discardPile);
-            
         };
 
         game = new GamePhaseCollection(new IGamePhase[]
@@ -69,11 +75,10 @@ public class Game : MonoBehaviour
             new GamePhaseFight(true,
                 new IBattlePhase[]
                 {
-                    new BattlePhaseSmallDelay(logicQueue),
-                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
-                    new BattlePhaseApplyBuffs(battleInstance.GetAllActors()),
+                    new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
                     battlePhasePlayerAction,
                     new BattlePhasePlayerActions(battleInstance, logicQueue),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
@@ -81,7 +86,7 @@ public class Game : MonoBehaviour
             )
         });
 
-        game.Start();
+        logicQueue.AddElement(1f, () => { game.Start(); });
     }
 
     private void CreateNewCardView(CardInstance cardInstance, ActorInstance player)
@@ -90,7 +95,6 @@ public class Game : MonoBehaviour
         cardView.draggableImage.OnDragNotification += () =>
         {
             fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering);
-            fightView.uiView.handView.Highlight(fightView.uiView.handView.isMouseHoveringOverMe.IsHovering);
         };
         cardView.draggableImage.OnExitDragNotification += () =>
         {

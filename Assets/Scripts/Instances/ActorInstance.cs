@@ -9,6 +9,7 @@ public class ActorInstance
     public DeckInstance deck;
 
     public event Action OnHealthChanged;
+    public event Action OnDeath;
 
     public ActorInstance(ActorScriptableObject scriptableObject)
     {
@@ -43,5 +44,9 @@ public class ActorInstance
         }
         currentHealth -= amount;
         OnHealthChanged?.Invoke();
+        if (currentHealth <= 0)
+        {
+            OnDeath?.Invoke();
+        }
     }
 }

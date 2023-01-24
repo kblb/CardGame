@@ -15,11 +15,11 @@ public class BattlePhaseSpawnOneEnemyInLastSlotIfEmpty : IBattlePhase
     public void Start()
     {
         SlotInstance lastSlot = fight.slots[^1];
-        if (lastSlot.IsFree())
+        if (fight.CanSpawnMoreEnemies() && lastSlot.IsFree())
         {
-            logicQueue.AddElement(() => { fight.SpawnEnemyAtSlotIndex(fight.slots.Count - 1); });
+            logicQueue.AddElement(0.5f, () => { fight.SpawnEnemyAtSlotIndex(fight.slots.Count - 1); });
         }
 
-        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0, () => { OnFinish?.Invoke(); });
     }
 }

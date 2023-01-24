@@ -8,6 +8,7 @@ public class BattleInstance
     public readonly List<ActorInstance> allEnemies = new();
     private ActorInstance player;
     public readonly List<SlotInstance> slots = new();
+    private int enemiesCreated;
 
     public Action<ActorInstance> OnActorSpawned;
     public ActorInstance Player => player;
@@ -31,7 +32,12 @@ public class BattleInstance
 
     public void SpawnEnemyAtSlotIndex(int index)
     {
+        if (enemiesCreated >= scriptableObject.enemies.Count)
+        {
+            throw new Exception("We shouldn't spawn next enemy, because we reached already the end of level.");
+        }
         ActorInstance enemy = new(scriptableObject.enemies[allEnemies.Count]);
+        enemiesCreated++;
         allEnemies.Add(enemy);
         if (slots[index].IsFree() == false)
         {
@@ -57,11 +63,22 @@ public class BattleInstance
 
     public void MoveForward(ActorInstance owner)
     {
-        
         SlotInstance currentSlot = slots.First(t => t.actor == owner);
         int currentSlotIndex = slots.IndexOf(currentSlot);
 
         currentSlot.PlaceActorHere(null);
         slots[currentSlotIndex - 1].PlaceActorHere(owner);
+    }
+
+    public void DestroyActor(ActorInstance actorInstance)
+    {
+        allEnemies.Remove(actorInstance);
+        SlotInstance slotInstance = slots.First(t => t.actor == actorInstance);
+        slotInstance.actor = null;
+    }
+
+    public bool CanSpawnMoreEnemies()
+    {
+        return enemiesCreated < scriptableObject.enemies.Count;
     }
 }

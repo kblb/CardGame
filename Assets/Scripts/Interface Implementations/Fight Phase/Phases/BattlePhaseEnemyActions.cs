@@ -19,13 +19,13 @@ public class BattlePhaseEnemyActions : IBattlePhase
         {
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {
-                logicQueue.AddElement(() =>
+                logicQueue.AddElement(0.5f, () =>
                 {
                     enemy.deck.Cast(cardInstance, enemy, battleInstance);
                 });
             }
         }
 
-        logicQueue.AddElement(() => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0, () => { OnFinish?.Invoke(); });
     }
 }
