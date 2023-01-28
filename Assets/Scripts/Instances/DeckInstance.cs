@@ -8,6 +8,7 @@ public class DeckInstance
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
     public readonly List<CardInstance> intents = new();
+    public readonly List<CardInstance> usedEtherealPile = new();
 
     public event Action<CardInstance> OnNewCardDrawn;
     public event Action<CardInstance> OnCardDiscarded;
@@ -59,7 +60,15 @@ public class DeckInstance
     private void DiscardCard(CardInstance cardInstance)
     {
         intents.Remove(cardInstance);
-        discardPile.Add(cardInstance);
+        if (cardInstance.scriptableObject.ethereal)
+        {
+            usedEtherealPile.Add(cardInstance);
+        }
+        else
+        {
+            discardPile.Add(cardInstance);
+        }
+
         OnCardDiscarded?.Invoke(cardInstance);
     }
 
@@ -85,7 +94,8 @@ public class DeckInstance
 
     public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
     {
-        cardInstance.scriptableObject.cardAction.Cast(owner, battleInstance);
+        //sleep card doesn't have any action
+        cardInstance.scriptableObject.cardAction?.Cast(owner, battleInstance);
         DiscardCard(cardInstance);
     }
 }

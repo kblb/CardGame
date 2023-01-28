@@ -3,7 +3,7 @@
 public class SlotInstance
 {
     public ActorInstance actor;
-    public event Action OnActorMovedHere;
+    public event Action OnActorChanged;
 
     public bool IsFree()
     {
@@ -13,9 +13,6 @@ public class SlotInstance
     public void PlaceActorHere(ActorInstance owner)
     {
         actor = owner;
-        if (owner != null)
-        {
-            OnActorMovedHere?.Invoke();
-        }
+        OnActorChanged?.Invoke();
     }
 }

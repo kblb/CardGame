@@ -5,6 +5,7 @@ public class Game : MonoBehaviour
     [SerializeField] private BattleScriptableObject battleScriptableObject;
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
+    [SerializeField] private CardScriptableObject sleepCard;
 
     private readonly LogicQueue logicQueue = new();
 
@@ -32,7 +33,7 @@ public class Game : MonoBehaviour
 
         foreach (SlotInstance slot in battleInstance.slots)
         {
-            slot.OnActorMovedHere += () => { fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player); };
+            slot.OnActorChanged += () => { fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player); };
         }
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
@@ -75,9 +76,10 @@ public class Game : MonoBehaviour
             new GamePhaseFight(true,
                 new IBattlePhase[]
                 {
+                    new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard)),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
                     battlePhasePlayerAction,
                     new BattlePhasePlayerActions(battleInstance, logicQueue),

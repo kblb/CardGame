@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 public class CardInstance
 {
     public readonly CardScriptableObject scriptableObject;
@@ -8,4 +7,5 @@ public class CardInstance
     {
         this.scriptableObject = scriptableObject;
     }
+
 }
