@@ -45,10 +45,6 @@ public class Game : MonoBehaviour
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
 
-        BattlePhasePlayerAction battlePhasePlayerAction = new();
-        fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
-
-
         playerInstance.deck.OnNewCardDrawn += (card) =>
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
@@ -70,6 +66,9 @@ public class Game : MonoBehaviour
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
             fightView.uiView.ShowDiscardPile(playerInstance.deck.discardPile);
         };
+        
+        BattlePhasePlayerAction battlePhasePlayerAction = new();
+        fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
 
         game = new GamePhaseCollection(new IGamePhase[]
         {

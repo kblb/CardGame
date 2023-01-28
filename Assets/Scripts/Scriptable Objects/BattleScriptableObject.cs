@@ -2,7 +2,7 @@
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Create/Fight Phase/Fight Phase")]
+[CreateAssetMenu(menuName = "Create/Battle")]
 public class BattleScriptableObject : SerializedScriptableObject
 {
     public List<ActorScriptableObject> enemies;

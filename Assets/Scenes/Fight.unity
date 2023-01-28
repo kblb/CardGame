@@ -155,6 +155,7 @@ MonoBehaviour:
   battleScriptableObject: {fileID: 11400000, guid: 7b452ee0405b1344396485666fe8ad0c, type: 2}
   playerScriptableObject: {fileID: 11400000, guid: 07d19e393bce33d43ba9dc541dc46008, type: 2}
   fightView: {fileID: 1429984710}
+  sleepCard: {fileID: 11400000, guid: a3c4e10a0c18db4408f0bae9b2a62cce, type: 2}
 --- !u!4 &248551507
 Transform:
   m_ObjectHideFlags: 0
@@ -916,8 +917,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99477512d765439a85425ebe8123b6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 30
   isMouseHoveringOverMe: {fileID: 0}
+  spacing: 30
 --- !u!222 &584709095
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -44,8 +44,6 @@ public class UIView : MonoBehaviour
         ShowCardsIn(discardPile, cardViews, discardPileView.transform.position, 3, 2);
     }
 
-
-
     private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)
     {
         IOrderedEnumerable<CardView> viewsOrdered = views
