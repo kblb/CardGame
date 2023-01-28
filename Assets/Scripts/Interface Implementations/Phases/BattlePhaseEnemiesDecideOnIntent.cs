@@ -24,7 +24,7 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
             if (enemy != null)
             {
                 int anotherLoopIndex = i;
-                logicQueue.AddElement(0.5f, () =>
+                logicQueue.AddElement(0.1f, () =>
                 {
                     CardInstance cardInstance = null;
                     if (anotherLoopIndex == 0)
