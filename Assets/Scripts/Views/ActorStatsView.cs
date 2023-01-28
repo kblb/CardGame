@@ -87,15 +87,15 @@ public class ActorStatsView : MonoBehaviour
             {
                 if (i < drawHp)
                 {
-                    _healthBarImage.SetPixel(i, 0, Color.green);
+                    _healthBarImage.SetPixel(i, 0, Color.white);
                 }
                 else if (i < drawShield + drawHp)
                 {
-                    _healthBarImage.SetPixel(i, 0, Color.blue);
+                    _healthBarImage.SetPixel(i, 0, Color.cyan);
                 }
                 else
                 {
-                    _healthBarImage.SetPixel(i, 0, Color.red);
+                    _healthBarImage.SetPixel(i, 0, Color.black);
                 }
             }
 

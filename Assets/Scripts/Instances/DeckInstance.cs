@@ -57,7 +57,7 @@ public class DeckInstance
         OnDrawPileReshuffled?.Invoke();
     }
 
-    private void DiscardCard(CardInstance cardInstance)
+    public void DiscardCard(CardInstance cardInstance)
     {
         intents.Remove(cardInstance);
         if (cardInstance.scriptableObject.ethereal)
@@ -94,8 +94,6 @@ public class DeckInstance
 
     public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
     {
-        //sleep card doesn't have any action
-        cardInstance.scriptableObject.cardAction?.Cast(owner, battleInstance);
-        DiscardCard(cardInstance);
+        cardInstance.Cast(owner, battleInstance);
     }
 }

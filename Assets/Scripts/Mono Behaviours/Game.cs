@@ -41,6 +41,7 @@ public class Game : MonoBehaviour
         foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
         {
             CreateNewCardView(cardInstance, battleInstance.Player);
+            cardInstance.OnCast += (target) => fightView.OnCast(cardInstance, target);
         }
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
@@ -69,6 +70,7 @@ public class Game : MonoBehaviour
         
         BattlePhasePlayerAction battlePhasePlayerAction = new();
         fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
+        battlePhasePlayerAction.OnCommitReady += fightView.uiView.cardCommitAreaView.CommitReady;
 
         game = new GamePhaseCollection(new IGamePhase[]
         {

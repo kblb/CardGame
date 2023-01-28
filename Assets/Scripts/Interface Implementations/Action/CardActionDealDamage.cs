@@ -18,4 +18,9 @@ public class CardActionDealDamage : ICardAction
 
         target.ReceiveDamage(amount);
     }
+
+    public ActorInstance GetTarget(ActorInstance owner, BattleInstance battleInstance)
+    {
+        return battleInstance.slots.First(t => t.actor != null).actor;
+    }
 }

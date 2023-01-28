@@ -20,4 +20,10 @@ public class CardCommitAreaView : MonoBehaviour
     {
         transform.localScale = Vector3.one * (isHovering ? 1.2f : 1.0f);
     }
+
+    public void CommitReady(bool isReady)
+    {
+        cardCommitButton.interactable = isReady;
+        cardCommitButton.image.color = isReady ? Color.green : Color.white;
+    }
 }

@@ -52,4 +52,9 @@ public class SlotsView : MonoBehaviour
         actorViews.Remove(actorView);
         Destroy(actorView.gameObject);
     }
+
+    public ActorView FindActorView(ActorInstance target)
+    {
+        return actorViews.Find(t => t.actorInstance == target);
+    }
 }

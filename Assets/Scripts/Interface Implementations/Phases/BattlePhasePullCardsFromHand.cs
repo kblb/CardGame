@@ -31,9 +31,9 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
             {
                 logicQueue.AddElement(0.5f, () => { deck.ReshuffleDeck(); });
             }
-            logicQueue.AddElement(0.5f, () => { deck.DrawCard(); });
+            logicQueue.AddElement(0.2f, () => { deck.DrawCard(); });
         }
 
-        logicQueue.AddElement(0.5f, () => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0.1f, () => { OnFinish?.Invoke(); });
     }
 }
