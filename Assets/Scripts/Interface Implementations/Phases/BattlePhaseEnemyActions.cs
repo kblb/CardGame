@@ -19,9 +19,7 @@ public class BattlePhaseEnemyActions : IBattlePhase
         {
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {
-                CardInstance tempCardInstance = cardInstance;
-                ActorInstance tempEnemy = enemy; 
-                logicQueue.AddElement(1.5f, () => { enemy.deck.Cast(cardInstance, enemy, battleInstance); });
+                logicQueue.AddElement(0.1f, () => { enemy.deck.Cast(cardInstance, enemy, battleInstance); });
                 logicQueue.AddElement(0.1f, () => { enemy.deck.DiscardCard(cardInstance); });
             }
         }

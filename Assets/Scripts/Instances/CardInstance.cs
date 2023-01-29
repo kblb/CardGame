@@ -14,7 +14,7 @@ public class CardInstance
     {
         //sleep card doesn't have any action
         ActorInstance target = scriptableObject.cardAction?.GetTarget(owner, battleInstance);
-        scriptableObject.cardAction?.Cast(owner, battleInstance);
         OnCast?.Invoke(target);
+        scriptableObject.cardAction?.Cast(owner, battleInstance);
     }
 }
