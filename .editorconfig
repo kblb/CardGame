@@ -47,6 +47,7 @@ resharper_place_expr_method_on_single_line = true
 resharper_place_expr_property_on_single_line = true
 resharper_place_simple_accessorholder_on_single_line = true
 resharper_place_simple_anonymousmethod_on_single_line = false
+resharper_place_type_attribute_on_same_line = true
 resharper_remove_blank_lines_near_braces_in_code = false
 resharper_simple_embedded_statement_style = on_single_line
 resharper_toplevel_function_definition_return_type_style = on_single_line
