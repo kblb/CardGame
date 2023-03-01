@@ -8,12 +8,13 @@ public class SlotsView : MonoBehaviour
 {
     [SceneObjectsOnly, SerializeField] public SlotView playerSlot;
     [SceneObjectsOnly, SerializeField] public SlotView[] enemySlots;
+    [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
 
     private List<ActorView> actorViews = new();
 
     public ActorView CreateNewActorView(ActorInstance actor)
     {
-        ActorView actorView = Instantiate(actor.scriptableObject.prefab, transform);
+        ActorView actorView = Instantiate(actorViewPrefab, transform);
         actorView.Init(actor);
 
         actorViews.Add(actorView);

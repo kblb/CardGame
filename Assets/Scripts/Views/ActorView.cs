@@ -6,7 +6,6 @@ using UnityEngine;
 public class ActorView : MonoBehaviour
 {
     [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
-    [SerializeField] private GameObject modelPrefab;
     private GameObject model;
     public ActorInstance actorInstance;
     
@@ -15,22 +14,22 @@ public class ActorView : MonoBehaviour
 
     public void Init(ActorInstance actor)
     {
-        this.actorInstance = actor;
+        actorInstance = actor;
         transform.localScale = Vector3.zero;
         statsView.Init(actor);
-        model = Instantiate(modelPrefab, transform);
+        model = Instantiate(actor.scriptableObject.prefab, transform);
         originalScale = model.transform.localScale.x;
         transform.DOScale(Vector3.one, 0.5f);
     }
 
     public void ShowAttackAnimation()
     {
-        modelPrefab.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
+        model.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
     }
 
     public void HideAttackAnimation()
     {
-        modelPrefab.transform.localScale = Vector3.one * originalScale;
+        model.transform.localScale = Vector3.one * originalScale;
     }
 
     public void UpdateIntent(List<CardInstance> intents)
