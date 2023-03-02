@@ -1,6 +1,7 @@
 ﻿using System.Linq;
+using Builders;
 
-public class CardActionDealDamage : ICardAction
+public class CardActionBoostDamage : ICardAction
 {
     public int amount;
 
@@ -16,11 +17,12 @@ public class CardActionDealDamage : ICardAction
             target = battleInstance.allEnemies.First();
         }
 
-        target.ReceiveDamage(amount);
+        target.ReceiveDamage(amount, Affinity.None);
     }
 
-    public ActorInstance GetTarget(ActorInstance owner, BattleInstance battleInstance)
+    public void AppendToAttack(AttackBuilder builder, ActorInstance owner, BattleInstance battleInstance)
     {
-        return battleInstance.slots.First(t => t.actor != null).actor;
+        var target = battleInstance.allEnemies.Contains(owner) ? AttackBuilder.PLAYER_TARGET_INDEX : 0;
+        builder.AddDamage(amount, target);
     }
 }

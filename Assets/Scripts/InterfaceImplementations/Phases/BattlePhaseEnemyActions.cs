@@ -1,4 +1,5 @@
 ﻿using System;
+using Builders;
 
 public class BattlePhaseEnemyActions : IBattlePhase
 {
@@ -17,9 +18,18 @@ public class BattlePhaseEnemyActions : IBattlePhase
     {
         foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
+            var attack = new AttackBuilder(battleInstance);
+        
+            foreach (CardInstance cardInstance in battleInstance.Player.deck.intents)
+            {
+                cardInstance.AppendToAttack(attack, enemy, battleInstance);
+            }
+        
+            attack.Execute(battleInstance);
+            
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {
-                logicQueue.AddElement(0.1f, () => { enemy.deck.Cast(cardInstance, enemy, battleInstance); });
+                // logicQueue.AddElement(0.1f, () => { enemy.deck.UseCard(cardInstance, enemy, battleInstance); });
                 logicQueue.AddElement(0.1f, () => { enemy.deck.DiscardCard(cardInstance); });
             }
         }

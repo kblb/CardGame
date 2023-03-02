@@ -91,9 +91,4 @@ public class DeckInstance
     {
         OnIntentUpdated?.Invoke();
     }
-
-    public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
-    {
-        cardInstance.Cast(owner, battleInstance);
-    }
 }

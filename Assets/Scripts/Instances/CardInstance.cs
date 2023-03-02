@@ -1,4 +1,5 @@
 ﻿using System;
+using Builders;
 
 public class CardInstance
 {
@@ -10,11 +11,17 @@ public class CardInstance
         this.scriptableObject = scriptableObject;
     }
 
-    public void Cast(ActorInstance owner, BattleInstance battleInstance)
+    // public void Cast(ActorInstance owner, BattleInstance battleInstance)
+    // {
+    //     //sleep card doesn't have any action
+    //     ActorInstance target = scriptableObject.cardAction?.GetTarget(owner, battleInstance);
+    //     OnCast?.Invoke(target);
+    //     scriptableObject.cardAction?.Cast(owner, battleInstance);
+    // }
+    //
+    public void AppendToAttack(AttackBuilder attack, ActorInstance owner, BattleInstance battleInstance)
     {
         //sleep card doesn't have any action
-        ActorInstance target = scriptableObject.cardAction?.GetTarget(owner, battleInstance);
-        OnCast?.Invoke(target);
-        scriptableObject.cardAction?.Cast(owner, battleInstance);
+        scriptableObject.cardAction?.AppendToAttack(attack, owner, battleInstance);
     }
 }

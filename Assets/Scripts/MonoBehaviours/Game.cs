@@ -83,7 +83,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard)),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
                     battlePhasePlayerAction,
-                    new BattlePhasePlayerActions(battleInstance, logicQueue),
+                    new BattlePhasePlayerCommit(battleInstance, logicQueue),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
                 }
             )

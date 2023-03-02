@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1bcceff161da48218cb5e3c796beb97d, type: 3}
-  m_Name: Punch
+  m_Name: Fire
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -23,15 +23,17 @@ MonoBehaviour:
     SerializationNodes:
     - Name: cardAction
       Entry: 7
-      Data: 0|CardActionBoostDamage, Assembly-CSharp
-    - Name: amount
+      Data: 0|InterfaceImplementations.Action.CardActionSetAffinity, Assembly-CSharp
+    - Name: affinity
       Entry: 3
-      Data: 4
+      Data: 1
     - Name: 
       Entry: 8
       Data: 
-  displayName: Punch
-  description: Deal 4 dmg to first enemy in Queue
-  icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
-  intentIcon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  displayName: Fire
+  description: 'Change affinity to fire
+
+'
+  icon: {fileID: 21300000, guid: fe3852467ea5e4b488f8c7e0006c970b, type: 3}
+  intentIcon: {fileID: 21300000, guid: 82d262794483b44d097c6b72e3a9e271, type: 3}
   ethereal: 0
