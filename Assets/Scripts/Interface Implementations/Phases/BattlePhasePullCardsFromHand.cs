@@ -5,6 +5,8 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
     private readonly DeckInstance deck;
     private readonly int handSize;
     private readonly LogicQueue logicQueue;
+    
+    public event Action OnCardsArePulled;
 
     public BattlePhasePullCardsFromHand(DeckInstance deck, int handSize, LogicQueue logicQueue)
     {
@@ -34,6 +36,10 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
             logicQueue.AddElement(0.2f, () => { deck.DrawCard(); });
         }
 
-        logicQueue.AddElement(0.1f, () => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0.1f, () =>
+        {
+            OnCardsArePulled?.Invoke();
+            OnFinish?.Invoke();
+        });
     }
 }

@@ -69,8 +69,20 @@ public class Game : MonoBehaviour
         };
         
         BattlePhasePlayerAction battlePhasePlayerAction = new();
-        fightView.uiView.cardCommitAreaView.OnCommitClicked += battlePhasePlayerAction.InvokeFinish;
+        fightView.uiView.cardCommitAreaView.OnCommitClicked += () =>
+        {
+            fightView.uiView.TurnOffHighlights();
+            battlePhasePlayerAction.InvokeFinish();
+        };
         battlePhasePlayerAction.OnCommitReady += fightView.uiView.cardCommitAreaView.CommitReady;
+        
+        BattlePhasePullCardsFromHand battlePhasePullCardsFromHand = new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue);
+
+        battlePhasePullCardsFromHand.OnCardsArePulled += () =>
+        {
+            fightView.uiView.TurnOffHighlights();
+            fightView.uiView.Highlight(battleInstance.Player.deck.hand);
+        };
 
         game = new GamePhaseCollection(new IGamePhase[]
         {
@@ -81,7 +93,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard)),
-                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
+                    battlePhasePullCardsFromHand,
                     battlePhasePlayerAction,
                     new BattlePhasePlayerActions(battleInstance, logicQueue),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
