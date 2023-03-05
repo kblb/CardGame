@@ -8,9 +8,10 @@ public class FightView : MonoBehaviour
     [SerializeField] public SlotsView slotsView;
     [SerializeField] public UIView uiView;
 
+    public event Action<IntentInstance> OnCasted;
     public event Action<IntentInstance> OnCastFinished;
 
-    public void OnCast(IntentInstance intent)
+    public void StartCasting(IntentInstance intent)
     {
         CardView cardView = uiView.FindCardView(intent.cards.First());
         ActorView actorView = slotsView.FindActorView(intent.target);
@@ -22,7 +23,8 @@ public class FightView : MonoBehaviour
         DOTween.Sequence()
             .Append(cardView.transform
                 .DOMove(actorUiPosition, 0.5f)
-                .SetEase(Ease.InCubic))
+                .SetEase(Ease.InCubic)
+                .OnComplete(() => OnCasted?.Invoke(intent)))
             .Append(actorView.transform
                 .DOMove(actorView.transform.position + new Vector3(1, -1, 0) * 5, 0.2f)
                 .SetEase(Ease.OutCirc)

@@ -20,8 +20,7 @@ public class BattlePhasePlayerActions : IBattlePhase
         {
             logicQueue.AddElement(1.3f, () =>
             {
-                intent.OnCast += fightView.OnCast;
-                intent.Cast();
+                fightView.StartCasting(intent);
             });
         }
 

@@ -13,6 +13,8 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        fightView.OnCasted += (intent) => intent.Cast();
+
         BattleInstance battleInstance = new(battleScriptableObject);
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
@@ -51,14 +53,8 @@ public class Game : MonoBehaviour
             fightView.uiView.ShowHand(playerInstance.deck.hand);
         };
 
-        playerInstance.deck.OnCardAddedToHand += instance =>
-        {
-            fightView.uiView.ShowHand(playerInstance.deck.hand);
-        };
-        playerInstance.deck.OnIntentUpdated += () =>
-        {
-            fightView.uiView.ShowHand(playerInstance.deck.hand);
-        };
+        playerInstance.deck.OnCardAddedToHand += instance => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
+        playerInstance.deck.OnIntentUpdated += () => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
         playerInstance.deck.OnDrawPileReshuffled += () =>
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
