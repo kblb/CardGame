@@ -40,8 +40,7 @@ public class Game : MonoBehaviour
 
         foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
         {
-            CreateNewCardView(cardInstance, battleInstance.Player);
-            cardInstance.OnCast += (target) => fightView.OnCast(cardInstance, target);
+            fightView.uiView.CreateCardView(cardInstance);
         }
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
@@ -55,33 +54,26 @@ public class Game : MonoBehaviour
         playerInstance.deck.OnCardAddedToHand += instance =>
         {
             fightView.uiView.ShowHand(playerInstance.deck.hand);
-            fightView.uiView.ShowCommitArea(playerInstance.deck.intents);
         };
         playerInstance.deck.OnIntentUpdated += () =>
         {
             fightView.uiView.ShowHand(playerInstance.deck.hand);
-            fightView.uiView.ShowCommitArea(playerInstance.deck.intents);
         };
         playerInstance.deck.OnDrawPileReshuffled += () =>
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
             fightView.uiView.ShowDiscardPile(playerInstance.deck.discardPile);
         };
-        
-        BattlePhasePlayerAction battlePhasePlayerAction = new();
-        fightView.uiView.cardCommitAreaView.OnCommitClicked += () =>
-        {
-            fightView.uiView.TurnOffHighlights();
-            battlePhasePlayerAction.InvokeFinish();
-        };
-        battlePhasePlayerAction.OnCommitReady += fightView.uiView.cardCommitAreaView.CommitReady;
-        
-        BattlePhasePullCardsFromHand battlePhasePullCardsFromHand = new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue);
 
-        battlePhasePullCardsFromHand.OnCardsArePulled += () =>
+        fightView.OnCastFinished += (intent) =>
         {
-            fightView.uiView.TurnOffHighlights();
-            fightView.uiView.Highlight(battleInstance.Player.deck.hand);
+            foreach (ActorInstance actor in battleInstance.GetAllActors())
+            {
+                if (actor.deck.intents.Contains(intent))
+                {
+                    actor.deck.DiscardIntent(intent);
+                }
+            }
         };
 
         game = new GamePhaseCollection(new IGamePhase[]
@@ -92,41 +84,15 @@ public class Game : MonoBehaviour
                     new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard)),
-                    battlePhasePullCardsFromHand,
-                    battlePhasePlayerAction,
-                    new BattlePhasePlayerActions(battleInstance, logicQueue),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard), battleInstance.Player),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
+                    new BattlePhaseWaitForInput(fightView, battleInstance),
+                    new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
                 }
             )
         });
 
         game.Start();
-    }
-
-    private void CreateNewCardView(CardInstance cardInstance, ActorInstance player)
-    {
-        CardView cardView = fightView.uiView.CreateCardView(cardInstance);
-        cardView.draggableImage.OnDragNotification += () => { fightView.uiView.cardCommitAreaView.Highlight(fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering); };
-        cardView.draggableImage.OnExitDragNotification += () =>
-        {
-            if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering
-                && player.deck.hand.Contains(cardInstance)
-                && player.deck.intents.Count < 2)
-            {
-                player.deck.AddCardToCommitArea(cardInstance);
-            }
-
-            else if (fightView.uiView.cardCommitAreaView.isMouseHoveringOverMe.IsHovering == false
-                     && player.deck.intents.Contains(cardInstance))
-            {
-                player.deck.RemoveCardFromCommitArea(cardInstance);
-            }
-            else
-            {
-                fightView.uiView.ShowHand(player.deck.hand);
-                fightView.uiView.ShowCommitArea(player.deck.intents);
-            }
-        };
     }
 }

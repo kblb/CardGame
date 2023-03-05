@@ -6,9 +6,11 @@ public class DraggableImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 {
     public event Action OnExitDragNotification;
     public event Action OnDragNotification;
+    public event Action OnBeginDragNotification;
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        OnBeginDragNotification?.Invoke();
     }
 
     public void OnDrag(PointerEventData eventData)

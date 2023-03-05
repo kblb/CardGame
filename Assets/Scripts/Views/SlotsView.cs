@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -10,7 +11,7 @@ public class SlotsView : MonoBehaviour
     [SceneObjectsOnly, SerializeField] public SlotView[] enemySlots;
     [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
 
-    private List<ActorView> actorViews = new();
+    public List<ActorView> actorViews = new();
 
     public ActorView CreateNewActorView(ActorInstance actor)
     {
@@ -57,5 +58,27 @@ public class SlotsView : MonoBehaviour
     public ActorView FindActorView(ActorInstance target)
     {
         return actorViews.Find(t => t.actorInstance == target);
+    }
+
+    public void Highlight(List<ActorInstance> actors)
+    {
+        foreach (ActorView actorView in actorViews)
+        {
+            actorView.ResetHighlight();
+        }
+
+        foreach (ActorInstance actorInstance in actors)
+        {
+            ActorView view = FindActorView(actorInstance);
+            view.Highlight();
+        }
+    }
+
+    public void TurnOffHighlight(List<ActorInstance> battleInstanceAllEnemies)
+    {
+        foreach (ActorInstance actor in battleInstanceAllEnemies)
+        {
+            FindActorView(actor).ResetHighlight();
+        }
     }
 }

@@ -14,7 +14,7 @@ public class UIView : MonoBehaviour
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 
-    private readonly List<CardView> cardViews = new();
+    public readonly List<CardView> cardViews = new();
 
     public CardView CreateCardView(CardInstance cardInstance)
     {
@@ -32,11 +32,6 @@ public class UIView : MonoBehaviour
     public void ShowHand(List<CardInstance> cardInstances)
     {
         ShowCardsIn(cardInstances, cardViews, handView.transform.position, 40, 7);
-    }
-
-    public void ShowCommitArea(List<CardInstance> intents)
-    {
-        ShowCardsIn(intents, cardViews, cardCommitAreaView.transform.position, 100, 5);
     }
 
     public void ShowDiscardPile(List<CardInstance> discardPile)
@@ -76,6 +71,8 @@ public class UIView : MonoBehaviour
 
     public void Highlight(List<CardInstance> instances)
     {
+        TurnOffHighlights();
+        
         IOrderedEnumerable<CardView> viewsOrdered = cardViews
             .Where(t => instances.Any(y => y == t.cardInstance))
             .OrderBy(t => instances.IndexOf(t.cardInstance));

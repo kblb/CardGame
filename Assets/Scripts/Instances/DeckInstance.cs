@@ -7,7 +7,7 @@ public class DeckInstance
     public readonly List<CardInstance> discardPile = new();
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
-    public readonly List<CardInstance> intents = new();
+    public readonly List<IntentInstance> intents = new();
     public readonly List<CardInstance> usedEtherealPile = new();
 
     public event Action<CardInstance> OnNewCardDrawn;
@@ -15,6 +15,7 @@ public class DeckInstance
     public event Action OnDrawPileReshuffled;
     public event Action<CardInstance> OnCardAddedToHand;
     public event Action OnIntentUpdated;
+    public event Action OnHandModified;
 
     public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
@@ -57,43 +58,37 @@ public class DeckInstance
         OnDrawPileReshuffled?.Invoke();
     }
 
-    public void DiscardCard(CardInstance cardInstance)
+    public void DiscardIntent(IntentInstance intent)
     {
-        intents.Remove(cardInstance);
-        if (cardInstance.scriptableObject.ethereal)
+        foreach (CardInstance cardInstance in intent.cards)
         {
-            usedEtherealPile.Add(cardInstance);
+            if (cardInstance.scriptableObject.ethereal)
+            {
+                usedEtherealPile.Add(cardInstance);
+            }
+            else
+            {
+                discardPile.Add(cardInstance);
+            }
+
+            OnCardDiscarded?.Invoke(cardInstance);
         }
-        else
+        intents.Remove(intent);
+        OnIntentUpdated?.Invoke();
+    }
+
+    public void AddIntent(IntentInstance intent)
+    {
+        foreach (CardInstance card in intent.cards)
         {
-            discardPile.Add(cardInstance);
+            if (hand.Contains(card))
+            {
+                hand.Remove(card);
+                OnHandModified?.Invoke();
+            }
         }
 
-        OnCardDiscarded?.Invoke(cardInstance);
-    }
-
-    public void AddCardToCommitArea(CardInstance cardInstance)
-    {
-        hand.Remove(cardInstance);
-        intents.Add(cardInstance);
+        intents.Add(intent);
         OnIntentUpdated?.Invoke();
-    }
-
-    public void RemoveCardFromCommitArea(CardInstance cardInstance)
-    {
-        intents.Remove(cardInstance);
-        hand.Add(cardInstance);
-        OnCardAddedToHand?.Invoke(cardInstance);
-        OnIntentUpdated?.Invoke();
-    }
-
-    public void OnIntentReadyInvoke()
-    {
-        OnIntentUpdated?.Invoke();
-    }
-
-    public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
-    {
-        cardInstance.Cast(owner, battleInstance);
     }
 }

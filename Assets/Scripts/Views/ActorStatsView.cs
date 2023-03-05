@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -23,7 +24,7 @@ public class ActorStatsView : MonoBehaviour
     {
         SetHealth(actor.scriptableObject.health, actor.currentHealth);
         SetBuffs(actor.buffs);
-        SetIntent(actor.deck.intents);
+        SetIntents(actor.deck.intents);
     }
 
     private void Awake()
@@ -38,17 +39,17 @@ public class ActorStatsView : MonoBehaviour
         healthBar.sprite = Sprite.Create(_healthBarImage, new Rect(0, 0, ImageWidth, 1), Vector2.zero);
     }
 
-    public void SetIntent(List<CardInstance> intents)
+    public void SetIntents(List<IntentInstance> intents)
     {
         foreach (Transform t in intentBar)
         {
             Destroy(t.gameObject);
         }
 
-        foreach (CardInstance intent in intents)
+        foreach (IntentInstance intent in intents)
         {
             Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-            intentImage.sprite = intent.scriptableObject.intentIcon;
+            intentImage.sprite = intent.cards.First().scriptableObject.intentIcon;
         }
     }
 

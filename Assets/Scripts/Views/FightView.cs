@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using DG.Tweening;
 using UnityEngine;
 
@@ -7,12 +8,12 @@ public class FightView : MonoBehaviour
     [SerializeField] public SlotsView slotsView;
     [SerializeField] public UIView uiView;
 
-    public event Action OnCastFinished;
+    public event Action<IntentInstance> OnCastFinished;
 
-    public void OnCast(CardInstance card, ActorInstance target)
+    public void OnCast(IntentInstance intent)
     {
-        CardView cardView = uiView.FindCardView(card);
-        ActorView actorView = slotsView.FindActorView(target);
+        CardView cardView = uiView.FindCardView(intent.cards.First());
+        ActorView actorView = slotsView.FindActorView(intent.target);
         Vector3 actorViewScreenPosition = Camera.main.WorldToViewportPoint(actorView.transform.position);
         Vector3 actorUiPosition = new Vector3(Screen.width * actorViewScreenPosition.x, Screen.height * actorViewScreenPosition.y, 0);
 
@@ -29,7 +30,7 @@ public class FightView : MonoBehaviour
             .Insert(0.5f, cardView.transform
                 .DOMove(originalCardPosition, 0.5f)
                 .SetEase(Ease.OutCubic))
-            .AppendCallback(() => OnCastFinished?.Invoke())
+            .AppendCallback(() => OnCastFinished?.Invoke(intent))
             ;
     }
 }

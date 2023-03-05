@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -12,6 +13,8 @@ public class ActorView : MonoBehaviour
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
 
+    public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent;
+
     public void Init(ActorInstance actor)
     {
         actorInstance = actor;
@@ -24,7 +27,7 @@ public class ActorView : MonoBehaviour
 
     public void ShowAttackAnimation()
     {
-        model.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
+        model.transform.localScale *= AttackScaleFactor;
     }
 
     public void HideAttackAnimation()
@@ -32,8 +35,33 @@ public class ActorView : MonoBehaviour
         model.transform.localScale = Vector3.one * originalScale;
     }
 
-    public void UpdateIntent(List<CardInstance> intents)
+    public void UpdateIntent(List<IntentInstance> intents)
     {
-        statsView.SetIntent(intents);
+        statsView.SetIntents(intents);
+    }
+    
+    void OnMouseOver()
+    {
+        OnMouseOverEvent?.Invoke(this);
+    }
+
+    void OnMouseExit()
+    {
+        OnMouseExitEvent?.Invoke(this);
+    }
+
+    public void Highlight()
+    {
+        ShowAttackAnimation();
+    }
+
+    public void ResetHighlight()
+    {
+        HideAttackAnimation();
+    }
+
+    public void TurnOffHighlight()
+    {
+        model.transform.localScale /= AttackScaleFactor;
     }
 }

@@ -20,11 +20,27 @@ public class CardView : MonoBehaviour
     public DraggableImage draggableImage;
 
     private TweenerCore<float, float, FloatOptions> currentTween;
+    public event Action<CardView> OnBeginDragNotification;
+    public event Action<CardView> OnExitDragNotification;
 
     private void Awake()
     {
         draggableImage = GetComponent<DraggableImage>();
         Highlight(false);
+
+        DraggableImage di = GetComponent<DraggableImage>();
+        di.OnBeginDragNotification += OnBeginDrag;
+        di.OnExitDragNotification += OnExitDrag;
+    }
+
+    private void OnExitDrag()
+    {
+        OnExitDragNotification?.Invoke(this);
+    }
+
+    private void OnBeginDrag()
+    {
+        OnBeginDragNotification?.Invoke(this);
     }
 
     public void Init(CardInstance card)

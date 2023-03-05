@@ -6,13 +6,15 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
     private readonly List<SlotInstance> fightSlots;
     private readonly LogicQueue logicQueue;
     private readonly CardInstance sleepCard;
+    private readonly ActorInstance target;
     public Action OnFinish { get; set; }
 
-    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue, CardInstance sleepCard)
+    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue, CardInstance sleepCard, ActorInstance target)
     {
         this.fightSlots = fightSlots;
         this.logicQueue = logicQueue;
         this.sleepCard = sleepCard;
+        this.target = target;
     }
 
     public void Start()
@@ -41,9 +43,8 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
                         cardInstance = sleepCard;
                     }
 
-                    enemy.deck.AddCardToCommitArea(cardInstance);
-
-                    slotInstance.actor.deck.OnIntentReadyInvoke();
+                    IntentInstance intent = new IntentInstance(enemy, cardInstance, target);
+                    enemy.deck.AddIntent(intent);
                 });
             }
 
