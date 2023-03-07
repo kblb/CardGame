@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -37,11 +36,7 @@ public class SlotsView : MonoBehaviour
             if (slotInstance.actor != null)
             {
                 ActorView actorView = actorViews.FirstOrDefault(t => t.actorInstance == slotInstance.actor);
-                if (actorView != null)
-                {
-                    actorView.transform.DOMove(enemySlots[i].transform.position, 0.5f);
-                    actorView.transform.DOScale(enemySlots[i].transform.localScale, 0.5f);
-                }
+                enemySlots[i].MoveActorHere(actorView);
             }
 
             i++;
@@ -80,5 +75,10 @@ public class SlotsView : MonoBehaviour
         {
             FindActorView(actor).ResetHighlight();
         }
+    }
+
+    public SlotView FindSlotView(ActorView actorView)
+    {
+        return enemySlots.First(t => t.actorView == actorView);
     }
 }

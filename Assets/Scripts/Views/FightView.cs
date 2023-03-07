@@ -14,7 +14,7 @@ public class FightView : MonoBehaviour
     public void StartCasting(IntentInstance intent)
     {
         CardView cardView = uiView.FindCardView(intent.cards.First());
-        ActorView actorView = slotsView.FindActorView(intent.target);
+        ActorView actorView = slotsView.FindActorView(intent.targetActor);
         Vector3 actorViewScreenPosition = Camera.main.WorldToViewportPoint(actorView.transform.position);
         Vector3 actorUiPosition = new Vector3(Screen.width * actorViewScreenPosition.x, Screen.height * actorViewScreenPosition.y, 0);
 
@@ -34,5 +34,13 @@ public class FightView : MonoBehaviour
                 .SetEase(Ease.OutCubic))
             .AppendCallback(() => OnCastFinished?.Invoke(intent))
             ;
+    }
+
+    public void ShowIntentOverTarget(IntentInstance playersDeckIntent)
+    {
+        ActorView actorView = slotsView.FindActorView(playersDeckIntent.targetActor);
+        SlotView slotView = slotsView.FindSlotView(actorView);
+        
+        uiView.cardCommitAreaView.ShowOverTarget(playersDeckIntent.cards, slotView);
     }
 }

@@ -39,6 +39,12 @@ public class UIView : MonoBehaviour
         ShowCardsIn(discardPile, cardViews, discardPileView.transform.position, 3, 2);
     }
 
+    public void ShowIntent(IntentInstance deckIntent)
+    {
+        List<CardInstance> cards = deckIntent.cards;
+        ShowCardsIn(cards, cardViews, cardCommitAreaView.transform.position, 10, 0);
+    }
+
     private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)
     {
         IOrderedEnumerable<CardView> viewsOrdered = views
@@ -72,7 +78,7 @@ public class UIView : MonoBehaviour
     public void Highlight(List<CardInstance> instances)
     {
         TurnOffHighlights();
-        
+
         IOrderedEnumerable<CardView> viewsOrdered = cardViews
             .Where(t => instances.Any(y => y == t.cardInstance))
             .OrderBy(t => instances.IndexOf(t.cardInstance));

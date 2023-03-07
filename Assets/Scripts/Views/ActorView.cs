@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -35,9 +34,9 @@ public class ActorView : MonoBehaviour
         model.transform.localScale = Vector3.one * originalScale;
     }
 
-    public void UpdateIntent(List<IntentInstance> intents)
+    public void UpdateIntent(IntentInstance intent)
     {
-        statsView.SetIntents(intents);
+        statsView.UpdateIntent(intent);
     }
     
     void OnMouseOver()

@@ -28,8 +28,8 @@ public class Game : MonoBehaviour
 
             ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance);
             actorInstance.OnHealthChanged += () => actorView.statsView.SetHealth(actorInstance.scriptableObject.health, actorInstance.currentHealth);
-            actorInstance.deck.OnIntentUpdated += () => actorView.UpdateIntent(actorInstance.deck.intents);
-            actorInstance.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.deck.intents);
+            actorInstance.deck.OnIntentUpdated += () => actorView.UpdateIntent(actorInstance.deck.intent);
+            actorInstance.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.deck.intent);
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
 
@@ -39,6 +39,8 @@ public class Game : MonoBehaviour
         }
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
+        
+        fightView.uiView.cardCommitAreaView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
 
         foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
         {
@@ -47,14 +49,10 @@ public class Game : MonoBehaviour
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
 
-        playerInstance.deck.OnNewCardDrawn += (card) =>
-        {
-            fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
-            fightView.uiView.ShowHand(playerInstance.deck.hand);
-        };
-
-        playerInstance.deck.OnCardAddedToHand += instance => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
-        playerInstance.deck.OnIntentUpdated += () => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
+        playerInstance.deck.OnCardAddedToHand += (card) => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
+        playerInstance.deck.OnCardRemovedFromHand += () => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
+        playerInstance.deck.OnIntentUpdated += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
+        playerInstance.deck.OnCardRemovedFromDrawPile += (card) => { fightView.uiView.ShowDrawPile(playerInstance.deck.hand); };
         playerInstance.deck.OnDrawPileReshuffled += () =>
         {
             fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
@@ -65,7 +63,7 @@ public class Game : MonoBehaviour
         {
             foreach (ActorInstance actor in battleInstance.GetAllActors())
             {
-                if (actor.deck.intents.Contains(intent))
+                if (actor.deck.intent == intent)
                 {
                     actor.deck.DiscardIntent(intent);
                 }

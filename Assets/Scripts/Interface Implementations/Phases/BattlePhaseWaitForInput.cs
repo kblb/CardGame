@@ -14,12 +14,16 @@ public class BattlePhaseWaitForInput : IBattlePhase
             battleInstance.Player.deck.AddIntent(new IntentInstance(
                 battleInstance.Player,
                 selectCardAndMoveUpPlayerPhase.selectedCard.cardInstance,
-                selectCardAndMoveUpPlayerPhase.selectedTarget.actorInstance));
+                selectCardAndMoveUpPlayerPhase.selectedTarget.actorInstance
+            ));
         };
+
+        ShowIntentSlotWithAdditionalSlotsPlayerPhase showIntentSlotWithAdditionalSlotsPlayerPhase = new ShowIntentSlotWithAdditionalSlotsPlayerPhase(fightView, battleInstance.Player.deck);
 
         playerPhases = new PlayerPhaseCollection(new IPlayerPhase[]
         {
             selectCardAndMoveUpPlayerPhase,
+            showIntentSlotWithAdditionalSlotsPlayerPhase
         });
 
         playerPhases.OnCompleted += () => { OnFinish?.Invoke(); };

@@ -7,15 +7,15 @@ public class DeckInstance
     public readonly List<CardInstance> discardPile = new();
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
-    public readonly List<IntentInstance> intents = new();
+    public IntentInstance intent;
     public readonly List<CardInstance> usedEtherealPile = new();
 
-    public event Action<CardInstance> OnNewCardDrawn;
     public event Action<CardInstance> OnCardDiscarded;
     public event Action OnDrawPileReshuffled;
-    public event Action<CardInstance> OnCardAddedToHand;
     public event Action OnIntentUpdated;
-    public event Action OnHandModified;
+    public event Action OnCardRemovedFromHand;
+    public event Action<CardInstance> OnCardAddedToHand;
+    public event Action<CardInstance> OnCardRemovedFromDrawPile;
 
     public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
@@ -37,7 +37,8 @@ public class DeckInstance
         CardInstance card = drawPile[indexToDraw];
         drawPile.RemoveAt(indexToDraw);
         hand.Add(card);
-        OnNewCardDrawn?.Invoke(card);
+        OnCardRemovedFromDrawPile?.Invoke(card);
+        OnCardAddedToHand?.Invoke(card);
         return card;
     }
 
@@ -73,22 +74,27 @@ public class DeckInstance
 
             OnCardDiscarded?.Invoke(cardInstance);
         }
-        intents.Remove(intent);
+        this.intent = null;
         OnIntentUpdated?.Invoke();
     }
 
     public void AddIntent(IntentInstance intent)
     {
+        if (this.intent != null)
+        {
+            throw new Exception("Will not add intent while there is another one already.");
+        }
+        
         foreach (CardInstance card in intent.cards)
         {
             if (hand.Contains(card))
             {
                 hand.Remove(card);
-                OnHandModified?.Invoke();
+                OnCardRemovedFromHand?.Invoke();
             }
         }
 
-        intents.Add(intent);
+        this.intent = intent;
         OnIntentUpdated?.Invoke();
     }
 }
