@@ -75,7 +75,6 @@ public class DeckInstance
             OnCardDiscarded?.Invoke(cardInstance);
         }
         this.intent = null;
-        OnIntentUpdated?.Invoke();
     }
 
     public void AddIntent(IntentInstance intent)
