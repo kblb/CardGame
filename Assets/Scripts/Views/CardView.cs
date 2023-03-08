@@ -3,10 +3,12 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(DraggableImage))]
+[RequireComponent(typeof(DragNotifier))]
 public class CardView : MonoBehaviour
 {
     [SerializeField] private Image cardIcon;
@@ -17,20 +19,27 @@ public class CardView : MonoBehaviour
 
     public CardInstance cardInstance;
 
-    public DraggableImage draggableImage;
+    [FormerlySerializedAs("draggableImage")] public DragNotifier dragNotifier;
 
     private TweenerCore<float, float, FloatOptions> currentTween;
     public event Action<CardView> OnBeginDragNotification;
+    public event Action<CardView> OnDragNotification;
     public event Action<CardView> OnExitDragNotification;
 
     private void Awake()
     {
-        draggableImage = GetComponent<DraggableImage>();
+        dragNotifier = GetComponent<DragNotifier>();
         Highlight(false);
 
-        DraggableImage di = GetComponent<DraggableImage>();
+        DragNotifier di = GetComponent<DragNotifier>();
         di.OnBeginDragNotification += OnBeginDrag;
+        di.OnDragNotification += OnDrag;
         di.OnExitDragNotification += OnExitDrag;
+    }
+
+    private void OnDrag()
+    {
+        OnDragNotification?.Invoke(this);
     }
 
     private void OnExitDrag()

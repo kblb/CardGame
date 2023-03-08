@@ -25,6 +25,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             CardView cardView = fightView.uiView.FindCardView(cardInstance);
             
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
+            cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
         }
 
@@ -44,6 +45,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         {
             CardView cardView = fightView.uiView.FindCardView(cardInstance);
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
+            cardView.OnDragNotification -= CardViewOnOnDragNotification;
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
         }
 
@@ -58,6 +60,11 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         fightView.uiView.TurnOffHighlights();
 
         OnCompleted?.Invoke();
+    }
+    
+    private void CardViewOnOnDragNotification(CardView obj)
+    {
+        obj.transform.position = Input.mousePosition;
     }
 
     private void HightlightDefaultState()

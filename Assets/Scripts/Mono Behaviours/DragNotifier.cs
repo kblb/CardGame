@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DraggableImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class DragNotifier : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public event Action OnExitDragNotification;
     public event Action OnDragNotification;
@@ -15,7 +15,6 @@ public class DraggableImage : MonoBehaviour, IBeginDragHandler, IDragHandler, IE
 
     public void OnDrag(PointerEventData eventData)
     {
-        transform.position = eventData.position;
         OnDragNotification?.Invoke();
     }
 
