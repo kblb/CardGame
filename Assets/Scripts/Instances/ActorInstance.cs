@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Builders;
+using UnityEngine;
 
 public class ActorInstance
 {
@@ -18,7 +19,6 @@ public class ActorInstance
         this.scriptableObject = scriptableObject;
         deck = new DeckInstance(scriptableObject.deck);
         currentHealth = scriptableObject.health;
-        buffs = this.scriptableObject.initialBuffs.Select(t => new BuffInstance(t, 999)).ToList();
     }
 
     public void ApplyBuffs()
@@ -41,16 +41,20 @@ public class ActorInstance
 
     public void ReceiveDamage(int amount, Affinity attackAffinity)
     {
-        foreach (BuffInstance buff in buffs)
+        if (amount > 0) // Don't apply affinity to healing
         {
-            amount = buff.AlterDamageReceived(amount, attackAffinity);
+            amount = Mathf.RoundToInt(amount * attackAffinity.MultiplierOnAttacking(scriptableObject.affinity));
         }
-        
         currentHealth -= amount;
         OnHealthChanged?.Invoke();
         if (currentHealth <= 0)
         {
             OnDeath?.Invoke();
         }
+    }
+
+    public void ReceiveDamage(Attack attack)
+    {
+        ReceiveDamage(attack.damage, attack.affinity);
     }
 }

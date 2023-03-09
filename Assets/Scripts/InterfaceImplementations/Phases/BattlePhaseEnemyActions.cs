@@ -18,14 +18,16 @@ public class BattlePhaseEnemyActions : IBattlePhase
     {
         foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
-            var attack = new AttackBuilder(battleInstance);
-        
+            var attack = new AttackBuilder(battleInstance, new Attack(), InitialTargetSelectionPolicy.Default);
+            attack.AddTarget(AttackBuilder.PLAYER_TARGET_INDEX);
+            
             foreach (CardInstance cardInstance in battleInstance.Player.deck.intents)
             {
                 cardInstance.AppendToAttack(attack, enemy, battleInstance);
             }
-        
-            attack.Execute(battleInstance);
+
+            var attackCollection = attack.BuildAttack();
+            attackCollection.Execute(battleInstance);
             
             foreach (CardInstance cardInstance in enemy.deck.intents)
             {

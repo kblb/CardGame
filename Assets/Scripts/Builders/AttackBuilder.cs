@@ -1,110 +1,215 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 namespace Builders
 {
-    public enum Affinity
+
+    public class InitialTargetSelectionPolicy
     {
-        None,
-        Fire,
-        Water,
-        Earth,
-        Air,
-        Light,
-        Dark
-    }
-    
-    public class Attack
-    {
-        public int damage;
-        public Affinity affinity;
+        public static readonly InitialTargetSelectionPolicy Default = new InitialTargetSelectionPolicy
+        {
+            isPlayerTargeted = false,
+            isEnemyTargeted = new List<bool>() { true, false, false, false, false }
+        };
+        
+        public bool isPlayerTargeted;
+        public List<bool> isEnemyTargeted;
     }
 
     public class AttackBuilder
     {
         public const int PLAYER_TARGET_INDEX = -1;
 
-        /// <summary>
-        /// Attack targeted to enemies
-        /// </summary>
-        private List<Attack> attacksOnEnemies;
-        /// <summary>
-        ///  Attack targeted to player
-        /// </summary>
-        private Attack attackOnPlayer; 
+        private readonly Attack baseAttack;
 
-        public AttackBuilder(BattleInstance battleInstance)
+        private readonly List<bool> isEnemyTargeted;
+        private bool isPlayerTargeted;
+        
+        private readonly List<Affinity> affinities;
+        private readonly List<int> additiveDamageModifiers;
+        private readonly List<float> multiplicativeDamageModifiers;
+        private int? damageOverride;
+
+        public AttackBuilder(BattleInstance battleInstance, Attack baseAttack, InitialTargetSelectionPolicy policy)
         {
-            attacksOnEnemies = new List<Attack>(battleInstance.allEnemies.Count);
+            isEnemyTargeted = new List<bool>(battleInstance.allEnemies.Count);
             for (int i = 0; i < battleInstance.allEnemies.Count; i++)
             {
-                attacksOnEnemies.Add(new Attack());
+                isEnemyTargeted.Add(policy.isEnemyTargeted[i]);
             }
-            attackOnPlayer = new Attack();
+            isPlayerTargeted = policy.isPlayerTargeted;
+            this.baseAttack = baseAttack;
+            affinities = new List<Affinity>();
+            additiveDamageModifiers = new List<int>();
+            multiplicativeDamageModifiers = new List<float>();
+            damageOverride = null;
         }
         
-        public void AddDamage(int amount, int target)
+        public void AddDamage(int amount)
         {
-            if (target == PLAYER_TARGET_INDEX)
-            {
-                attackOnPlayer.damage += amount;
-            }
-            else
-            {
-                Attack enemy = attacksOnEnemies[target];
-                enemy.damage += amount;
-            }
+            additiveDamageModifiers.Add(amount);
         }
         
-        public void SetDamage(int amount, int target)
+        public void HealDamage(int amount)
         {
-            if (target == PLAYER_TARGET_INDEX)
-            {
-                attackOnPlayer.damage = amount;
-            }
-            else
-            {
-                Attack enemy = attacksOnEnemies[target];
-                enemy.damage = amount;
-            }
+            additiveDamageModifiers.Add(-amount);
         }
         
-        public void HealDamage(int amount, int target)
+        public void SetDamage(int amount)
         {
-            if (target == PLAYER_TARGET_INDEX)
-            {
-                attackOnPlayer.damage -= amount;
-            }
-            else
-            {
-                Attack enemy = attacksOnEnemies[target];
-                enemy.damage -= amount;
-            }
+            damageOverride = amount;
         }
 
-        public void SetAffinity(Affinity affinity)
+        public void MultiplyDamage(float amount)
         {
-            attackOnPlayer.affinity = affinity;
-            attacksOnEnemies.ForEach(attack => attack.affinity = affinity);
+            multiplicativeDamageModifiers.Add(amount);
+        }
+        
+        public void DivideDamage(float amount)
+        {
+            multiplicativeDamageModifiers.Add(1 / amount);
         }
 
-        public void Execute(BattleInstance battleInstance)
+        public void AddTarget(int target)
         {
-            for (int i = 0; i < Mathf.Min(attacksOnEnemies.Count, battleInstance.allEnemies.Count); i++)
+            if (target == PLAYER_TARGET_INDEX)
             {
-                Attack attack = attacksOnEnemies[i];
-                battleInstance.allEnemies[i].ReceiveDamage(attack.damage, attack.affinity);
+                isPlayerTargeted = true;
+                return;
+            }
+
+            if (target >= isEnemyTargeted.Count)
+            {
+                Debug.LogError($"Target {target} is out of range");
+                return;
             }
             
-            battleInstance.Player.ReceiveDamage(attackOnPlayer.damage, attackOnPlayer.affinity);
+            isEnemyTargeted[target] = true;
+        }
+        
+        public void AddTargetRelative()
+        {
+            int idx = isEnemyTargeted.LastIndexOf(true) + 1;
+            if (idx >= isEnemyTargeted.Count)
+            {
+                Debug.LogError($"Target {idx} is out of range");
+                return;
+            }
+            
+            isEnemyTargeted[idx] = true;
+        }
+
+        public void AddTargets(int[] targets)
+        {
+            foreach (var target in targets)
+            {
+                AddTarget(target);
+            }
+        }
+        
+        public void RemoveTarget(int target)
+        {
+            if (target == PLAYER_TARGET_INDEX)
+            {
+                isPlayerTargeted = false;
+                return;
+            }
+            
+            if (target >= isEnemyTargeted.Count)
+            {
+                Debug.LogError($"Target {target} is out of range");
+                return;
+            }
+            
+            isEnemyTargeted[target] = false;
+        }
+        
+        public void RemovePlayerTarget()
+        {
+            isPlayerTargeted = false;
+        }
+        
+        public void RemoveEnemiesTarget()
+        {
+            for (int i = 0; i < isEnemyTargeted.Count; i++)
+            {
+                isEnemyTargeted[i] = false;
+            }
+        }
+
+        public void AppendAffinity(Affinity affinity)
+        {
+            affinities.Add(affinity);
+        }
+
+        public AttackCollection BuildAttack()
+        {
+            var collection = new Dictionary<int, Attack>();
+            var builtAttack = new Attack(baseAttack);
+
+            if (damageOverride.HasValue)
+            {
+                builtAttack.damage = damageOverride.Value;
+            }
+            else
+            {
+                builtAttack.damage = baseAttack.damage;
+                foreach (var modifier in additiveDamageModifiers)
+                {
+                    builtAttack.damage += modifier;
+                }
+
+                foreach (var modifier in multiplicativeDamageModifiers)
+                {
+                    builtAttack.damage = Mathf.RoundToInt(builtAttack.damage * modifier);
+                }
+            }
+            
+            foreach (var affinity in affinities)
+            {
+                builtAttack.affinity = builtAttack.affinity.CombineWith(affinity);
+            }
+            
+            
+            if (isPlayerTargeted)
+            {
+                collection.Add(PLAYER_TARGET_INDEX, builtAttack);
+            }
+            
+            for (int i = 0; i < isEnemyTargeted.Count; i++)
+            {
+                if (isEnemyTargeted[i])
+                {
+                    collection.Add(i, builtAttack);
+                }
+            }
+
+            return new AttackCollection(collection);
         }
 
         public override string ToString()
         {
-            string result = "";
-            for (int i = 0; i < attacksOnEnemies.Count; i++)
+            string result = $"{baseAttack.affinity};{baseAttack.damage} => ";
+            if (isPlayerTargeted)
             {
-                Attack attack = attacksOnEnemies[i];
-                result += $"Enemy {i}: {attack.damage} {attack.affinity} damage; ";
+                result += "[x] ... ";
+            }
+            else
+            {
+                result += "[ ] ... ";
+            }
+            for (int i = 0; i < isEnemyTargeted.Count; i++)
+            {
+                if (isEnemyTargeted[i])
+                {
+                    result += "[x] ";
+                }
+                else
+                {
+                    result += "[ ] ";
+                }
             }
             return result;
         }

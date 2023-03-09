@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Builders;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ using UnityEngine;
 public class ActorScriptableObject : SerializedScriptableObject
 {
     [SerializeField] public int health;
+    [SerializeField] public Affinity affinity;
     [SerializeField] public GameObject prefab;
     [SerializeField] public List<CardScriptableObject> deck;
-    [SerializeField] public List<BuffScriptableObject> initialBuffs;
 }

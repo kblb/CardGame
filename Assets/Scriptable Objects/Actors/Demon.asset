@@ -21,7 +21,8 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  health: 20
+  health: 8
   prefab: {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
   deck:
   - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
+  initialBuffs: []

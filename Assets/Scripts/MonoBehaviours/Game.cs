@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
             actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
             actorInstance.OnDeath += () =>
             {
+                Debug.Log($"Actor {actorInstance.scriptableObject.prefab.name} dies");
                 fightView.slotsView.DestroyActor(actorInstance);
                 battleInstance.DestroyActor(actorInstance);
             };

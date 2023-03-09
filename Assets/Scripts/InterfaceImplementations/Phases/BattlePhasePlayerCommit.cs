@@ -16,7 +16,8 @@ public class BattlePhasePlayerCommit : IBattlePhase
 
     public void Start()
     {
-        var attack = new AttackBuilder(battleInstance);
+        var attack = new AttackBuilder(battleInstance, new Attack() { damage = 2 }, InitialTargetSelectionPolicy.Default);
+        attack.AddTarget(0);
         
         foreach (CardInstance cardInstance in battleInstance.Player.deck.intents)
         {
@@ -24,7 +25,8 @@ public class BattlePhasePlayerCommit : IBattlePhase
         }
         
         Debug.Log(attack);
-        attack.Execute(battleInstance);
+        var attackCollection = attack.BuildAttack();
+        attackCollection.Execute(battleInstance);
         
         // TODO: Animate building attack from cards
         

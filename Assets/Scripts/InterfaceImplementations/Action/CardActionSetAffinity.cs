@@ -7,7 +7,7 @@ namespace InterfaceImplementations.Action
         
         public void AppendToAttack(AttackBuilder builder, ActorInstance owner, BattleInstance battleInstance)
         {
-            builder.SetAffinity(affinity);
+            builder.AppendAffinity(affinity);
         }
     }
 }
