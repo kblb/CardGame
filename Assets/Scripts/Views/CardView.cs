@@ -52,12 +52,12 @@ public class CardView : MonoBehaviour
         OnBeginDragNotification?.Invoke(this);
     }
 
-    public void Init(CardInstance card)
+    public void Init(CardInstance attackCard)
     {
-        this.cardInstance = card;
-        cardIcon.sprite = card.scriptableObject.icon;
-        titleText.text = card.scriptableObject.displayName;
-        descriptionText.text = card.scriptableObject.description;
+        this.cardInstance = attackCard;
+        cardIcon.sprite = attackCard.baseScriptableObject.icon;
+        titleText.text = attackCard.baseScriptableObject.displayName;
+        descriptionText.text = attackCard.baseScriptableObject.description;
         
     }
 

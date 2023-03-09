@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using Sirenix.OdinInspector;
 using TMPro;
 using UnityEngine;
@@ -49,7 +48,7 @@ public class ActorStatsView : MonoBehaviour
         if (intent != null)
         {
             Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-            intentImage.sprite = intent.cards.First().scriptableObject.intentIcon;
+            intentImage.sprite = intent.attack.scriptableObject.intentIcon;
         }
     }
 

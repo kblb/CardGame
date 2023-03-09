@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bcceff161da48218cb5e3c796beb97d, type: 3}
-  m_Name: Punch
+  m_Script: {fileID: 11500000, guid: 4dca01e76d0a4fd98e438848a3d6e55d, type: 3}
+  m_Name: IncreaseAttackModifierCard
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,16 +21,16 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: cardAction
+    - Name: modify
       Entry: 7
-      Data: 0|CardActionDealDamage, Assembly-CSharp
-    - Name: amount
+      Data: 0|IncreaseAttackModify, Assembly-CSharp
+    - Name: damageToAdd
       Entry: 3
-      Data: 4
+      Data: 5
     - Name: 
       Entry: 8
       Data: 
-  displayName: Punch
-  description: Deal 8 dmg to first enemy in Queue
-  icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
-  intentIcon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  displayName: Increase attack
+  description: Increase attack card
+  icon: {fileID: 21300000, guid: 049a769a83d5063478c1320f70206cac, type: 3}
+  isEthereal: 0

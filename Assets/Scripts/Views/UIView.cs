@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -7,7 +6,7 @@ using UnityEngine;
 
 public class UIView : MonoBehaviour
 {
-    [SerializeField] public CardCommitAreaView cardCommitAreaView;
+    [SerializeField, SceneObjectsOnly] public IntentView intentView;
     [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
@@ -41,8 +40,13 @@ public class UIView : MonoBehaviour
 
     public void ShowIntent(IntentInstance deckIntent)
     {
-        List<CardInstance> cards = deckIntent.cards;
-        ShowCardsIn(cards, cardViews, cardCommitAreaView.transform.position, 10, 0);
+        List<CardInstance> attackList = new List<CardInstance>()
+        {
+            deckIntent.attack
+        };
+        ShowCardsIn(attackList, cardViews, intentView.attackArea.transform.position, 10, 0);
+
+        ShowCardsIn(deckIntent.modifiers.Select(t => t as CardInstance).ToList(), cardViews, intentView.modifiersArea.transform.position, 100, 0);
     }
 
     private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)
@@ -77,7 +81,7 @@ public class UIView : MonoBehaviour
 
     public void Highlight(List<CardInstance> instances)
     {
-        TurnOffHighlights();
+        TurnOffCardHighlights();
 
         IOrderedEnumerable<CardView> viewsOrdered = cardViews
             .Where(t => instances.Any(y => y == t.cardInstance))
@@ -89,7 +93,7 @@ public class UIView : MonoBehaviour
         }
     }
 
-    public void TurnOffHighlights()
+    public void TurnOffCardHighlights()
     {
         foreach (CardView cardView in cardViews)
         {

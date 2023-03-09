@@ -1,13 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 {
     private readonly FightView fightView;
     private readonly BattleInstance battleInstance;
-    
+
     public ActorView selectedTarget;
     public CardView selectedCard;
+
+    private List<CardInstance> cardsHookedUpTo;
 
     public event Action OnCompleted;
 
@@ -19,11 +23,13 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     public void Start()
     {
+        cardsHookedUpTo = new List<CardInstance>(battleInstance.Player.deck.hand.OfType<AttackCardInstance>());
+
         //hooking events
-        foreach (CardInstance cardInstance in battleInstance.Player.deck.hand)
+        foreach (CardInstance cardInstance in cardsHookedUpTo)
         {
             CardView cardView = fightView.uiView.FindCardView(cardInstance);
-            
+
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
@@ -41,7 +47,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
     private void InvokeOnCompleted()
     {
         //unhook events
-        foreach (CardInstance cardInstance in battleInstance.Player.deck.hand)
+        foreach (CardInstance cardInstance in cardsHookedUpTo)
         {
             CardView cardView = fightView.uiView.FindCardView(cardInstance);
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
@@ -57,11 +63,11 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
         //turn off all highlights
         fightView.slotsView.TurnOffHighlight(battleInstance.allEnemies);
-        fightView.uiView.TurnOffHighlights();
+        fightView.uiView.TurnOffCardHighlights();
 
         OnCompleted?.Invoke();
     }
-    
+
     private void CardViewOnOnDragNotification(CardView obj)
     {
         obj.transform.position = Input.mousePosition;
@@ -69,9 +75,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     private void HightlightDefaultState()
     {
-        
         fightView.uiView.ShowHand(battleInstance.Player.deck.hand);
-        fightView.uiView.Highlight(battleInstance.Player.deck.hand);
+        fightView.uiView.Highlight(cardsHookedUpTo);
         foreach (ActorView actorView in fightView.slotsView.actorViews)
         {
             actorView.ResetHighlight();
@@ -96,7 +101,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
     private void CardViewDraggableImageOnBeginDragNotification(CardView cardView)
     {
         selectedCard = cardView;
-        fightView.uiView.TurnOffHighlights();
+        fightView.uiView.TurnOffCardHighlights();
         fightView.slotsView.Highlight(battleInstance.allEnemies);
     }
 

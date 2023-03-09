@@ -13,7 +13,7 @@ public class BattlePhaseWaitForInput : IBattlePhase
         {
             battleInstance.Player.deck.AddIntent(new IntentInstance(
                 battleInstance.Player,
-                selectCardAndMoveUpPlayerPhase.selectedCard.cardInstance,
+                selectCardAndMoveUpPlayerPhase.selectedCard.cardInstance as AttackCardInstance, 
                 selectCardAndMoveUpPlayerPhase.selectedTarget.actorInstance
             ));
         };

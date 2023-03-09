@@ -4,10 +4,10 @@ using System.Linq;
 
 public class DeckInstance
 {
+    public IntentInstance intent;
     public readonly List<CardInstance> discardPile = new();
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
-    public IntentInstance intent;
     public readonly List<CardInstance> usedEtherealPile = new();
 
     public event Action<CardInstance> OnCardDiscarded;
@@ -17,11 +17,22 @@ public class DeckInstance
     public event Action<CardInstance> OnCardAddedToHand;
     public event Action<CardInstance> OnCardRemovedFromDrawPile;
 
-    public DeckInstance(IEnumerable<CardScriptableObject> cards)
+    public DeckInstance(IEnumerable<BaseCardScriptableObject> cards)
     {
-        foreach (CardScriptableObject cardScriptableObject in cards)
+        foreach (BaseCardScriptableObject cardScriptableObject in cards)
         {
-            drawPile.Add(new CardInstance(cardScriptableObject));
+            if (cardScriptableObject is AttackCardScriptableObject scriptableObject)
+            {
+                drawPile.Add(new AttackCardInstance(scriptableObject));
+            }
+            else if (cardScriptableObject is ModifierCardScriptableObject modifierCardScriptableObject)
+            {
+                drawPile.Add(new ModifyCardInstance(modifierCardScriptableObject));
+            }
+            else
+            {
+                throw new Exception("Unknown card scriptable object type");
+            }
         }
     }
 
@@ -61,9 +72,9 @@ public class DeckInstance
 
     public void DiscardIntent(IntentInstance intent)
     {
-        foreach (CardInstance cardInstance in intent.cards)
+        foreach (CardInstance cardInstance in intent.GetAllCards())
         {
-            if (cardInstance.scriptableObject.ethereal)
+            if (cardInstance.baseScriptableObject.isEthereal)
             {
                 usedEtherealPile.Add(cardInstance);
             }
@@ -74,6 +85,7 @@ public class DeckInstance
 
             OnCardDiscarded?.Invoke(cardInstance);
         }
+        
         this.intent = null;
     }
 
@@ -84,7 +96,7 @@ public class DeckInstance
             throw new Exception("Will not add intent while there is another one already.");
         }
         
-        foreach (CardInstance card in intent.cards)
+        foreach (CardInstance card in intent.GetAllCards())
         {
             if (hand.Contains(card))
             {
@@ -95,5 +107,13 @@ public class DeckInstance
 
         this.intent = intent;
         OnIntentUpdated?.Invoke();
+    }
+
+    public void AddCardToIntent(ModifyCardInstance cardInstance)
+    {
+        hand.Remove(cardInstance);
+        intent.modifiers.Add(cardInstance);
+        OnIntentUpdated?.Invoke();
+        OnCardRemovedFromHand?.Invoke();
     }
 }

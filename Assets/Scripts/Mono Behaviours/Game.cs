@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
 {
     [SerializeField] private BattleScriptableObject battleScriptableObject;
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
-    [SerializeField] private CardScriptableObject sleepCard;
+
+    [FormerlySerializedAs("sleepCard")] [SerializeField]
+    private AttackCardScriptableObject sleepAttackCard;
 
     private readonly LogicQueue logicQueue = new();
 
@@ -39,8 +42,8 @@ public class Game : MonoBehaviour
         }
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
-        
-        fightView.uiView.cardCommitAreaView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
+
+        fightView.uiView.intentView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
 
         foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
         {
@@ -78,7 +81,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepCard), battleInstance.Player),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
                     new BattlePhaseWaitForInput(fightView, battleInstance),
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
