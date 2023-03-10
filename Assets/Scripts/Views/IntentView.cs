@@ -36,4 +36,9 @@ public class IntentView : MonoBehaviour
         this.transform
             .DOScale(Vector3.zero, 0.5f);
     }
+
+    public void OnCommitClickedInvoke()
+    {
+        OnCommitClicked?.Invoke();
+    }
 }

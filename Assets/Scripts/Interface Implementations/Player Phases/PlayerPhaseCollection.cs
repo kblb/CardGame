@@ -4,7 +4,8 @@ using System.Linq;
 public class PlayerPhaseCollection : IPlayerPhase
 {
     private readonly IPlayerPhase[] collection;
-    
+
+    public event Action OnCancel;
     public event Action OnCompleted;
 
     public PlayerPhaseCollection(IPlayerPhase[] collection)
@@ -12,6 +13,8 @@ public class PlayerPhaseCollection : IPlayerPhase
         this.collection = collection;
         for (int i = 0; i < collection.Length; i++)
         {
+            collection[i].OnCancel += Start;
+            
             if (i < collection.Length - 1)
             {
                 collection[i].OnCompleted += collection[i + 1].Start;

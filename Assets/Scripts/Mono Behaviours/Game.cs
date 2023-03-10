@@ -20,6 +20,7 @@ public class Game : MonoBehaviour
         BattleInstance battleInstance = new(battleScriptableObject);
         
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
+        fightView.uiView.endTurn.onClick.AddListener(() => { fightView.uiView.intentView.OnCommitClickedInvoke();});
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {
@@ -83,7 +84,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
-                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 5, logicQueue),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 3, logicQueue),
                     new BattlePhaseWaitForInput(fightView, battleInstance),
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),

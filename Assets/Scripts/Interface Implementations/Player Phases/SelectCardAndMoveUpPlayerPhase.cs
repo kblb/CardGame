@@ -13,6 +13,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     private List<CardInstance> cardsHookedUpTo;
 
+    public event Action OnCancel;
     public event Action OnCompleted;
 
     public SelectCardAndMoveUpPlayerPhase(FightView fightView, BattleInstance battleInstance)

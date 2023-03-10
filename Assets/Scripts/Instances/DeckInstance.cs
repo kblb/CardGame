@@ -19,7 +19,8 @@ public class DeckInstance
 
     public DeckInstance(IEnumerable<BaseCardScriptableObject> cards)
     {
-        foreach (BaseCardScriptableObject cardScriptableObject in cards)
+        List<BaseCardScriptableObject> randomizedCards = cards.OrderBy(t => UnityEngine.Random.Range(-10, 10)).ToList();
+        foreach (BaseCardScriptableObject cardScriptableObject in randomizedCards)
         {
             if (cardScriptableObject is AttackCardScriptableObject scriptableObject)
             {
@@ -65,6 +66,8 @@ public class DeckInstance
         {
             drawPile.Add(cardInstance);
         }
+
+        drawPile.Sort((t, y) => UnityEngine.Random.Range(-10, 10));
 
         discardPile.Clear();
         OnDrawPileReshuffled?.Invoke();
@@ -115,5 +118,23 @@ public class DeckInstance
         intent.modifiers.Add(cardInstance);
         OnIntentUpdated?.Invoke();
         OnCardRemovedFromHand?.Invoke();
+    }
+
+    public void CancelIntentBackToHand()
+    {
+        if (intent == null)
+        {
+            throw new Exception("There is no intent to cancel.");
+        }
+
+        foreach (ModifyCardInstance cardInstance in intent.modifiers)
+        {
+            hand.Add(cardInstance);
+            OnCardAddedToHand?.Invoke(cardInstance);
+        }
+        hand.Add(intent.attack);
+        OnCardAddedToHand?.Invoke(intent.attack);
+
+        intent = null;
     }
 }

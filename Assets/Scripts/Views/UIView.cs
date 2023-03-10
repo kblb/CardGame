@@ -3,6 +3,7 @@ using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIView : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class UIView : MonoBehaviour
     [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
+    [SerializeField] public Button endTurn;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 
