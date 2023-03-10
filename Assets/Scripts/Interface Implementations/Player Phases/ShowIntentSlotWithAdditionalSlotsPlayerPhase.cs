@@ -114,6 +114,9 @@ public class ShowIntentSlotWithAdditionalSlotsPlayerPhase : IPlayerPhase
         }
         else
         {
+
+            playersDeck.intent.modifiers.Remove(cardView.cardInstance as ModifyCardInstance);
+            playersDeck.hand.Add(cardView.cardInstance);
             fightView.uiView.ShowHand(playersDeck.hand);
         }
 

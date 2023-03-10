@@ -95,8 +95,11 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     private void ActorViewOnOnMouseExitEvent(ActorView actorView)
     {
-        selectedTarget = null;
-        actorView.TurnOffHighlight();
+        if (actorView == selectedTarget)
+        {
+            selectedTarget = null;
+            actorView.TurnOffHighlight();
+        }
     }
 
     private void CardViewDraggableImageOnBeginDragNotification(CardView cardView)
