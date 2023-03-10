@@ -1,4 +1,5 @@
-﻿
+﻿using System.Collections.Generic;
+
 public class DealDamageCast : ICast
 {
     public int amount;
@@ -8,7 +9,10 @@ public class DealDamageCast : ICast
         return new CastInstance()
         {
             owner = owner,
-            target = target,
+            targets = new List<ActorInstance>()
+            {
+                target
+            },
             damage = amount
         };
     }

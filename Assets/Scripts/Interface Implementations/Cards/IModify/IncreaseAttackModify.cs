@@ -7,7 +7,7 @@
         this.damageToAdd = damageToAdd;
     }
     
-    public void Modify(CastInstance castInstance)
+    public void Modify(CastInstance castInstance, BattleInstance battleInstance)
     {
         castInstance.damage += damageToAdd;
     }

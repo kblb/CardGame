@@ -16,9 +16,10 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-        fightView.OnCasted += (intent) => intent.Cast();
 
         BattleInstance battleInstance = new(battleScriptableObject);
+        
+        fightView.OnCasted += (intent) => intent.Cast(battleInstance);
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {

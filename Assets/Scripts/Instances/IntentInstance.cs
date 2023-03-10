@@ -19,7 +19,7 @@ public class IntentInstance
         attack = attackCard;
     }
 
-    public void Cast()
+    public void Cast(BattleInstance battleInstance)
     {
         //sleep card doesn't have any casts
         if (attack.scriptableObject.cast != null)
@@ -28,7 +28,7 @@ public class IntentInstance
 
             foreach (ModifyCardInstance modifyCardInstance in modifiers)
             {
-                modifyCardInstance.scriptableObject.modify.Modify(castInstance);
+                modifyCardInstance.scriptableObject.modify.Modify(castInstance, battleInstance);
             }
 
             castInstance.Cast();

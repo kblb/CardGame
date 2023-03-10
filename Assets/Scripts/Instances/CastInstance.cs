@@ -1,12 +1,17 @@
-﻿public class CastInstance
+﻿using System.Collections.Generic;
+
+public class CastInstance
 {
     public ActorInstance owner;
-    public ActorInstance target;
+    public List<ActorInstance> targets = new List<ActorInstance>();
     public int damage;
-    
-    
+
+
     public void Cast()
     {
-        target.ReceiveDamage(damage);
+        foreach (ActorInstance target in targets)
+        {
+            target.ReceiveDamage(damage);
+        }
     }
 }

@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70aa0f7101334a15a29fd3e1203946d3, type: 3}
-  m_Name: Demon
+  m_Script: {fileID: 11500000, guid: 1bcceff161da48218cb5e3c796beb97d, type: 3}
+  m_Name: Strong Punch
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -20,8 +20,18 @@ MonoBehaviour:
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  health: 25
-  prefab: {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
-  deck:
-  - {fileID: 11400000, guid: 19f5d1d4bf3512840abbab809f7a8bed, type: 2}
+    SerializationNodes:
+    - Name: cast
+      Entry: 7
+      Data: 0|DealDamageCast, Assembly-CSharp
+    - Name: amount
+      Entry: 3
+      Data: 20
+    - Name: 
+      Entry: 8
+      Data: 
+  displayName: Punch
+  description: Deal 20 damage
+  icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
+  isEthereal: 0
+  intentIcon: {fileID: 21300000, guid: fbaf15e00c97991469cb99eda3724ff4, type: 3}

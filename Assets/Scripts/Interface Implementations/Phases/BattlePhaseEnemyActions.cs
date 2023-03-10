@@ -20,7 +20,7 @@ public class BattlePhaseEnemyActions : IBattlePhase
             IntentInstance intentInstance = enemy.deck.intent;
             logicQueue.AddElement(0.1f, () =>
             {
-                intentInstance.Cast();
+                intentInstance.Cast(battleInstance);
                 enemy.deck.DiscardIntent(intentInstance);
             });
         }

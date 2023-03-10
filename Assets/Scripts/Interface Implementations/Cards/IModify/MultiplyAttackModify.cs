@@ -7,7 +7,7 @@
         this.damageToMultiply = damageToMultiply;
     }
     
-    public void Modify(CastInstance castInstance)
+    public void Modify(CastInstance castInstance, BattleInstance battleInstance)
     {
         castInstance.damage *= damageToMultiply;
     }
