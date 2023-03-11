@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70aa0f7101334a15a29fd3e1203946d3, type: 3}
-  m_Name: Fire Demon
+  m_Name: Earth Demon
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -22,7 +22,7 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   health: 7
-  affinity: 2
-  prefab: {fileID: 1455456907196829960, guid: bfbada7dc530835d6973a85c888ceb54, type: 3}
+  affinity: 4
+  prefab: {fileID: 1455456907196829960, guid: ede635af4e62fde05878a5c74d9a6d22, type: 3}
   deck:
   - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}

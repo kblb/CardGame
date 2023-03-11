@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 internal class BattlePhaseApplyBuffs : IBattlePhase
 {
-    public IEnumerable<ActorInstance> allActors;
     private readonly LogicQueue logicQueue;
-
-    public Action OnFinish { get; set; }
+    public IEnumerable<ActorInstance> allActors;
 
     public BattlePhaseApplyBuffs(IEnumerable<ActorInstance> allActors, LogicQueue logicQueue)
     {
@@ -14,8 +13,11 @@ internal class BattlePhaseApplyBuffs : IBattlePhase
         this.logicQueue = logicQueue;
     }
 
+    public Action OnFinish { get; set; }
+
     public void Start()
     {
+        Debug.Log("--- Battle Phase: Apply Buffs");
         foreach (ActorInstance phaseActor in allActors)
         {
             logicQueue.AddElement(0.5f, () =>

@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class BattlePhaseSmallDelay : IBattlePhase
 {
@@ -14,6 +15,10 @@ public class BattlePhaseSmallDelay : IBattlePhase
     public Action OnFinish { get; set; }
     public void Start()
     {
-        logicQueue.AddElement(delay, () => { OnFinish?.Invoke();});
+        Debug.Log("--- Battle Phase: Small Delay");
+        logicQueue.AddElement(delay, () =>
+        {
+            OnFinish?.Invoke();
+        });
     }
 }

@@ -83,7 +83,7 @@ namespace Builders
         /// </summary>
         public static float MultiplierOnAttacking(this Affinity attackAffinity, Affinity actorAffinity)
         {
-            if (attackAffinity == actorAffinity)
+            if (attackAffinity == actorAffinity && attackAffinity != Affinity.None && attackAffinity != Affinity.CancelOut)
             {
                 return 0.25f;
             }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
 {
     private readonly List<SlotInstance> fightSlots;
     private readonly LogicQueue logicQueue;
     private readonly CardInstance sleepCard;
-    public Action OnFinish { get; set; }
 
     public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue, CardInstance sleepCard)
     {
@@ -14,9 +14,11 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
         this.logicQueue = logicQueue;
         this.sleepCard = sleepCard;
     }
+    public Action OnFinish { get; set; }
 
     public void Start()
     {
+        Debug.Log("--- Battle Phase: Enemies Decide on Intent");
         int i = 0;
         foreach (SlotInstance slotInstance in fightSlots)
         {
@@ -50,6 +52,9 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
             i++;
         }
 
-        logicQueue.AddElement(0, () => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0, () =>
+        {
+            OnFinish?.Invoke();
+        });
     }
 }

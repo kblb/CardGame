@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class BattlePhasePullCardsFromHand : IBattlePhase
 {
@@ -17,6 +18,7 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
 
     public void Start()
     {
+        Debug.Log("--- Battle Phase: Pull Cards From Hand");
         int count = handSize - deck.hand.Count;
 
         int? reshuffleAtIndex = null;
@@ -29,11 +31,20 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
         {
             if (reshuffleAtIndex.HasValue && reshuffleAtIndex == i)
             {
-                logicQueue.AddElement(0.5f, () => { deck.ReshuffleDeck(); });
+                logicQueue.AddElement(0.5f, () =>
+                {
+                    deck.ReshuffleDeck();
+                });
             }
-            logicQueue.AddElement(0.2f, () => { deck.DrawCard(); });
+            logicQueue.AddElement(0.2f, () =>
+            {
+                deck.DrawCard();
+            });
         }
 
-        logicQueue.AddElement(0.1f, () => { OnFinish?.Invoke(); });
+        logicQueue.AddElement(0.1f, () =>
+        {
+            OnFinish?.Invoke();
+        });
     }
 }

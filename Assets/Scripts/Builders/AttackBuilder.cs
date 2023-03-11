@@ -148,13 +148,16 @@ namespace Builders
         {
             var collection = new Dictionary<int, Attack>();
             var builtAttack = new Attack(baseAttack);
-
+            
+            Debug.Log($"Building attack from base {baseAttack}");
             if (damageOverride.HasValue)
             {
+                Debug.Log("Applying damage override");
                 builtAttack.damage = damageOverride.Value;
             }
             else
             {
+                Debug.Log("Applying damage modifiers");
                 builtAttack.damage = baseAttack.damage;
                 foreach (var modifier in additiveDamageModifiers)
                 {
@@ -167,12 +170,17 @@ namespace Builders
                 }
             }
             
+            Debug.Log($"New attack damage {builtAttack.damage}; Applying {affinities.Count} affinities");
+            
             foreach (var affinity in affinities)
             {
+                Debug.Log($"Applying affinity {affinity} to {builtAttack.affinity}");
                 builtAttack.affinity = builtAttack.affinity.CombineWith(affinity);
+                Debug.Log($"New affinity: {builtAttack.affinity}");
             }
-            
-            
+
+            Debug.Log($"Built attack {builtAttack}");
+
             if (isPlayerTargeted)
             {
                 collection.Add(PLAYER_TARGET_INDEX, builtAttack);
@@ -185,6 +193,8 @@ namespace Builders
                     collection.Add(i, builtAttack);
                 }
             }
+            
+            Debug.Log($"Built attack collection with {collection.Count} attacks");
 
             return new AttackCollection(collection);
         }

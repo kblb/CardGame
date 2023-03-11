@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BattlePhaseEnemiesMoveForward : IBattlePhase
 {
-    private readonly List<SlotInstance> slots;
     private readonly LogicQueue logicQueue;
-
-    public Action OnFinish { get; set; }
+    private readonly List<SlotInstance> slots;
 
     public BattlePhaseEnemiesMoveForward(List<SlotInstance> slots, LogicQueue logicQueue)
     {
@@ -14,8 +13,11 @@ public class BattlePhaseEnemiesMoveForward : IBattlePhase
         this.logicQueue = logicQueue;
     }
 
+    public Action OnFinish { get; set; }
+
     public void Start()
     {
+        Debug.Log("--- Battle Phase: Enemies Move Forward");
         logicQueue.AddElement(0.5f, () =>
         {
             for (int i = 0; i < slots.Count - 1; i++)
