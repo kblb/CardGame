@@ -2,15 +2,18 @@
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActorView : MonoBehaviour
 {
     [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
-    private GameObject model;
-    public ActorInstance actorInstance;
+    [SerializeField] private Image hightlight;
     
+    private GameObject model;
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
+    
+    public ActorInstance actorInstance;
 
     public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent;
 
@@ -21,6 +24,7 @@ public class ActorView : MonoBehaviour
         statsView.Init(actor);
         model = Instantiate(actor.scriptableObject.prefab, transform);
         originalScale = model.transform.localScale.x;
+        hightlight.gameObject.SetActive(false);
         transform.DOScale(Vector3.one, 0.5f);
     }
 
@@ -51,16 +55,21 @@ public class ActorView : MonoBehaviour
 
     public void Highlight()
     {
-        ShowAttackAnimation();
-    }
-
-    public void ResetHighlight()
-    {
-        HideAttackAnimation();
+        hightlight.gameObject.SetActive(true);
     }
 
     public void TurnOffHighlight()
     {
-        model.transform.localScale /= AttackScaleFactor;
+        hightlight.gameObject.SetActive(false);
+    }
+
+    public void Selected()
+    {
+        hightlight.color = Color.red;
+    }
+
+    public void TurnOffSelect()
+    {
+        hightlight.color = Color.green;
     }
 }

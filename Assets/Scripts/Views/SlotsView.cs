@@ -57,15 +57,18 @@ public class SlotsView : MonoBehaviour
 
     public void Highlight(List<ActorInstance> actors)
     {
-        foreach (ActorView actorView in actorViews)
-        {
-            actorView.ResetHighlight();
-        }
+        IEnumerable<ActorView> actorsToHighlight = actors.Select(FindActorView);
 
-        foreach (ActorInstance actorInstance in actors)
+        foreach (ActorView actor in actorViews)
         {
-            ActorView view = FindActorView(actorInstance);
-            view.Highlight();
+            if (actorsToHighlight.Contains(actor))
+            {
+                actor.Highlight();
+            }
+            else
+            {
+                actor.TurnOffHighlight();
+            }
         }
     }
 
@@ -73,7 +76,7 @@ public class SlotsView : MonoBehaviour
     {
         foreach (ActorInstance actor in battleInstanceAllEnemies)
         {
-            FindActorView(actor).ResetHighlight();
+            FindActorView(actor).TurnOffHighlight();
         }
     }
 

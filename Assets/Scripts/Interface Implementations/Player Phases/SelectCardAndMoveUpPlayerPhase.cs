@@ -36,10 +36,11 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
         }
 
-        foreach (ActorView actorView in fightView.slotsView.actorViews)
+        foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
-            actorView.OnMouseOverEvent += ActorViewOnOnMouseOverEvent;
-            actorView.OnMouseExitEvent += ActorViewOnOnMouseExitEvent;
+            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
+            enemyView.OnMouseOverEvent += ActorViewOnOnMouseOverEvent;
+            enemyView.OnMouseExitEvent += ActorViewOnOnMouseExitEvent;
         }
 
         HightlightDefaultState();
@@ -56,10 +57,11 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
         }
 
-        foreach (ActorView actorView in fightView.slotsView.actorViews)
+        foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
-            actorView.OnMouseOverEvent -= ActorViewOnOnMouseOverEvent;
-            actorView.OnMouseExitEvent -= ActorViewOnOnMouseExitEvent;
+            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
+            enemyView.OnMouseOverEvent -= ActorViewOnOnMouseOverEvent;
+            enemyView.OnMouseExitEvent -= ActorViewOnOnMouseExitEvent;
         }
 
         //turn off all highlights
@@ -80,26 +82,23 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         fightView.uiView.Highlight(cardsHookedUpTo);
         foreach (ActorView actorView in fightView.slotsView.actorViews)
         {
-            actorView.ResetHighlight();
+            actorView.TurnOffHighlight();
         }
     }
 
     private void ActorViewOnOnMouseOverEvent(ActorView actorView)
     {
-        if (selectedTarget != actorView)
+        if (selectedCard != null)
         {
             selectedTarget = actorView;
-            actorView.Highlight();
+            actorView.Selected();
         }
     }
 
     private void ActorViewOnOnMouseExitEvent(ActorView actorView)
     {
-        if (actorView == selectedTarget)
-        {
-            selectedTarget = null;
-            actorView.TurnOffHighlight();
-        }
+        selectedTarget = null;
+        actorView.TurnOffSelect();
     }
 
     private void CardViewDraggableImageOnBeginDragNotification(CardView cardView)
