@@ -64,6 +64,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             enemyView.OnMouseExitEvent -= ActorViewOnOnMouseExitEvent;
         }
 
+        selectedTarget.TurnOffSelect();
+
         //turn off all highlights
         fightView.slotsView.TurnOffHighlight(battleInstance.allEnemies);
         fightView.uiView.TurnOffCardHighlights();
