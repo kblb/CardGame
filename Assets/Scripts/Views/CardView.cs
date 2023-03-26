@@ -44,7 +44,6 @@ public class CardView : MonoBehaviour
 
     private void OnExitDrag()
     {
-        Debug.Log(Time.time + $"{this.name} OnExitDrag");
         OnExitDragNotification?.Invoke(this);
     }
 

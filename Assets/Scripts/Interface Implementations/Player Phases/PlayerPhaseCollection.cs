@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using UnityEngine;
 
 public class PlayerPhaseCollection : IPlayerPhase
 {
@@ -45,7 +44,6 @@ public class PlayerPhaseCollection : IPlayerPhase
 
     private void InvokeOnCompleted()
     {
-        Debug.Log("Invoking on complete player phase action.");
         OnCompleted?.Invoke();
     }
 

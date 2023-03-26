@@ -33,7 +33,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification -= CardViewOnOnDragNotification;
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
-            Debug.Log($"Removing callbacks from {cardView.name}");
         }
 
         foreach (ActorInstance enemy in battleInstance.allEnemies)
@@ -65,7 +64,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
-            Debug.Log($"Adding callbacks to {cardView.name}");
         }
 
         foreach (ActorInstance enemy in battleInstance.allEnemies)
@@ -124,7 +122,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
     {
         if (selectedTarget != null)
         {
-            Debug.Log($"card view {cardView.name} draggable image on exit drag notification ");
             OnCompleted?.Invoke();
         }
         else
