@@ -8,11 +8,11 @@ public class ActorView : MonoBehaviour
 {
     [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
     [SerializeField] private Image hightlight;
-    
+
     private GameObject model;
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
-    
+
     public ActorInstance actorInstance;
 
     public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent;
@@ -42,14 +42,20 @@ public class ActorView : MonoBehaviour
     {
         statsView.UpdateIntent(intent);
     }
-    
+
     void OnMouseOver()
     {
         OnMouseOverEvent?.Invoke(this);
     }
 
+    private void OnMouseEnter()
+    {
+        Debug.Log($"Mouse entered {this.name}");
+    }
+
     void OnMouseExit()
     {
+        Debug.Log($"Mouse no longer over {this.name}");
         OnMouseExitEvent?.Invoke(this);
     }
 

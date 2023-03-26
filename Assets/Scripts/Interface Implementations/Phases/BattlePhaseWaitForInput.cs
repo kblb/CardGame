@@ -32,7 +32,6 @@ public class BattlePhaseWaitForInput : IBattlePhase
 
     public void OnFinishInvoked()
     {
-        playerPhases.Terminate();
         OnFinish?.Invoke();
     }
 

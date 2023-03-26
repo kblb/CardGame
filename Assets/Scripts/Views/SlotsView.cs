@@ -11,12 +11,13 @@ public class SlotsView : MonoBehaviour
     [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
 
     public List<ActorView> actorViews = new();
+    private static int createdEnemies;
 
     public ActorView CreateNewActorView(ActorInstance actor)
     {
         ActorView actorView = Instantiate(actorViewPrefab, transform);
         actorView.Init(actor);
-
+        actorView.name += ++createdEnemies;
         actorViews.Add(actorView);
         return actorView;
     }
