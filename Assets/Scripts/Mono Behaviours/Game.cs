@@ -20,15 +20,20 @@ public class Game : MonoBehaviour
         BattleInstance battleInstance = new(battleScriptableObject);
         
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
-        fightView.uiView.endTurn.onClick.AddListener(() => { fightView.uiView.intentView.OnCommitClickedInvoke();});
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
         {
             actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
             actorInstance.OnDeath += () =>
             {
+                int indexOfActor = battleInstance.slots.FindIndex(t => t.actor == actorInstance);
                 fightView.slotsView.DestroyActor(actorInstance);
                 battleInstance.DestroyActor(actorInstance);
+
+                if (actorInstance.scriptableObject.spawnAfterDeath != null)
+                {
+                    battleInstance.SpawnAtSlotIndex(indexOfActor, new ActorInstance(actorInstance.scriptableObject.spawnAfterDeath));
+                }
             };
 
             ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance);
@@ -75,6 +80,13 @@ public class Game : MonoBehaviour
             }
         };
 
+        BattlePhaseWaitForInput battlePhaseWaitForInput = new BattlePhaseWaitForInput(fightView, battleInstance);
+        
+        fightView.uiView.endTurn.onClick.AddListener(() =>
+        {
+            battlePhaseWaitForInput.OnFinishInvoked();
+        });
+
         game = new GamePhaseCollection(new IGamePhase[]
         {
             new GamePhaseFight(true,
@@ -85,7 +97,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 3, logicQueue),
-                    new BattlePhaseWaitForInput(fightView, battleInstance),
+                    battlePhaseWaitForInput,
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),
                 }

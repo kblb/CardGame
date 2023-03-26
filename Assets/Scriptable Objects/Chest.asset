@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86fdf18407a34b44b61118579f3f12cb, type: 3}
-  m_Name: Level 1
+  m_Script: {fileID: 11500000, guid: 70aa0f7101334a15a29fd3e1203946d3, type: 3}
+  m_Name: Chest
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,10 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  enemies:
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 5ed46537942d5434b94fefc894d29bf8, type: 2}
-  - {fileID: 11400000, guid: 8b9dcf1c90e0870579ed2f4a789d4cc2, type: 2}
-  enemySlots: 5
+  health: 10
+  prefab: {fileID: 1455456907196829960, guid: 28b797b3f73caef42a595a6e48ec67d4, type: 3}
+  deck: []
+  spawnAfterDeath: {fileID: 0}

@@ -25,3 +25,4 @@ MonoBehaviour:
   prefab: {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
   deck:
   - {fileID: 11400000, guid: 19f5d1d4bf3512840abbab809f7a8bed, type: 2}
+  spawnAfterDeath: {fileID: 11400000, guid: c2559eb476f10f1409761260a2bf2989, type: 2}

@@ -36,14 +36,17 @@ public class BattleInstance
         {
             throw new Exception("We shouldn't spawn next enemy, because we reached already the end of level.");
         }
-        ActorInstance enemy = new(scriptableObject.enemies[allEnemies.Count]);
-        enemiesCreated++;
-        allEnemies.Add(enemy);
+        ActorInstance enemy = new ActorInstance(scriptableObject.enemies[enemiesCreated++]);
+        SpawnAtSlotIndex(index, enemy); 
+    }
+
+    public void SpawnAtSlotIndex(int index, ActorInstance enemy)
+    {
         if (slots[index].IsFree() == false)
         {
             throw new Exception($"Will not spawn enemy at slot {index}, because it is already occupied");
         }
-
+        allEnemies.Add(enemy);
         slots[index].actor = enemy;
         OnActorSpawned?.Invoke(enemy);
     }

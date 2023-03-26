@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class DeckInstance
 {
@@ -96,7 +97,7 @@ public class DeckInstance
     {
         if (this.intent != null)
         {
-            throw new Exception("Will not add intent while there is another one already.");
+            throw new Exception($"Will not add intent while there is another one already. With {this.intent.attack.scriptableObject.name} and {this.intent.modifiers.Count} modifiers");
         }
         
         foreach (CardInstance card in intent.GetAllCards())

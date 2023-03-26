@@ -22,6 +22,7 @@ public class UIView : MonoBehaviour
         CardView cardView = Instantiate(cardViewPrefab, handView.transform);
         cardView.Init(cardInstance);
         cardViews.Add(cardView);
+        cardView.name += cardViews.Count;
         return cardView;
     }
 

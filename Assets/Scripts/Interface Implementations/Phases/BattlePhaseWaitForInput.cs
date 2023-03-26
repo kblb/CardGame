@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class BattlePhaseWaitForInput : IBattlePhase
 {
@@ -26,7 +27,13 @@ public class BattlePhaseWaitForInput : IBattlePhase
             showIntentSlotWithAdditionalSlotsPlayerPhase
         });
 
-        playerPhases.OnCompleted += () => { OnFinish?.Invoke(); };
+        playerPhases.OnCompleted += OnFinishInvoked;
+    }
+
+    public void OnFinishInvoked()
+    {
+        playerPhases.Terminate();
+        OnFinish?.Invoke();
     }
 
     public void Start()

@@ -20,6 +20,37 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
     {
         this.fightView = fightView;
         this.battleInstance = battleInstance;
+
+        OnCompleted += UnhookEvents;
+    }
+
+    private void UnhookEvents()
+    {
+        //unhook events
+        foreach (CardInstance cardInstance in cardsHookedUpTo)
+        {
+            CardView cardView = fightView.uiView.FindCardView(cardInstance);
+            cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
+            cardView.OnDragNotification -= CardViewOnOnDragNotification;
+            cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
+            Debug.Log($"Removing callbacks from {cardView.name}");
+        }
+
+        foreach (ActorInstance enemy in battleInstance.allEnemies)
+        {
+            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
+            enemyView.OnMouseOverEvent -= ActorViewOnOnMouseOverEvent;
+            enemyView.OnMouseExitEvent -= ActorViewOnOnMouseExitEvent;
+        }
+
+        if (selectedTarget != null)
+        {
+            selectedTarget.TurnOffSelect();
+        }
+
+        //turn off all highlights
+        fightView.slotsView.TurnOffHighlight(battleInstance.allEnemies);
+        fightView.uiView.TurnOffCardHighlights();
     }
 
     public void Start()
@@ -34,6 +65,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
+            Debug.Log($"Adding callbacks to {cardView.name}");
         }
 
         foreach (ActorInstance enemy in battleInstance.allEnemies)
@@ -46,31 +78,9 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         HightlightDefaultState();
     }
 
-    private void InvokeOnCompleted()
+    public void Terminate()
     {
-        //unhook events
-        foreach (CardInstance cardInstance in cardsHookedUpTo)
-        {
-            CardView cardView = fightView.uiView.FindCardView(cardInstance);
-            cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
-            cardView.OnDragNotification -= CardViewOnOnDragNotification;
-            cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
-        }
-
-        foreach (ActorInstance enemy in battleInstance.allEnemies)
-        {
-            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
-            enemyView.OnMouseOverEvent -= ActorViewOnOnMouseOverEvent;
-            enemyView.OnMouseExitEvent -= ActorViewOnOnMouseExitEvent;
-        }
-
-        selectedTarget.TurnOffSelect();
-
-        //turn off all highlights
-        fightView.slotsView.TurnOffHighlight(battleInstance.allEnemies);
-        fightView.uiView.TurnOffCardHighlights();
-
-        OnCompleted?.Invoke();
+        UnhookEvents();
     }
 
     private void CardViewOnOnDragNotification(CardView obj)
@@ -114,7 +124,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
     {
         if (selectedTarget != null)
         {
-            InvokeOnCompleted();
+            Debug.Log($"card view {cardView.name} draggable image on exit drag notification ");
+            OnCompleted?.Invoke();
         }
         else
         {

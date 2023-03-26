@@ -52,6 +52,11 @@ public class ShowIntentSlotWithAdditionalSlotsPlayerPhase : IPlayerPhase
         attackCardView.OnExitDragNotification += AttackCardViewOnExitDragNotification;
     }
 
+    public void Terminate()
+    {
+        UnhookAll();
+    }
+
     private void UnhookAll()
     {
         if (cardsHookedUpTo != null)
