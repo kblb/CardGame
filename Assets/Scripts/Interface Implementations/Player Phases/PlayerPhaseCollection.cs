@@ -54,6 +54,9 @@ public class PlayerPhaseCollection : IPlayerPhase
 
     public void Terminate()
     {
-        collection[currentIndex].Terminate();
+        if (currentIndex != -1)
+        {
+            collection[currentIndex].Terminate();
+        }
     }
 }
