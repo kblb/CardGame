@@ -7,6 +7,9 @@ public class Game : MonoBehaviour
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
 
+    [FormerlySerializedAs("sleepCard")] [SerializeField]
+    private AttackCardScriptableObject sleepAttackCard;
+
     private readonly LogicQueue logicQueue = new();
 
     private IGamePhase game;
@@ -92,7 +95,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, battleInstance.Player),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 3, logicQueue),
                     battlePhaseWaitForInput,
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
