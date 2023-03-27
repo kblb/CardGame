@@ -15,7 +15,7 @@ public class ActorView : MonoBehaviour
 
     public ActorInstance actorInstance;
 
-    public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent;
+    public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent, OnMouseEnteredEvent;
 
     public void Init(ActorInstance actor)
     {
@@ -50,12 +50,11 @@ public class ActorView : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        Debug.Log($"Mouse entered {this.name}");
+        OnMouseEnteredEvent?.Invoke(this);
     }
 
     void OnMouseExit()
     {
-        Debug.Log($"Mouse no longer over {this.name}");
         OnMouseExitEvent?.Invoke(this);
     }
 
