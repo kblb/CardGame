@@ -39,9 +39,11 @@ public class IntentInstance
 
     public IEnumerable<CardInstance> GetAllCards()
     {
-        return new List<CardInstance>(modifiers)
+        List<CardInstance> cards = new List<CardInstance>(modifiers)
         {
             attack
         };
+
+        return cards;
     }
 }

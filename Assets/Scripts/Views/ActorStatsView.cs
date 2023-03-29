@@ -11,6 +11,7 @@ public class ActorStatsView : MonoBehaviour
 
     [SerializeField] private Image healthBar;
     [SerializeField] private TMP_Text healthText;
+    [SerializeField] private TMP_Text shieldsText;
     [SerializeField] public Transform buffBar;
     [SerializeField] public Transform intentBar;
     [SerializeField] [AssetsOnly] private Image buffBarImagePrefab;
@@ -22,6 +23,7 @@ public class ActorStatsView : MonoBehaviour
     public void Init(ActorInstance actor)
     {
         SetHealth(actor.scriptableObject.health, actor.currentHealth);
+        SetShields(actor.currentShields);
         SetBuffs(actor.buffs);
         UpdateIntent(actor.deck.intent);
     }
@@ -66,6 +68,12 @@ public class ActorStatsView : MonoBehaviour
         }
     }
 
+    public void SetShields(int shields)
+    {
+        shieldsText.text = "Shields\n" + shields;
+        shieldsText.transform.parent.gameObject.SetActive(shields > 0);
+    }
+
     public void SetHealth(float maxHealth, float currentHealth)
     {
         float shields = 0;
@@ -75,7 +83,7 @@ public class ActorStatsView : MonoBehaviour
             _oldHealth = currentHealth;
             _oldShield = shields;
 
-            healthText.text = currentHealth.ToString(CultureInfo.InvariantCulture) +
+            healthText.text = "Health\n" + currentHealth.ToString(CultureInfo.InvariantCulture) +
                               (shields > 0 ? $"(+{shields})" : "") + "/" +
                               maxHealth.ToString(CultureInfo.InvariantCulture);
 

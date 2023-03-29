@@ -13,12 +13,22 @@ public class SlotsView : MonoBehaviour
     public List<ActorView> actorViews = new();
     private static int createdEnemies;
 
-    public ActorView CreateNewActorView(ActorInstance actor)
+    public ActorView CreateNewActorView(ActorInstance actor, bool isPlayer)
     {
         ActorView actorView = Instantiate(actorViewPrefab, transform);
         actorView.Init(actor);
-        actorView.name += ++createdEnemies;
+        if (isPlayer)
+        {
+            playerSlot.actorView = actorView;
+            actorView.name = "Player";
+        }
+        else
+        {
+            actorView.name += ++createdEnemies;
+        }
+
         actorViews.Add(actorView);
+
         return actorView;
     }
 
@@ -83,6 +93,6 @@ public class SlotsView : MonoBehaviour
 
     public SlotView FindSlotView(ActorView actorView)
     {
-        return enemySlots.First(t => t.actorView == actorView);
+        return playerSlot.actorView == actorView ? playerSlot : enemySlots.First(t => t.actorView == actorView);
     }
 }

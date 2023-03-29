@@ -10,7 +10,7 @@ public class BattleInstance
     public readonly List<SlotInstance> slots = new();
     private int enemiesCreated;
 
-    public Action<ActorInstance> OnActorSpawned;
+    public Action<ActorInstance, bool> OnActorSpawned;
     public ActorInstance Player => player;
 
     public BattleInstance(BattleScriptableObject scriptableObject)
@@ -25,8 +25,8 @@ public class BattleInstance
 
     public ActorInstance SpawnPlayer(ActorScriptableObject playerScriptableObject)
     {
-        player = new(playerScriptableObject);
-        OnActorSpawned?.Invoke(player);
+        player = new ActorInstance(playerScriptableObject);
+        OnActorSpawned?.Invoke(player, true);
         return player;
     }
 
@@ -48,7 +48,7 @@ public class BattleInstance
         }
         allEnemies.Add(enemy);
         slots[index].actor = enemy;
-        OnActorSpawned?.Invoke(enemy);
+        OnActorSpawned?.Invoke(enemy, false);
     }
 
     public List<ActorInstance> GetAllActors()

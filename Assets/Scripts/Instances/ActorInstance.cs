@@ -5,10 +5,12 @@ public class ActorInstance
 {
     public readonly ActorScriptableObject scriptableObject;
     public float currentHealth;
+    public int currentShields;
     public List<BuffInstance> buffs = new();
     public DeckInstance deck;
 
     public event Action OnHealthChanged;
+    public event Action OnShieldsChanged;
     public event Action OnDeath;
 
     public ActorInstance(ActorScriptableObject scriptableObject)
@@ -42,11 +44,28 @@ public class ActorInstance
         {
             throw new Exception("Amount should be bigger than 0");
         }
-        currentHealth -= amount;
+
+        int amountAfterShields = Math.Clamp(amount - currentShields, 0, amount);
+        currentShields = Math.Max(currentShields - amount, 0); 
+        OnShieldsChanged?.Invoke();
+        
+        currentHealth -= amountAfterShields;
         OnHealthChanged?.Invoke();
         if (currentHealth <= 0)
         {
             OnDeath?.Invoke();
         }
+    }
+
+    public void AddShields(int shields)
+    {
+        currentShields += shields;
+        OnShieldsChanged?.Invoke();
+    }
+
+    public void ResetShields()
+    {
+        currentShields = 0;
+        OnShieldsChanged?.Invoke();
     }
 }

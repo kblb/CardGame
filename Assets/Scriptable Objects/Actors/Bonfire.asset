@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 70aa0f7101334a15a29fd3e1203946d3, type: 3}
-  m_Name: Player
+  m_Name: Bonfire
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
@@ -21,13 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes: []
-  health: 30
-  prefab: {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
-  deck:
-  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
-  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
-  - {fileID: 11400000, guid: 61d3340d3b64f784f840e59bd7ec978d, type: 2}
-  - {fileID: 11400000, guid: 9befb232e6d29a748abc4d0e24e4d760, type: 2}
-  - {fileID: 11400000, guid: 9befb232e6d29a748abc4d0e24e4d760, type: 2}
-  - {fileID: 11400000, guid: 9befb232e6d29a748abc4d0e24e4d760, type: 2}
+  health: 10
+  prefab: {fileID: 1455456907196829960, guid: 3b74457da833fba48afee646f17603d9, type: 3}
+  deck: []
   spawnAfterDeath: {fileID: 0}

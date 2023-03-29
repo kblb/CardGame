@@ -17,11 +17,11 @@ public class Game : MonoBehaviour
     private void Start()
     {
 
-        BattleInstance battleInstance = new(battleScriptableObject);
+        BattleInstance battleInstance = new BattleInstance(battleScriptableObject);
         
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
 
-        battleInstance.OnActorSpawned += (ActorInstance actorInstance) =>
+        battleInstance.OnActorSpawned += (ActorInstance actorInstance, bool isPlayer) =>
         {
             actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
             actorInstance.OnDeath += () =>
@@ -36,8 +36,9 @@ public class Game : MonoBehaviour
                 }
             };
 
-            ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance);
+            ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance, isPlayer);
             actorInstance.OnHealthChanged += () => actorView.statsView.SetHealth(actorInstance.scriptableObject.health, actorInstance.currentHealth);
+            actorInstance.OnShieldsChanged += () => actorView.statsView.SetShields(actorInstance.currentShields);
             actorInstance.deck.OnIntentUpdated += () => actorView.UpdateIntent(actorInstance.deck.intent);
             actorInstance.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.deck.intent);
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
@@ -92,11 +93,12 @@ public class Game : MonoBehaviour
             new GamePhaseFight(true,
                 new IBattlePhase[]
                 {
+                    new BattlePhaseCancelAllShields(battleInstance, logicQueue),
                     new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
-                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 3, logicQueue),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 2, logicQueue),
                     battlePhaseWaitForInput,
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),

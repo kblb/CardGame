@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
@@ -33,9 +34,13 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification -= CardViewOnOnDragNotification;
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
+            Debug.Log("removing OnExitDragNotification callback");
         }
+        
+        List<ActorInstance> actors = battleInstance.allEnemies;
+        actors.Add(battleInstance.Player);
 
-        foreach (ActorInstance enemy in battleInstance.allEnemies)
+        foreach (ActorInstance enemy in actors)
         {
             ActorView enemyView = fightView.slotsView.FindActorView(enemy);
             enemyView.OnMouseOverEvent -= ActorViewOnOnMouseOverEvent;
@@ -64,9 +69,13 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
+            Debug.Log("adding OnExitDragNotification callback");
         }
 
-        foreach (ActorInstance enemy in battleInstance.allEnemies)
+        List<ActorInstance> actors = battleInstance.allEnemies;
+        actors.Add(battleInstance.Player);
+        
+        foreach (ActorInstance enemy in actors)
         {
             ActorView enemyView = fightView.slotsView.FindActorView(enemy);
             enemyView.OnMouseOverEvent += ActorViewOnOnMouseOverEvent;
