@@ -34,7 +34,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification -= CardViewOnOnDragNotification;
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
-            Debug.Log("removing OnExitDragNotification callback");
         }
         
         List<ActorInstance> actors = battleInstance.allEnemies;
@@ -69,7 +68,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
-            Debug.Log("adding OnExitDragNotification callback");
         }
 
         List<ActorInstance> actors = battleInstance.allEnemies;
