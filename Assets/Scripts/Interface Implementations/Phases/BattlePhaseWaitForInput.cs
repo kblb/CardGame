@@ -24,7 +24,6 @@ public class BattlePhaseWaitForInput : IBattlePhase
         playerPhases = new PlayerPhaseCollection(new IPlayerPhase[]
         {
             selectCardAndMoveUpPlayerPhase,
-            showIntentSlotWithAdditionalSlotsPlayerPhase
         });
 
         playerPhases.OnCompleted += OnFinishInvoked;
