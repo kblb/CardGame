@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4172319724817987036}
   - component: {fileID: 4172319724817987039}
   - component: {fileID: 4172319724817987038}
+  - component: {fileID: 8383648993143277872}
   m_Layer: 5
   m_Name: JewelView
   m_TagString: Untagged
@@ -93,6 +94,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!225 &8383648993143277872
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4172319724817987032}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4172319725689889015
 GameObject:
   m_ObjectHideFlags: 0
