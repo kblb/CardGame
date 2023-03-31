@@ -12,6 +12,7 @@ public class UIView : MonoBehaviour
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
     [SerializeField] public Button endTurn;
+    [SerializeField] public JewelsFrameView jewelsFrame;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 

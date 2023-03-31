@@ -58,7 +58,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     public void Start()
     {
-        cardsHookedUpTo = new List<CardInstance>(battleInstance.Player.deck.hand.OfType<AttackCardInstance>());
+        cardsHookedUpTo = new List<CardInstance>(battleInstance.Player.inventory.deck.hand.OfType<AttackCardInstance>());
 
         //hooking events
         foreach (CardInstance cardInstance in cardsHookedUpTo)
@@ -95,7 +95,7 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
 
     private void HightlightDefaultState()
     {
-        fightView.uiView.ShowHand(battleInstance.Player.deck.hand);
+        fightView.uiView.ShowHand(battleInstance.Player.inventory.deck.hand);
         fightView.uiView.Highlight(cardsHookedUpTo);
         foreach (ActorView actorView in fightView.slotsView.actorViews)
         {

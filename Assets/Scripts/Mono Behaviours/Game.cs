@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using DG.Tweening;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
@@ -16,31 +18,37 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
-
         BattleInstance battleInstance = new BattleInstance(battleScriptableObject);
-        
+
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
+
+        fightView.uiView.jewelsFrame.OnJewelFinishedAnimatingToSlot += itemView => { battleInstance.Player.inventory.AddItem(itemView.instance); };
+
+        battleInstance.OnActorDestroyed += instance => { fightView.slotsView.DestroyActor(instance); };
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance, bool isPlayer) =>
         {
-            actorInstance.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.deck.discardPile); };
-            actorInstance.OnDeath += () =>
+            actorInstance.inventory.deck.OnCardDiscarded += card => { fightView.uiView.ShowDiscardPile(actorInstance.inventory.deck.discardPile); };
+            actorInstance.OnZeroHealth += () =>
             {
-                int indexOfActor = battleInstance.slots.FindIndex(t => t.actor == actorInstance);
-                fightView.slotsView.DestroyActor(actorInstance);
-                battleInstance.DestroyActor(actorInstance);
+                SlotView slotView = fightView.slotsView.enemySlots.First(t => (t.actorView != null ? t.actorView.actorInstance : null) == actorInstance);
 
-                if (actorInstance.scriptableObject.spawnAfterDeath != null)
-                {
-                    battleInstance.SpawnAtSlotIndex(indexOfActor, new ActorInstance(actorInstance.scriptableObject.spawnAfterDeath));
-                }
+                fightView.uiView.jewelsFrame.SpawnItemViewAndAnimateToSlot(
+                    0,
+                    actorInstance.scriptableObject.lootGenerator.Generate(),
+                    Camera.main.WorldToScreenPoint(slotView.actorView.transform.position));
+
+                battleInstance.DestroyActor(actorInstance);
             };
 
             ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance, isPlayer);
             actorInstance.OnHealthChanged += () => actorView.statsView.SetHealth(actorInstance.scriptableObject.health, actorInstance.currentHealth);
             actorInstance.OnShieldsChanged += () => actorView.statsView.SetShields(actorInstance.currentShields);
-            actorInstance.deck.OnIntentUpdated += () => actorView.UpdateIntent(actorInstance.deck.intent);
-            actorInstance.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.deck.intent);
+            actorInstance.inventory.deck.OnIntentUpdated += () =>
+            {
+                actorView.UpdateIntent(actorInstance.inventory.deck.intent);
+            };
+            actorInstance.inventory.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.inventory.deck.intent);
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
 
@@ -51,42 +59,39 @@ public class Game : MonoBehaviour
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
 
-        fightView.uiView.intentView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
+        fightView.uiView.intentView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.inventory.deck.intent); };
 
-        foreach (CardInstance cardInstance in battleInstance.Player.deck.drawPile)
+        foreach (CardInstance cardInstance in battleInstance.Player.inventory.deck.drawPile)
         {
             fightView.uiView.CreateCardView(cardInstance);
         }
 
-        fightView.uiView.ShowDrawPile(battleInstance.Player.deck.drawPile);
+        fightView.uiView.ShowDrawPile(battleInstance.Player.inventory.deck.drawPile);
 
-        playerInstance.deck.OnCardAddedToHand += (card) => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
-        playerInstance.deck.OnCardRemovedFromHand += () => { fightView.uiView.ShowHand(playerInstance.deck.hand); };
-        playerInstance.deck.OnIntentUpdated += () => { fightView.uiView.ShowIntent(playerInstance.deck.intent); };
-        playerInstance.deck.OnCardRemovedFromDrawPile += (card) => { fightView.uiView.ShowDrawPile(playerInstance.deck.hand); };
-        playerInstance.deck.OnDrawPileReshuffled += () =>
+        playerInstance.inventory.deck.OnCardAddedToHand += (card) => { fightView.uiView.ShowHand(playerInstance.inventory.deck.hand); };
+        playerInstance.inventory.deck.OnCardRemovedFromHand += () => { fightView.uiView.ShowHand(playerInstance.inventory.deck.hand); };
+        playerInstance.inventory.deck.OnIntentUpdated += () => { fightView.uiView.ShowIntent(playerInstance.inventory.deck.intent); };
+        playerInstance.inventory.deck.OnCardRemovedFromDrawPile += (card) => { fightView.uiView.ShowDrawPile(playerInstance.inventory.deck.hand); };
+        playerInstance.inventory.deck.OnDrawPileReshuffled += () =>
         {
-            fightView.uiView.ShowDrawPile(playerInstance.deck.drawPile);
-            fightView.uiView.ShowDiscardPile(playerInstance.deck.discardPile);
+            fightView.uiView.ShowDrawPile(playerInstance.inventory.deck.drawPile);
+            fightView.uiView.ShowDiscardPile(playerInstance.inventory.deck.discardPile);
         };
 
         fightView.OnCastFinished += (intent) =>
         {
             foreach (ActorInstance actor in battleInstance.GetAllActors())
             {
-                if (actor.deck.intent == intent)
+                if (actor.inventory.deck.intent == intent)
                 {
-                    actor.deck.DiscardIntent(intent);
+                    actor.inventory.deck.DiscardIntent(intent);
                 }
             }
         };
 
         BattlePhaseWaitForInput battlePhaseWaitForInput = new BattlePhaseWaitForInput(fightView, battleInstance);
-        
-        fightView.uiView.endTurn.onClick.AddListener(() =>
-        {
-            battlePhaseWaitForInput.OnFinishInvoked();
-        });
+
+        fightView.uiView.endTurn.onClick.AddListener(() => { battlePhaseWaitForInput.OnFinishInvoked(); });
 
         game = new GamePhaseCollection(new IGamePhase[]
         {
@@ -98,7 +103,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
                     new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
-                    new BattlePhasePullCardsFromHand(battleInstance.Player.deck, 2, logicQueue),
+                    new BattlePhasePullCardsFromHand(battleInstance.Player.inventory.deck, 2, logicQueue),
                     battlePhaseWaitForInput,
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),
                     new BattlePhaseEnemyActions(battleInstance, logicQueue),

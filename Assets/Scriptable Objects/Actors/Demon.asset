@@ -15,14 +15,26 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: cee96d4791795f44d879cc7f9217edb5, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
-    SerializationNodes: []
-  health: 25
+    SerializationNodes:
+    - Name: lootGenerator
+      Entry: 7
+      Data: 0|SimpleLootGenerator, Assembly-CSharp
+    - Name: name
+      Entry: 1
+      Data: Jewel
+    - Name: sprite
+      Entry: 10
+      Data: 0
+    - Name: 
+      Entry: 8
+      Data: 
+  health: 6
   prefab: {fileID: 919132149155446097, guid: a80f3ae741ef1e24b94fad69c67afc7f, type: 3}
   deck:
   - {fileID: 11400000, guid: 19f5d1d4bf3512840abbab809f7a8bed, type: 2}
-  spawnAfterDeath: {fileID: 11400000, guid: c2559eb476f10f1409761260a2bf2989, type: 2}

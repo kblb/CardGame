@@ -31,12 +31,12 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
                     AttackCardInstance cardInstance = null;
                     if (anotherLoopIndex == 0)
                     {
-                        if (enemy.deck.drawPile.Count == 0)
+                        if (enemy.inventory.deck.drawPile.Count == 0)
                         {
-                            enemy.deck.ReshuffleDeck();
+                            enemy.inventory.deck.ReshuffleDeck();
                         }
 
-                        cardInstance = enemy.deck.DrawCard() as AttackCardInstance;
+                        cardInstance = enemy.inventory.deck.DrawCard() as AttackCardInstance;
                     }
                     else
                     {
@@ -44,7 +44,7 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
                     }
 
                     IntentInstance intent = new IntentInstance(enemy, cardInstance, target);
-                    enemy.deck.AddIntent(intent);
+                    enemy.inventory.deck.AddIntent(intent);
                 });
             }
 

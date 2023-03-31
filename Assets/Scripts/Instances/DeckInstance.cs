@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class DeckInstance
 {
@@ -91,6 +90,7 @@ public class DeckInstance
         }
         
         this.intent = null;
+        OnIntentUpdated?.Invoke();
     }
 
     public void AddIntent(IntentInstance intent)

@@ -11,6 +11,7 @@ public class BattleInstance
     private int enemiesCreated;
 
     public Action<ActorInstance, bool> OnActorSpawned;
+    public Action<ActorInstance> OnActorDestroyed;
     public ActorInstance Player => player;
 
     public BattleInstance(BattleScriptableObject scriptableObject)
@@ -78,6 +79,8 @@ public class BattleInstance
         allEnemies.Remove(actorInstance);
         SlotInstance slotInstance = slots.First(t => t.actor == actorInstance);
         slotInstance.actor = null;
+
+        OnActorDestroyed?.Invoke(actorInstance);
     }
 
     public bool CanSpawnMoreEnemies()

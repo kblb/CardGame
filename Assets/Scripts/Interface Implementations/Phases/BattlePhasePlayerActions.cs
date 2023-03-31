@@ -16,7 +16,7 @@ public class BattlePhasePlayerActions : IBattlePhase
 
     public void Start()
     {
-        IntentInstance intent = battleInstance.Player.deck.intent;
+        IntentInstance intent = battleInstance.Player.inventory.deck.intent;
         if (intent != null)
         {
             logicQueue.AddElement(1.3f, () => { fightView.StartCasting(intent); });

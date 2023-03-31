@@ -26,12 +26,12 @@ MonoBehaviour:
       Data: 0|DealDamageCast, Assembly-CSharp
     - Name: amount
       Entry: 3
-      Data: 1
+      Data: 6
     - Name: 
       Entry: 8
       Data: 
   displayName: Punch
-  description: Deal 1 damage
+  description: Deal 6 damage
   icon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}
   isEthereal: 0
   intentIcon: {fileID: 21300000, guid: bf378023d0aa9f04aa7a50e9f545cdb5, type: 3}

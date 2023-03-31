@@ -25,7 +25,7 @@ public class ActorStatsView : MonoBehaviour
         SetHealth(actor.scriptableObject.health, actor.currentHealth);
         SetShields(actor.currentShields);
         SetBuffs(actor.buffs);
-        UpdateIntent(actor.deck.intent);
+        UpdateIntent(actor.inventory.deck.intent);
     }
 
     private void Awake()

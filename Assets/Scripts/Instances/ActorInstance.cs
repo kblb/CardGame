@@ -6,17 +6,17 @@ public class ActorInstance
     public readonly ActorScriptableObject scriptableObject;
     public float currentHealth;
     public int currentShields;
-    public List<BuffInstance> buffs = new();
-    public DeckInstance deck;
+    public List<BuffInstance> buffs = new List<BuffInstance>();
+    public InventoryInstance inventory = new InventoryInstance();
 
     public event Action OnHealthChanged;
     public event Action OnShieldsChanged;
-    public event Action OnDeath;
+    public event Action OnZeroHealth;
 
     public ActorInstance(ActorScriptableObject scriptableObject)
     {
         this.scriptableObject = scriptableObject;
-        deck = new DeckInstance(scriptableObject.deck);
+        inventory.deck = new DeckInstance(scriptableObject.deck);
         currentHealth = scriptableObject.health;
     }
 
@@ -53,7 +53,7 @@ public class ActorInstance
         OnHealthChanged?.Invoke();
         if (currentHealth <= 0)
         {
-            OnDeath?.Invoke();
+            OnZeroHealth?.Invoke();
         }
     }
 
