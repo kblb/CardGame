@@ -34,6 +34,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification -= CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification -= CardViewOnOnDragNotification;
             cardView.OnExitDragNotification -= CardViewDraggableImageOnExitDragNotification;
+            cardView.OnPointerEnterNotification -= CardViewOnOnPointerEnterNotification;
+            cardView.OnPointerExitNotification -= CardViewOnOnPointerExitNotification;
         }
         
         List<ActorInstance> actors = battleInstance.allEnemies;
@@ -68,6 +70,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
             cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
             cardView.OnDragNotification += CardViewOnOnDragNotification;
             cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
+            cardView.OnPointerEnterNotification += CardViewOnOnPointerEnterNotification;
+            cardView.OnPointerExitNotification += CardViewOnOnPointerExitNotification;
         }
 
         List<ActorInstance> actors = battleInstance.allEnemies;
@@ -81,6 +85,16 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         }
 
         HightlightDefaultState();
+    }
+
+    private void CardViewOnOnPointerExitNotification(CardView obj)
+    {
+        fightView.uiView.MoveBackDownCard(obj);
+    }
+
+    private void CardViewOnOnPointerEnterNotification(CardView obj)
+    {
+        fightView.uiView.MoveUpCard(obj);
     }
 
     public void Terminate()

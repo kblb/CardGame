@@ -13,7 +13,6 @@ public class UIView : MonoBehaviour
     [SerializeField] public HandView handView;
     [SerializeField] public Button endTurn;
     [SerializeField] public JewelsFrameView jewelsFrame;
-    [SerializeField] public TooltipView tooltip;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 
@@ -35,7 +34,7 @@ public class UIView : MonoBehaviour
 
     public void ShowHand(List<CardInstance> cardInstances)
     {
-        ShowCardsIn(cardInstances, cardViews, handView.transform.position, 40, 7);
+        ShowCardsIn(cardInstances, cardViews, handView.transform.position, 60, 7);
     }
 
     public void ShowDiscardPile(List<CardInstance> discardPile)
@@ -72,9 +71,8 @@ public class UIView : MonoBehaviour
             float currentY = 0.2f * (i * spacing - offset);
             currentY *= i >= middleIndex ? -1 : 1;
 
-            cardView.transform.SetSiblingIndex(cardView.transform.parent.childCount - 1);
-            cardView.transform.DOMove(position + new Vector3(currentX, currentY, 0), 0.5f);
-            cardView.transform.DORotate(new Vector3(0, 0, currentAngle), 0.5f);
+            int siblingIndex = cardView.transform.parent.childCount - 1;
+            cardView.NewPosition(position + new Vector3(currentX, currentY, 0), new Vector3(0, 0, currentAngle), siblingIndex, .5f);
             i++;
         }
     }
@@ -104,5 +102,15 @@ public class UIView : MonoBehaviour
         {
             cardView.Highlight(false);
         }
+    }
+
+    public void MoveUpCard(CardView cardView)
+    {
+        cardView.MoveUp();
+    }
+
+    public void MoveBackDownCard(CardView cardView)
+    {
+        cardView.RestoreToOriginalPosition();
     }
 }
