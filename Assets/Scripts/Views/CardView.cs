@@ -14,6 +14,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private GameObject mask;
     [SerializeField] private Image highlightImage;
     [SerializeField] private DragNotifier dragNotifier;
+    [SerializeField] private Image[] sockets;
 
     public CardInstance cardInstance;
 
