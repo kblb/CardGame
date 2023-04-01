@@ -5,20 +5,20 @@ using UnityEngine;
 
 public class JewelsFrameView : MonoBehaviour
 {
-    [SerializeField, AssetsOnly] public ItemView jewelItemPrefab;
+    [SerializeField, AssetsOnly] public JewelView jewelItemPrefab;
     [SerializeField, SceneObjectsOnly] public GameObject[] slots;
 
-    public event Action<ItemView> OnJewelFinishedAnimatingToSlot;
+    public event Action<JewelView> OnJewelFinishedAnimatingToSlot;
 
-    public void SpawnItemViewAndAnimateToSlot(int slotIndex, AInventoryItemInstance item, Vector3 spawnPosition)
+    public void SpawnItemViewAndAnimateToSlot(int slotIndex, JewelInstance item, Vector3 spawnPosition)
     {
         spawnPosition.z = 0;
 
-        ItemView itemView = Instantiate(jewelItemPrefab, slots[slotIndex].transform);
-        itemView.transform.position = spawnPosition;
-        itemView.Initialize(item);
-        itemView.transform
+        JewelView jewelView = Instantiate(jewelItemPrefab, slots[slotIndex].transform);
+        jewelView.transform.position = spawnPosition;
+        jewelView.Initialize(item);
+        jewelView.transform
             .DOMove(slots[slotIndex].transform.position, 2f)
-            .OnComplete(() => { OnJewelFinishedAnimatingToSlot?.Invoke(itemView); });
+            .OnComplete(() => { OnJewelFinishedAnimatingToSlot?.Invoke(jewelView); });
     }
 }

@@ -2,13 +2,13 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ItemView : MonoBehaviour, ITooltipable
+public class JewelView : MonoBehaviour, ITooltipable
 {
-    public AInventoryItemInstance instance;
+    public JewelInstance instance;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private Image image;
 
-    public void Initialize(AInventoryItemInstance item)
+    public void Initialize(JewelInstance item)
     {
         instance = item;
         titleText.text = item.name;

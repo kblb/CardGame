@@ -3,13 +3,14 @@ using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SlotsView : MonoBehaviour
 {
     [SceneObjectsOnly, SerializeField] public SlotView playerSlot;
     [SceneObjectsOnly, SerializeField] public SlotView[] enemySlots;
     [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
-    [SerializeField, AssetsOnly] public ItemView itemViewPrefab;
+    [FormerlySerializedAs("itemViewPrefab")] [SerializeField, AssetsOnly] public JewelView jewelViewPrefab;
 
     public List<ActorView> actorViews = new();
     private static int createdEnemies;

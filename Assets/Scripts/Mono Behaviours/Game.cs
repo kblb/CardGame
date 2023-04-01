@@ -22,7 +22,7 @@ public class Game : MonoBehaviour
 
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
 
-        fightView.uiView.jewelsFrame.OnJewelFinishedAnimatingToSlot += itemView => { battleInstance.Player.inventory.AddItem(itemView.instance); };
+        fightView.uiView.jewelsFrame.OnJewelFinishedAnimatingToSlot += itemView => { battleInstance.Player.inventory.AddJewel(itemView.instance); };
 
         battleInstance.OnActorDestroyed += instance => { fightView.slotsView.DestroyActor(instance); };
 

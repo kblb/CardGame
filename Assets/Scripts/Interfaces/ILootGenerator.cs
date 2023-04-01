@@ -1,4 +1,4 @@
 ﻿public interface ILootGenerator
 {
-    AInventoryItemInstance Generate();
+    JewelInstance Generate();
 }

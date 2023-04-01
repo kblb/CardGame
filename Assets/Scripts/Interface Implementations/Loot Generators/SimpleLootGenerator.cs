@@ -5,7 +5,7 @@ public class SimpleLootGenerator : ILootGenerator
     public string name;
     public Sprite sprite;
     
-    public AInventoryItemInstance Generate()
+    public JewelInstance Generate()
     {
         return new JewelInstance(name, sprite);
     }

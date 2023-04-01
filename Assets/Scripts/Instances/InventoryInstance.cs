@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 public class InventoryInstance
 {
     public DeckInstance deck;
-    public List<AInventoryItemInstance> items = new List<AInventoryItemInstance>();
+    public List<JewelInstance> jewels = new List<JewelInstance>();
 
-    public void AddItem(AInventoryItemInstance item)
+    public void AddJewel(JewelInstance jewel)
     {
-        items.Add(item);
+        jewels.Add(jewel);
     }
 }
