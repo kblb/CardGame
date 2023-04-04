@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 public class IntentInstance
 {
@@ -6,8 +7,6 @@ public class IntentInstance
     public readonly ActorInstance targetActor;
 
     public readonly CardInstance card;
-    
-    public event Action<IntentInstance> OnCast;
     
     public IntentInstance(ActorInstance owner, CardInstance cardCard, ActorInstance targetActor)
     {
@@ -31,7 +30,5 @@ public class IntentInstance
 
             castInstance.Cast();
         }
-
-        OnCast?.Invoke(this);
     }
 }

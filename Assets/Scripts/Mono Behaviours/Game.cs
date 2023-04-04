@@ -32,10 +32,13 @@ public class Game : MonoBehaviour
             {
                 SlotView slotView = fightView.slotsView.enemySlots.First(t => (t.actorView != null ? t.actorView.actorInstance : null) == actorInstance);
 
-                fightView.uiView.jewelsFrame.SpawnItemViewAndAnimateToSlot(
-                    0,
-                    actorInstance.scriptableObject.lootGenerator.Generate(),
-                    Camera.main.WorldToScreenPoint(slotView.actorView.transform.position));
+                if (actorInstance.scriptableObject.lootGenerator != null)
+                {
+                    fightView.uiView.jewelsFrame.SpawnItemViewAndAnimateToSlot(
+                        0,
+                        actorInstance.scriptableObject.lootGenerator.Generate(),
+                        Camera.main.WorldToScreenPoint(slotView.actorView.transform.position));
+                }
 
                 battleInstance.DestroyActor(actorInstance);
             };
@@ -61,7 +64,6 @@ public class Game : MonoBehaviour
             Destroy(jewelView.gameObject);
         };
 
-        fightView.uiView.intentView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.inventory.deck.intent); };
 
         foreach (CardInstance cardInstance in battleInstance.Player.inventory.deck.drawPile)
         {
@@ -73,7 +75,6 @@ public class Game : MonoBehaviour
 
         playerInstance.inventory.deck.OnCardAddedToHand += (card) => { fightView.uiView.ShowHand(playerInstance.inventory.deck.hand); };
         playerInstance.inventory.deck.OnCardRemovedFromHand += () => { fightView.uiView.ShowHand(playerInstance.inventory.deck.hand); };
-        playerInstance.inventory.deck.OnIntentUpdated += () => { fightView.uiView.ShowIntent(playerInstance.inventory.deck.intent); };
         playerInstance.inventory.deck.OnCardRemovedFromDrawPile += (card) => { fightView.uiView.ShowDrawPile(playerInstance.inventory.deck.hand); };
         playerInstance.inventory.deck.OnDrawPileReshuffled += () =>
         {

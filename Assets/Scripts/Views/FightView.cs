@@ -33,12 +33,4 @@ public class FightView : MonoBehaviour
                 .SetEase(Ease.OutCubic))
             .AppendCallback(() => OnCastFinished?.Invoke(intent));
     }
-
-    public void ShowIntentOverTarget(IntentInstance playersDeckIntent)
-    {
-        ActorView actorView = slotsView.FindActorView(playersDeckIntent.targetActor);
-        SlotView slotView = slotsView.FindSlotView(actorView);
-        
-        uiView.intentView.ShowOverTarget(playersDeckIntent, slotView);
-    }
 }

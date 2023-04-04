@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class UIView : MonoBehaviour
 {
-    [SerializeField, SceneObjectsOnly] public IntentView intentView;
     [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
@@ -39,15 +38,6 @@ public class UIView : MonoBehaviour
     public void ShowDiscardPile(List<CardInstance> discardPile)
     {
         ShowCardsIn(discardPile, cardViews, discardPileView.transform.position, 3, 2);
-    }
-
-    public void ShowIntent(IntentInstance deckIntent)
-    {
-        List<CardInstance> attackList = new List<CardInstance>()
-        {
-            deckIntent.card
-        };
-        ShowCardsIn(attackList, cardViews, intentView.attackArea.transform.position, 10, 0);
     }
 
     private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)

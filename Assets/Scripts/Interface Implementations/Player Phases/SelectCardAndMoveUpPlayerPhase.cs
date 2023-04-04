@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
@@ -143,6 +142,8 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         if (selectedTarget != null)
         {
             OnCompleted?.Invoke();
+            selectedTarget = null;
+            selectedCard = null;
         }
         else
         {

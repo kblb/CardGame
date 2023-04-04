@@ -6,10 +6,15 @@ public class PlayerPhaseSimultaneous : IPlayerPhase
 
     public event Action OnCancel;
     public event Action OnCompleted;
-    
+
     public PlayerPhaseSimultaneous(IPlayerPhase[] playerPhases)
     {
         this.playerPhases = playerPhases;
+
+        foreach (IPlayerPhase playerPhase in playerPhases)
+        {
+            playerPhase.OnCompleted += InvokeOnCompleted;
+        }
     }
 
     public void Start()
@@ -17,7 +22,6 @@ public class PlayerPhaseSimultaneous : IPlayerPhase
         foreach (IPlayerPhase playerPhase in playerPhases)
         {
             playerPhase.Start();
-            playerPhase.OnCompleted += InvokeOnCompleted;
         }
     }
 
