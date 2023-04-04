@@ -1,49 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 
 public class IntentInstance
 {
     public readonly ActorInstance owner;
     public readonly ActorInstance targetActor;
 
-    public readonly AttackCardInstance attack;
-    public readonly List<ModifyCardInstance> modifiers = new List<ModifyCardInstance>();
+    public readonly CardInstance card;
     
     public event Action<IntentInstance> OnCast;
     
-    public IntentInstance(ActorInstance owner, AttackCardInstance attackCard, ActorInstance targetActor)
+    public IntentInstance(ActorInstance owner, CardInstance cardCard, ActorInstance targetActor)
     {
         this.owner = owner;
         this.targetActor = targetActor;
 
-        attack = attackCard;
+        card = cardCard;
     }
 
     public void Cast(BattleInstance battleInstance)
     {
         //sleep card doesn't have any casts
-        if (attack.scriptableObject.cast != null)
+        if (card.scriptableObject.cast != null)
         {
-            CastInstance castInstance = attack.scriptableObject.cast.CreateCastInstance(owner, targetActor);
+            CastInstance castInstance = card.scriptableObject.cast.CreateCastInstance(owner, targetActor);
 
-            foreach (ModifyCardInstance modifyCardInstance in modifiers)
+            foreach (JewelInstance jewel in card.jewels)
             {
-                modifyCardInstance.scriptableObject.modify.Modify(castInstance, battleInstance);
+                jewel.scriptableObject.modifier.Modify(castInstance, battleInstance);
             }
 
             castInstance.Cast();
         }
 
         OnCast?.Invoke(this);
-    }
-
-    public IEnumerable<CardInstance> GetAllCards()
-    {
-        List<CardInstance> cards = new List<CardInstance>(modifiers)
-        {
-            attack
-        };
-
-        return cards;
     }
 }

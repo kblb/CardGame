@@ -1,14 +1,14 @@
 ﻿public class MultiplyAttackModify : IModify
 {
-    public readonly int damageToMultiply;
+    public readonly int multiplier;
 
-    public MultiplyAttackModify(int damageToMultiply)
+    public MultiplyAttackModify(int multiplier)
     {
-        this.damageToMultiply = damageToMultiply;
+        this.multiplier = multiplier;
     }
     
     public void Modify(CastInstance castInstance, BattleInstance battleInstance)
     {
-        castInstance.damage *= damageToMultiply;
+        castInstance.damage *= multiplier;
     }
 }

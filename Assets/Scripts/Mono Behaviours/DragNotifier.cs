@@ -9,7 +9,7 @@ public class DragNotifier : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public event Action OnBeginDragNotification;
     public event Action OnPointerEnterNotification;
     public event Action OnPointerExitNotification;
-
+    
     private bool isDragging;
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -34,7 +34,6 @@ public class DragNotifier : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         //sometimes we're getting false positives on pointer exit. If this happens while we're dragging, then ignore.
         if (isDragging == false)
         {
-            Debug.Log($"OnPointerEnter {name}");
             OnPointerEnterNotification?.Invoke();
         }
     }
@@ -44,7 +43,6 @@ public class DragNotifier : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         //sometimes we're getting false positives on pointer exit. If this happens while we're dragging, then ignore.
         if (isDragging == false) 
         {
-            Debug.Log($"OnPointerExit {name}");
             OnPointerExitNotification?.Invoke();
         }
     }

@@ -2,8 +2,12 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BaseCardScriptableObject : SerializedScriptableObject
+[CreateAssetMenu(menuName = "Create/Card")]
+public class CardScriptableObject : SerializedScriptableObject
 {
+    public Sprite intentIcon;
+    public ICast cast;
+    
     public string displayName;
     [TextArea] public string description;
     public Sprite icon;

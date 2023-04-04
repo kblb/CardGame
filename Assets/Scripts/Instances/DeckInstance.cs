@@ -17,23 +17,12 @@ public class DeckInstance
     public event Action<CardInstance> OnCardAddedToHand;
     public event Action<CardInstance> OnCardRemovedFromDrawPile;
 
-    public DeckInstance(IEnumerable<BaseCardScriptableObject> cards)
+    public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
-        List<BaseCardScriptableObject> randomizedCards = cards.OrderBy(t => UnityEngine.Random.Range(-10, 10)).ToList();
-        foreach (BaseCardScriptableObject cardScriptableObject in randomizedCards)
+        List<CardScriptableObject> randomizedCards = cards.OrderBy(t => UnityEngine.Random.Range(-10, 10)).ToList();
+        foreach (CardScriptableObject cardScriptableObject in randomizedCards)
         {
-            if (cardScriptableObject is AttackCardScriptableObject scriptableObject)
-            {
-                drawPile.Add(new AttackCardInstance(scriptableObject));
-            }
-            else if (cardScriptableObject is ModifierCardScriptableObject modifierCardScriptableObject)
-            {
-                drawPile.Add(new ModifyCardInstance(modifierCardScriptableObject));
-            }
-            else
-            {
-                throw new Exception("Unknown card scriptable object type");
-            }
+            drawPile.Add(new CardInstance(cardScriptableObject));
         }
     }
 
@@ -75,20 +64,18 @@ public class DeckInstance
 
     public void DiscardIntent(IntentInstance intent)
     {
-        foreach (CardInstance cardInstance in intent.GetAllCards())
+        CardInstance card = intent.card;
+        if (card.scriptableObject.isEthereal)
         {
-            if (cardInstance.baseScriptableObject.isEthereal)
-            {
-                usedEtherealPile.Add(cardInstance);
-            }
-            else
-            {
-                discardPile.Add(cardInstance);
-            }
-
-            OnCardDiscarded?.Invoke(cardInstance);
+            usedEtherealPile.Add(card);
         }
-        
+        else
+        {
+            discardPile.Add(card);
+        }
+
+        OnCardDiscarded?.Invoke(card);
+
         this.intent = null;
         OnIntentUpdated?.Invoke();
     }
@@ -97,45 +84,17 @@ public class DeckInstance
     {
         if (this.intent != null)
         {
-            throw new Exception($"Will not add intent while there is another one already. With {this.intent.attack.scriptableObject.name} and {this.intent.modifiers.Count} modifiers");
+            throw new Exception($"Will not add intent while there is another one already. With {this.intent.card.scriptableObject.name}");
         }
-        
-        foreach (CardInstance card in intent.GetAllCards())
+
+        CardInstance card = intent.card;
+        if (hand.Contains(card))
         {
-            if (hand.Contains(card))
-            {
-                hand.Remove(card);
-                OnCardRemovedFromHand?.Invoke();
-            }
+            hand.Remove(card);
+            OnCardRemovedFromHand?.Invoke();
         }
 
         this.intent = intent;
         OnIntentUpdated?.Invoke();
-    }
-
-    public void AddCardToIntent(ModifyCardInstance cardInstance)
-    {
-        hand.Remove(cardInstance);
-        intent.modifiers.Add(cardInstance);
-        OnIntentUpdated?.Invoke();
-        OnCardRemovedFromHand?.Invoke();
-    }
-
-    public void CancelIntentBackToHand()
-    {
-        if (intent == null)
-        {
-            throw new Exception("There is no intent to cancel.");
-        }
-
-        foreach (ModifyCardInstance cardInstance in intent.modifiers)
-        {
-            hand.Add(cardInstance);
-            OnCardAddedToHand?.Invoke(cardInstance);
-        }
-        hand.Add(intent.attack);
-        OnCardAddedToHand?.Invoke(intent.attack);
-
-        intent = null;
     }
 }

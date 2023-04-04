@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-public class PlayerPhaseCollection : IPlayerPhase
+public class PlayerPhaseSequence : IPlayerPhase
 {
     private readonly IPlayerPhase[] collection;
 
@@ -10,7 +10,7 @@ public class PlayerPhaseCollection : IPlayerPhase
     public event Action OnCancel;
     public event Action OnCompleted;
 
-    public PlayerPhaseCollection(IPlayerPhase[] collection)
+    public PlayerPhaseSequence(IPlayerPhase[] collection)
     {
         this.collection = collection;
         for (int i = 0; i < collection.Length; i++)

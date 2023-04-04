@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 259155284801848707}
   - component: {fileID: 259155284801848732}
   - component: {fileID: 6361042468074519948}
+  - component: {fileID: 9221768773137448133}
   m_Layer: 5
   m_Name: CardView
   m_TagString: Untagged
@@ -57,16 +58,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9d9b71d7c627c44893e100b847dc080, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragNotifier: {fileID: 6361042468074519948}
   cardIcon: {fileID: 259155285600722328}
   titleText: {fileID: 7551805940165843834}
   descriptionText: {fileID: 6102292917175688335}
   mask: {fileID: 1316218582286015932}
   highlightImage: {fileID: 4734032379895662919}
-  dragNotifier: {fileID: 6361042468074519948}
   sockets:
   - {fileID: 9067516493727205574}
   - {fileID: 9137785114604693684}
   - {fileID: 1550223677463227853}
+  jewelImagePrefab: {fileID: 4172319724817987038, guid: bba9bd3a05ebd164c8fe61b8831c1ae7, type: 3}
 --- !u!222 &259155284801848707
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -117,6 +119,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b408138205da58469d68f244a3a21eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &9221768773137448133
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259155284801848734}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &259155285600722330
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3426805624499917135
 RectTransform:
   m_ObjectHideFlags: 0
@@ -868,7 +882,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: cee96d4791795f44d879cc7f9217edb5, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f73a7d8758d7be04588b15637d94b5a8, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1

@@ -9,8 +9,7 @@ public class Game : MonoBehaviour
     [SerializeField] private ActorScriptableObject playerScriptableObject;
     [SerializeField] private FightView fightView;
 
-    [FormerlySerializedAs("sleepCard")] [SerializeField]
-    private AttackCardScriptableObject sleepAttackCard;
+    [SerializeField] private CardScriptableObject sleepAttackCard;
 
     private readonly LogicQueue logicQueue = new();
 
@@ -44,10 +43,7 @@ public class Game : MonoBehaviour
             ActorView actorView = fightView.slotsView.CreateNewActorView(actorInstance, isPlayer);
             actorInstance.OnHealthChanged += () => actorView.statsView.SetHealth(actorInstance.scriptableObject.health, actorInstance.currentHealth);
             actorInstance.OnShieldsChanged += () => actorView.statsView.SetShields(actorInstance.currentShields);
-            actorInstance.inventory.deck.OnIntentUpdated += () =>
-            {
-                actorView.UpdateIntent(actorInstance.inventory.deck.intent);
-            };
+            actorInstance.inventory.deck.OnIntentUpdated += () => { actorView.UpdateIntent(actorInstance.inventory.deck.intent); };
             actorInstance.inventory.deck.OnCardDiscarded += (card) => actorView.UpdateIntent(actorInstance.inventory.deck.intent);
             fightView.slotsView.ShowActors(battleInstance.slots, battleInstance.Player);
         };
@@ -58,12 +54,19 @@ public class Game : MonoBehaviour
         }
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
+        
+        playerInstance.inventory.OnJewelRemoved += instance =>
+        {
+            JewelView jewelView = fightView.uiView.FindJewelView(instance);
+            Destroy(jewelView.gameObject);
+        };
 
         fightView.uiView.intentView.OnShown += () => { fightView.uiView.ShowIntent(playerInstance.inventory.deck.intent); };
 
         foreach (CardInstance cardInstance in battleInstance.Player.inventory.deck.drawPile)
         {
-            fightView.uiView.CreateCardView(cardInstance);
+            CardView cardView = fightView.uiView.CreateCardView(cardInstance);
+            cardInstance.OnJewelAdded += cardView.AnimateNewJewel;
         }
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.inventory.deck.drawPile);
@@ -102,7 +105,7 @@ public class Game : MonoBehaviour
                     new BattlePhaseEnemiesMoveForward(battleInstance.slots, logicQueue),
                     new BattlePhaseApplyBuffs(battleInstance.GetAllActors(), logicQueue),
                     new BattlePhaseSpawnOneEnemyInLastSlotIfEmpty(battleInstance, logicQueue),
-                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new AttackCardInstance(sleepAttackCard), battleInstance.Player),
+                    new BattlePhaseEnemiesDecideOnIntent(battleInstance.slots, logicQueue, new CardInstance(sleepAttackCard), battleInstance.Player),
                     new BattlePhasePullCardsFromHand(battleInstance.Player.inventory.deck, 2, logicQueue),
                     battlePhaseWaitForInput,
                     new BattlePhasePlayerActions(battleInstance, logicQueue, fightView),

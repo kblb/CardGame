@@ -1,13 +1,10 @@
-﻿using UnityEngine;
-
+﻿
 public class JewelInstance
 {
-    public readonly string name;
-    public readonly Sprite sprite;
+    public readonly JewelScriptableObject scriptableObject;
 
-    public JewelInstance(string name, Sprite sprite)
+    public JewelInstance(JewelScriptableObject scriptableObject)
     {
-        this.name = name;
-        this.sprite = sprite;
+        this.scriptableObject = scriptableObject;
     }
 }

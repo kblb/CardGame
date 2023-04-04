@@ -50,7 +50,7 @@ public class ActorStatsView : MonoBehaviour
         if (intent != null)
         {
             Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-            intentImage.sprite = intent.attack.scriptableObject.intentIcon;
+            intentImage.sprite = intent.card.scriptableObject.intentIcon;
         }
     }
 

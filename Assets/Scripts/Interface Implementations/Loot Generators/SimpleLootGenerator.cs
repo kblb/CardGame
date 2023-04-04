@@ -2,11 +2,10 @@
 
 public class SimpleLootGenerator : ILootGenerator
 {
-    public string name;
-    public Sprite sprite;
+    public JewelScriptableObject jewel;
     
     public JewelInstance Generate()
     {
-        return new JewelInstance(name, sprite);
+        return new JewelInstance(jewel);
     }
 }

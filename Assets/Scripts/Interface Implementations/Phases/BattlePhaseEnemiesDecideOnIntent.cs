@@ -5,11 +5,11 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
 {
     private readonly List<SlotInstance> fightSlots;
     private readonly LogicQueue logicQueue;
-    private readonly AttackCardInstance sleepAttackCard;
+    private readonly CardInstance sleepAttackCard;
     private readonly ActorInstance target;
     public Action OnFinish { get; set; }
 
-    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue, AttackCardInstance sleepAttackCard, ActorInstance target)
+    public BattlePhaseEnemiesDecideOnIntent(List<SlotInstance> fightSlots, LogicQueue logicQueue, CardInstance sleepAttackCard, ActorInstance target)
     {
         this.fightSlots = fightSlots;
         this.logicQueue = logicQueue;
@@ -28,7 +28,7 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
                 int anotherLoopIndex = i;
                 logicQueue.AddElement(0.1f, () =>
                 {
-                    AttackCardInstance cardInstance = null;
+                    CardInstance cardInstance = null;
                     if (anotherLoopIndex == 0)
                     {
                         if (enemy.inventory.deck.drawPile.Count == 0)
@@ -36,7 +36,7 @@ public class BattlePhaseEnemiesDecideOnIntent : IBattlePhase
                             enemy.inventory.deck.ReshuffleDeck();
                         }
 
-                        cardInstance = enemy.inventory.deck.DrawCard() as AttackCardInstance;
+                        cardInstance = enemy.inventory.deck.DrawCard();
                     }
                     else
                     {

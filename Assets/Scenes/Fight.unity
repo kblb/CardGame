@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 160810679}
   - component: {fileID: 160810678}
   m_Layer: 5
-  m_Name: Panel (1)
+  m_Name: Jewel Slot 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -493,7 +493,7 @@ GameObject:
   - component: {fileID: 359196736}
   - component: {fileID: 359196735}
   m_Layer: 5
-  m_Name: Panel (2)
+  m_Name: Jewel Slot 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,7 +569,7 @@ GameObject:
   - component: {fileID: 466038176}
   - component: {fileID: 466038175}
   m_Layer: 5
-  m_Name: Panel (4)
+  m_Name: Jewel Slot 5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1555,7 +1555,7 @@ GameObject:
   - component: {fileID: 731687393}
   - component: {fileID: 731687392}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Jewel Slot 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1677,7 +1677,7 @@ MonoBehaviour:
   - {fileID: 1950100958}
   - {fileID: 1455073002}
   actorViewPrefab: {fileID: 6919366547317327218, guid: 79fe493a4ad657c4fa964fc4d03a4e15, type: 3}
-  itemViewPrefab: {fileID: 8516680045095947692, guid: 1a6743d1eb176bd47af5ad5b61a014b8, type: 3}
+  jewelViewPrefab: {fileID: 8516680045095947692, guid: 1a6743d1eb176bd47af5ad5b61a014b8, type: 3}
   actorViews: []
 --- !u!1 &861112107
 GameObject:
@@ -1691,7 +1691,7 @@ GameObject:
   - component: {fileID: 861112110}
   - component: {fileID: 861112109}
   m_Layer: 5
-  m_Name: Panel (3)
+  m_Name: Jewel Slot 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2809,10 +2809,10 @@ RectTransform:
   m_Father: {fileID: 1187757412}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 138.85565, y: -15}
-  m_SizeDelta: {x: 227.7113, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1766788159
 MonoBehaviour:
@@ -3478,7 +3478,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.8725132}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 1.1676941}
+  m_AnchoredPosition: {x: 0, y: 1.1676636}
   m_SizeDelta: {x: 0, y: -2.3353271}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2109517003

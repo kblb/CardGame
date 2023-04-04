@@ -12,7 +12,7 @@ public class FightView : MonoBehaviour
 
     public void StartCasting(IntentInstance intent)
     {
-        CardView cardView = uiView.FindCardView(intent.attack);
+        CardView cardView = uiView.FindCardView(intent.card);
         ActorView actorView = slotsView.FindActorView(intent.targetActor);
         Vector3 actorViewScreenPosition = Camera.main.WorldToViewportPoint(actorView.transform.position);
         Vector3 actorUiPosition = new Vector3(Screen.width * actorViewScreenPosition.x, Screen.height * actorViewScreenPosition.y, 0);

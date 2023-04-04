@@ -9,28 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4dca01e76d0a4fd98e438848a3d6e55d, type: 3}
-  m_Name: MultiplyAttack
+  m_Script: {fileID: 11500000, guid: e755c0a6a9034ab0b4a1aa16ab20ae2c, type: 3}
+  m_Name: Double Damage Jewel
   m_EditorClassIdentifier: 
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: cee96d4791795f44d879cc7f9217edb5, type: 3}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: modify
+    - Name: name
+      Entry: 1
+      Data: Double damage
+    - Name: sprite
+      Entry: 10
+      Data: 0
+    - Name: modifier
       Entry: 7
       Data: 0|MultiplyAttackModify, Assembly-CSharp
-    - Name: damageToMultiply
+    - Name: multiplier
       Entry: 3
       Data: 2
     - Name: 
       Entry: 8
       Data: 
-  displayName: Multiply attack damage
-  description: Damage *2
-  icon: {fileID: 21300000, guid: 9d08d5734eca6a64ba892308fd5edb01, type: 3}
-  isEthereal: 0

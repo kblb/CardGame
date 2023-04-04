@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -46,11 +45,9 @@ public class UIView : MonoBehaviour
     {
         List<CardInstance> attackList = new List<CardInstance>()
         {
-            deckIntent.attack
+            deckIntent.card
         };
         ShowCardsIn(attackList, cardViews, intentView.attackArea.transform.position, 10, 0);
-
-        ShowCardsIn(deckIntent.modifiers.Select(t => t as CardInstance).ToList(), cardViews, intentView.modifiersArea.transform.position, 100, 0);
     }
 
     private static void ShowCardsIn(List<CardInstance> instances, List<CardView> views, Vector3 position, float spacing, float angle)
@@ -112,5 +109,10 @@ public class UIView : MonoBehaviour
     public void MoveBackDownCard(CardView cardView)
     {
         cardView.RestoreToOriginalPosition();
+    }
+
+    public JewelView FindJewelView(JewelInstance jewelInstance)
+    {
+        return jewelsFrame.jewelViews.Find(t => t.instance == jewelInstance);
     }
 }

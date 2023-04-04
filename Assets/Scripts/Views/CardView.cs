@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -6,14 +6,13 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CardView : MonoBehaviour
+public class CardView : InteractableMonoBehaviour<CardView>
 {
     [SerializeField] private Image cardIcon;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private GameObject mask;
     [SerializeField] private Image highlightImage;
-    [SerializeField] private DragNotifier dragNotifier;
     [SerializeField] private Image[] sockets;
 
     public CardInstance cardInstance;
@@ -22,54 +21,31 @@ public class CardView : MonoBehaviour
     private Vector3 originalPosition;
     private Vector3 originalAngle;
     private int originalSiblingIndex;
-    public event Action<CardView> OnBeginDragNotification;
-    public event Action<CardView> OnDragNotification;
-    public event Action<CardView> OnExitDragNotification;
-    public event Action<CardView> OnPointerEnterNotification;
-    public event Action<CardView> OnPointerExitNotification;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         Highlight(false);
-
-        dragNotifier.OnBeginDragNotification += OnBeginDrag;
-        dragNotifier.OnDragNotification += OnDrag;
-        dragNotifier.OnExitDragNotification += OnExitDrag;
-        dragNotifier.OnPointerEnterNotification += OnPointerEnter;
-        dragNotifier.OnPointerExitNotification += OnPointerExit;
-    }
-
-    private void OnPointerExit()
-    {
-        OnPointerExitNotification?.Invoke(this);
-    }
-
-    private void OnPointerEnter()
-    {
-        OnPointerEnterNotification?.Invoke(this);
-    }
-
-    private void OnDrag()
-    {
-        OnDragNotification?.Invoke(this);
-    }
-
-    private void OnExitDrag()
-    {
-        OnExitDragNotification?.Invoke(this);
-    }
-
-    private void OnBeginDrag()
-    {
-        OnBeginDragNotification?.Invoke(this);
     }
 
     public void Init(CardInstance attackCard)
     {
         this.cardInstance = attackCard;
-        cardIcon.sprite = attackCard.baseScriptableObject.icon;
-        titleText.text = attackCard.baseScriptableObject.displayName;
-        descriptionText.text = attackCard.baseScriptableObject.description;
+        cardIcon.sprite = attackCard.scriptableObject.icon;
+        titleText.text = attackCard.scriptableObject.displayName;
+        descriptionText.text = attackCard.scriptableObject.description;
+        if (attackCard.jewels.Count > 0)
+        {
+            descriptionText.text += "\n" + attackCard.jewels.Select(t => t.scriptableObject.name).Aggregate((t, y) => t + " " + y);
+        }
+
+        for (int j = 0; j < sockets.Length; j++)
+        {
+            JewelInstance jewelInstance = attackCard.jewels.Count > j ? attackCard.jewels[j] : null;
+            Transform childTransform = sockets[j].transform.GetChild(0);
+            childTransform.gameObject.SetActive(jewelInstance != null);
+            childTransform.GetComponent<Image>().sprite = jewelInstance?.scriptableObject.sprite;
+        }
     }
 
     public void Highlight(bool highlight)
@@ -120,5 +96,10 @@ public class CardView : MonoBehaviour
         transform.DORotate(originalAngle, .5f);
         transform.DOScale(1, .5f);
         transform.SetSiblingIndex(this.originalSiblingIndex);
+    }
+
+    public void AnimateNewJewel(JewelInstance obj)
+    {
+        Init(cardInstance);
     }
 }

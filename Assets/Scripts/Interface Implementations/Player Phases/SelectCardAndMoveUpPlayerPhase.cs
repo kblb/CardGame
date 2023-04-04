@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
@@ -25,6 +24,35 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         OnCompleted += UnhookEvents;
     }
 
+    public void Start()
+    {
+        cardsHookedUpTo = new List<CardInstance>(battleInstance.Player.inventory.deck.hand);
+
+        //hooking events
+        foreach (CardInstance cardInstance in cardsHookedUpTo)
+        {
+            CardView cardView = fightView.uiView.FindCardView(cardInstance);
+
+            cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
+            cardView.OnDragNotification += CardViewOnOnDragNotification;
+            cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
+            cardView.OnPointerEnterNotification += CardViewOnOnPointerEnterNotification;
+            cardView.OnPointerExitNotification += CardViewOnOnPointerExitNotification;
+        }
+
+        List<ActorInstance> actors = battleInstance.allEnemies;
+        actors.Add(battleInstance.Player);
+        
+        foreach (ActorInstance enemy in actors)
+        {
+            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
+            enemyView.OnMouseOverEvent += ActorViewOnOnMouseOverEvent;
+            enemyView.OnMouseExitEvent += ActorViewOnOnMouseExitEvent;
+        }
+
+        HightlightDefaultState();
+    }
+    
     private void UnhookEvents()
     {
         //unhook events
@@ -56,35 +84,6 @@ public class SelectCardAndMoveUpPlayerPhase : IPlayerPhase
         //turn off all highlights
         fightView.slotsView.TurnOffHighlight(battleInstance.allEnemies);
         fightView.uiView.TurnOffCardHighlights();
-    }
-
-    public void Start()
-    {
-        cardsHookedUpTo = new List<CardInstance>(battleInstance.Player.inventory.deck.hand.OfType<AttackCardInstance>());
-
-        //hooking events
-        foreach (CardInstance cardInstance in cardsHookedUpTo)
-        {
-            CardView cardView = fightView.uiView.FindCardView(cardInstance);
-
-            cardView.OnBeginDragNotification += CardViewDraggableImageOnBeginDragNotification;
-            cardView.OnDragNotification += CardViewOnOnDragNotification;
-            cardView.OnExitDragNotification += CardViewDraggableImageOnExitDragNotification;
-            cardView.OnPointerEnterNotification += CardViewOnOnPointerEnterNotification;
-            cardView.OnPointerExitNotification += CardViewOnOnPointerExitNotification;
-        }
-
-        List<ActorInstance> actors = battleInstance.allEnemies;
-        actors.Add(battleInstance.Player);
-        
-        foreach (ActorInstance enemy in actors)
-        {
-            ActorView enemyView = fightView.slotsView.FindActorView(enemy);
-            enemyView.OnMouseOverEvent += ActorViewOnOnMouseOverEvent;
-            enemyView.OnMouseExitEvent += ActorViewOnOnMouseExitEvent;
-        }
-
-        HightlightDefaultState();
     }
 
     private void CardViewOnOnPointerExitNotification(CardView obj)
