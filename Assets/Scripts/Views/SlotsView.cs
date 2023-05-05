@@ -3,21 +3,34 @@ using System.Linq;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SlotsView : MonoBehaviour
 {
     [SceneObjectsOnly, SerializeField] public SlotView playerSlot;
     [SceneObjectsOnly, SerializeField] public SlotView[] enemySlots;
     [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
+    [FormerlySerializedAs("itemViewPrefab")] [SerializeField, AssetsOnly] public JewelView jewelViewPrefab;
 
-    private List<ActorView> actorViews = new();
+    public List<ActorView> actorViews = new();
+    private static int createdEnemies;
 
-    public ActorView CreateNewActorView(ActorInstance actor)
+    public ActorView CreateNewActorView(ActorInstance actor, bool isPlayer)
     {
         ActorView actorView = Instantiate(actorViewPrefab, transform);
         actorView.Init(actor);
+        if (isPlayer)
+        {
+            playerSlot.actorView = actorView;
+            actorView.name = "Player";
+        }
+        else
+        {
+            actorView.name += ++createdEnemies;
+        }
 
         actorViews.Add(actorView);
+
         return actorView;
     }
 
@@ -36,11 +49,7 @@ public class SlotsView : MonoBehaviour
             if (slotInstance.actor != null)
             {
                 ActorView actorView = actorViews.FirstOrDefault(t => t.actorInstance == slotInstance.actor);
-                if (actorView != null)
-                {
-                    actorView.transform.DOMove(enemySlots[i].transform.position, 0.5f);
-                    actorView.transform.DOScale(enemySlots[i].transform.localScale, 0.5f);
-                }
+                enemySlots[i].MoveActorHere(actorView);
             }
 
             i++;
@@ -57,5 +66,35 @@ public class SlotsView : MonoBehaviour
     public ActorView FindActorView(ActorInstance target)
     {
         return actorViews.Find(t => t.actorInstance == target);
+    }
+
+    public void Highlight(List<ActorInstance> actors)
+    {
+        IEnumerable<ActorView> actorsToHighlight = actors.Select(FindActorView);
+
+        foreach (ActorView actor in actorViews)
+        {
+            if (actorsToHighlight.Contains(actor))
+            {
+                actor.Highlight();
+            }
+            else
+            {
+                actor.TurnOffHighlight();
+            }
+        }
+    }
+
+    public void TurnOffHighlight(List<ActorInstance> battleInstanceAllEnemies)
+    {
+        foreach (ActorInstance actor in battleInstanceAllEnemies)
+        {
+            FindActorView(actor).TurnOffHighlight();
+        }
+    }
+
+    public SlotView FindSlotView(ActorView actorView)
+    {
+        return playerSlot.actorView == actorView ? playerSlot : enemySlots.First(t => t.actorView == actorView);
     }
 }

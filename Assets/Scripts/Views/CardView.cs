@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Linq;
 using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
@@ -6,34 +6,46 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(DraggableImage))]
-public class CardView : MonoBehaviour
+public class CardView : InteractableMonoBehaviour<CardView>
 {
     [SerializeField] private Image cardIcon;
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private GameObject mask;
     [SerializeField] private Image highlightImage;
+    [SerializeField] private Image[] sockets;
 
     public CardInstance cardInstance;
 
-    public DraggableImage draggableImage;
-
     private TweenerCore<float, float, FloatOptions> currentTween;
+    private Vector3 originalPosition;
+    private Vector3 originalAngle;
+    private int originalSiblingIndex;
 
-    private void Awake()
+    private new void Awake()
     {
-        draggableImage = GetComponent<DraggableImage>();
+        base.Awake();
         Highlight(false);
     }
 
-    public void Init(CardInstance card)
+    public void Init(CardInstance attackCard)
     {
-        this.cardInstance = card;
-        cardIcon.sprite = card.scriptableObject.icon;
-        titleText.text = card.scriptableObject.displayName;
-        descriptionText.text = card.scriptableObject.description;
-        
+        this.cardInstance = attackCard;
+        cardIcon.sprite = attackCard.scriptableObject.icon;
+        titleText.text = attackCard.scriptableObject.displayName;
+        descriptionText.text = attackCard.scriptableObject.description;
+        if (attackCard.jewels.Count > 0)
+        {
+            descriptionText.text += "\n" + attackCard.jewels.Select(t => t.scriptableObject.name).Aggregate((t, y) => t + " " + y);
+        }
+
+        for (int j = 0; j < sockets.Length; j++)
+        {
+            JewelInstance jewelInstance = attackCard.jewels.Count > j ? attackCard.jewels[j] : null;
+            Transform childTransform = sockets[j].transform.GetChild(0);
+            childTransform.gameObject.SetActive(jewelInstance != null);
+            childTransform.GetComponent<Image>().sprite = jewelInstance?.scriptableObject.sprite;
+        }
     }
 
     public void Highlight(bool highlight)
@@ -42,7 +54,7 @@ public class CardView : MonoBehaviour
         {
             currentTween.Kill();
         }
-        
+
         if (highlight)
         {
             Color color = highlightImage.color;
@@ -52,5 +64,42 @@ public class CardView : MonoBehaviour
         }
 
         mask.SetActive(highlight);
+    }
+
+    public void MoveUp()
+    {
+        Vector3 position = originalPosition;
+        position.y += 50;
+
+        transform.DOKill();
+        transform.DOMove(position, .2f).SetEase(Ease.OutBack);
+        transform.DORotate(new Vector3(0, 0, 0), .5f).SetEase(Ease.OutBack);
+        transform.DOScale(1.2f, .5f).SetEase(Ease.OutBack);
+        transform.SetAsLastSibling();
+    }
+
+    public void NewPosition(Vector3 position, Vector3 angle, int siblingIndex, float duration)
+    {
+        transform.DOKill();
+        this.originalPosition = position;
+        this.originalAngle = angle;
+        this.originalSiblingIndex = siblingIndex;
+        transform.DOMove(position, duration);
+        transform.DORotate(angle, duration);
+        transform.SetSiblingIndex(siblingIndex);
+    }
+
+    public void RestoreToOriginalPosition()
+    {
+        transform.DOKill();
+        transform.DOMove(originalPosition, .5f);
+        transform.DORotate(originalAngle, .5f);
+        transform.DOScale(1, .5f);
+        transform.SetSiblingIndex(this.originalSiblingIndex);
+    }
+
+    public void AnimateNewJewel(JewelInstance obj)
+    {
+        Init(cardInstance);
     }
 }

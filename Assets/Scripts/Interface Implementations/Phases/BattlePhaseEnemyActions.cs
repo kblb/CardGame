@@ -17,10 +17,14 @@ public class BattlePhaseEnemyActions : IBattlePhase
     {
         foreach (ActorInstance enemy in battleInstance.allEnemies)
         {
-            foreach (CardInstance cardInstance in enemy.deck.intents)
+            IntentInstance intentInstance = enemy.inventory.deck.intent;
+            if (intentInstance != null)
             {
-                logicQueue.AddElement(0.1f, () => { enemy.deck.Cast(cardInstance, enemy, battleInstance); });
-                logicQueue.AddElement(0.1f, () => { enemy.deck.DiscardCard(cardInstance); });
+                logicQueue.AddElement(0.1f, () =>
+                {
+                    intentInstance.Cast(battleInstance);
+                    enemy.inventory.deck.DiscardIntent(intentInstance);
+                });
             }
         }
 

@@ -10,7 +10,8 @@ public class BattleInstance
     public readonly List<SlotInstance> slots = new();
     private int enemiesCreated;
 
-    public Action<ActorInstance> OnActorSpawned;
+    public Action<ActorInstance, bool> OnActorSpawned;
+    public Action<ActorInstance> OnActorDestroyed;
     public ActorInstance Player => player;
 
     public BattleInstance(BattleScriptableObject scriptableObject)
@@ -25,8 +26,8 @@ public class BattleInstance
 
     public ActorInstance SpawnPlayer(ActorScriptableObject playerScriptableObject)
     {
-        player = new(playerScriptableObject);
-        OnActorSpawned?.Invoke(player);
+        player = new ActorInstance(playerScriptableObject);
+        OnActorSpawned?.Invoke(player, true);
         return player;
     }
 
@@ -36,16 +37,19 @@ public class BattleInstance
         {
             throw new Exception("We shouldn't spawn next enemy, because we reached already the end of level.");
         }
-        ActorInstance enemy = new(scriptableObject.enemies[allEnemies.Count]);
-        enemiesCreated++;
-        allEnemies.Add(enemy);
+        ActorInstance enemy = new ActorInstance(scriptableObject.enemies[enemiesCreated++]);
+        SpawnAtSlotIndex(index, enemy); 
+    }
+
+    public void SpawnAtSlotIndex(int index, ActorInstance enemy)
+    {
         if (slots[index].IsFree() == false)
         {
             throw new Exception($"Will not spawn enemy at slot {index}, because it is already occupied");
         }
-
+        allEnemies.Add(enemy);
         slots[index].actor = enemy;
-        OnActorSpawned?.Invoke(enemy);
+        OnActorSpawned?.Invoke(enemy, false);
     }
 
     public List<ActorInstance> GetAllActors()
@@ -75,6 +79,8 @@ public class BattleInstance
         allEnemies.Remove(actorInstance);
         SlotInstance slotInstance = slots.First(t => t.actor == actorInstance);
         slotInstance.actor = null;
+
+        OnActorDestroyed?.Invoke(actorInstance);
     }
 
     public bool CanSpawnMoreEnemies()

@@ -4,21 +4,23 @@ using System.Linq;
 
 public class DeckInstance
 {
+    public IntentInstance intent;
     public readonly List<CardInstance> discardPile = new();
     public readonly List<CardInstance> drawPile = new();
     public readonly List<CardInstance> hand = new();
-    public readonly List<CardInstance> intents = new();
     public readonly List<CardInstance> usedEtherealPile = new();
 
-    public event Action<CardInstance> OnNewCardDrawn;
     public event Action<CardInstance> OnCardDiscarded;
     public event Action OnDrawPileReshuffled;
-    public event Action<CardInstance> OnCardAddedToHand;
     public event Action OnIntentUpdated;
+    public event Action OnCardRemovedFromHand;
+    public event Action<CardInstance> OnCardAddedToHand;
+    public event Action<CardInstance> OnCardRemovedFromDrawPile;
 
     public DeckInstance(IEnumerable<CardScriptableObject> cards)
     {
-        foreach (CardScriptableObject cardScriptableObject in cards)
+        List<CardScriptableObject> randomizedCards = cards.OrderBy(t => UnityEngine.Random.Range(-10, 10)).ToList();
+        foreach (CardScriptableObject cardScriptableObject in randomizedCards)
         {
             drawPile.Add(new CardInstance(cardScriptableObject));
         }
@@ -36,7 +38,8 @@ public class DeckInstance
         CardInstance card = drawPile[indexToDraw];
         drawPile.RemoveAt(indexToDraw);
         hand.Add(card);
-        OnNewCardDrawn?.Invoke(card);
+        OnCardRemovedFromDrawPile?.Invoke(card);
+        OnCardAddedToHand?.Invoke(card);
         return card;
     }
 
@@ -53,47 +56,45 @@ public class DeckInstance
             drawPile.Add(cardInstance);
         }
 
+        drawPile.Sort((t, y) => UnityEngine.Random.Range(-10, 10));
+
         discardPile.Clear();
         OnDrawPileReshuffled?.Invoke();
     }
 
-    public void DiscardCard(CardInstance cardInstance)
+    public void DiscardIntent(IntentInstance intent)
     {
-        intents.Remove(cardInstance);
-        if (cardInstance.scriptableObject.ethereal)
+        CardInstance card = intent.card;
+        if (card.scriptableObject.isEthereal)
         {
-            usedEtherealPile.Add(cardInstance);
+            usedEtherealPile.Add(card);
         }
         else
         {
-            discardPile.Add(cardInstance);
+            discardPile.Add(card);
         }
 
-        OnCardDiscarded?.Invoke(cardInstance);
-    }
+        OnCardDiscarded?.Invoke(card);
 
-    public void AddCardToCommitArea(CardInstance cardInstance)
-    {
-        hand.Remove(cardInstance);
-        intents.Add(cardInstance);
+        this.intent = null;
         OnIntentUpdated?.Invoke();
     }
 
-    public void RemoveCardFromCommitArea(CardInstance cardInstance)
+    public void AddIntent(IntentInstance intent)
     {
-        intents.Remove(cardInstance);
-        hand.Add(cardInstance);
-        OnCardAddedToHand?.Invoke(cardInstance);
-        OnIntentUpdated?.Invoke();
-    }
+        if (this.intent != null)
+        {
+            throw new Exception($"Will not add intent while there is another one already. With {this.intent.card.scriptableObject.name}");
+        }
 
-    public void OnIntentReadyInvoke()
-    {
-        OnIntentUpdated?.Invoke();
-    }
+        CardInstance card = intent.card;
+        if (hand.Contains(card))
+        {
+            hand.Remove(card);
+            OnCardRemovedFromHand?.Invoke();
+        }
 
-    public void Cast(CardInstance cardInstance, ActorInstance owner, BattleInstance battleInstance)
-    {
-        cardInstance.Cast(owner, battleInstance);
+        this.intent = intent;
+        OnIntentUpdated?.Invoke();
     }
 }

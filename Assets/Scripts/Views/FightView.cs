@@ -7,12 +7,13 @@ public class FightView : MonoBehaviour
     [SerializeField] public SlotsView slotsView;
     [SerializeField] public UIView uiView;
 
-    public event Action OnCastFinished;
+    public event Action<IntentInstance> OnCasted;
+    public event Action<IntentInstance> OnCastFinished;
 
-    public void OnCast(CardInstance card, ActorInstance target)
+    public void StartCasting(IntentInstance intent)
     {
-        CardView cardView = uiView.FindCardView(card);
-        ActorView actorView = slotsView.FindActorView(target);
+        CardView cardView = uiView.FindCardView(intent.card);
+        ActorView actorView = slotsView.FindActorView(intent.targetActor);
         Vector3 actorViewScreenPosition = Camera.main.WorldToViewportPoint(actorView.transform.position);
         Vector3 actorUiPosition = new Vector3(Screen.width * actorViewScreenPosition.x, Screen.height * actorViewScreenPosition.y, 0);
 
@@ -21,7 +22,8 @@ public class FightView : MonoBehaviour
         DOTween.Sequence()
             .Append(cardView.transform
                 .DOMove(actorUiPosition, 0.5f)
-                .SetEase(Ease.InCubic))
+                .SetEase(Ease.InCubic)
+                .OnComplete(() => OnCasted?.Invoke(intent)))
             .Append(actorView.transform
                 .DOMove(actorView.transform.position + new Vector3(1, -1, 0) * 5, 0.2f)
                 .SetEase(Ease.OutCirc)
@@ -29,7 +31,6 @@ public class FightView : MonoBehaviour
             .Insert(0.5f, cardView.transform
                 .DOMove(originalCardPosition, 0.5f)
                 .SetEase(Ease.OutCubic))
-            .AppendCallback(() => OnCastFinished?.Invoke())
-            ;
+            .AppendCallback(() => OnCastFinished?.Invoke(intent));
     }
 }

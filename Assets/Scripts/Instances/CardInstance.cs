@@ -1,20 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 
 public class CardInstance
 {
     public readonly CardScriptableObject scriptableObject;
-    public event Action<ActorInstance> OnCast;
+    public List<JewelInstance> jewels = new List<JewelInstance>();
 
+    public event Action<JewelInstance> OnJewelAdded;
+    
     public CardInstance(CardScriptableObject scriptableObject)
     {
+        if (scriptableObject == null)
+        {
+            throw new Exception("Scriptable object can't be null.");
+        }
         this.scriptableObject = scriptableObject;
     }
 
-    public void Cast(ActorInstance owner, BattleInstance battleInstance)
+    public void InsertJewel(JewelInstance jewel)
     {
-        //sleep card doesn't have any action
-        ActorInstance target = scriptableObject.cardAction?.GetTarget(owner, battleInstance);
-        OnCast?.Invoke(target);
-        scriptableObject.cardAction?.Cast(owner, battleInstance);
+        jewels.Add(jewel);
+        OnJewelAdded?.Invoke(jewel);
     }
 }

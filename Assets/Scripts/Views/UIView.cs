@@ -1,26 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIView : MonoBehaviour
 {
-    [SerializeField] public CardCommitAreaView cardCommitAreaView;
     [SerializeField] [SceneObjectsOnly] public DiscardPileView discardPileView;
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
+    [SerializeField] public Button endTurn;
+    [SerializeField] public JewelsFrameView jewelsFrame;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 
-    private readonly List<CardView> cardViews = new();
+    public readonly List<CardView> cardViews = new();
 
     public CardView CreateCardView(CardInstance cardInstance)
     {
         CardView cardView = Instantiate(cardViewPrefab, handView.transform);
         cardView.Init(cardInstance);
         cardViews.Add(cardView);
+        cardView.name += cardViews.Count;
         return cardView;
     }
 
@@ -31,12 +32,7 @@ public class UIView : MonoBehaviour
 
     public void ShowHand(List<CardInstance> cardInstances)
     {
-        ShowCardsIn(cardInstances, cardViews, handView.transform.position, 40, 7);
-    }
-
-    public void ShowCommitArea(List<CardInstance> intents)
-    {
-        ShowCardsIn(intents, cardViews, cardCommitAreaView.transform.position, 100, 5);
+        ShowCardsIn(cardInstances, cardViews, handView.transform.position, 60, 7);
     }
 
     public void ShowDiscardPile(List<CardInstance> discardPile)
@@ -62,9 +58,8 @@ public class UIView : MonoBehaviour
             float currentY = 0.2f * (i * spacing - offset);
             currentY *= i >= middleIndex ? -1 : 1;
 
-            cardView.transform.SetSiblingIndex(cardView.transform.parent.childCount - 1);
-            cardView.transform.DOMove(position + new Vector3(currentX, currentY, 0), 0.5f);
-            cardView.transform.DORotate(new Vector3(0, 0, currentAngle), 0.5f);
+            int siblingIndex = cardView.transform.parent.childCount - 1;
+            cardView.NewPosition(position + new Vector3(currentX, currentY, 0), new Vector3(0, 0, currentAngle), siblingIndex, .5f);
             i++;
         }
     }
@@ -76,6 +71,8 @@ public class UIView : MonoBehaviour
 
     public void Highlight(List<CardInstance> instances)
     {
+        TurnOffCardHighlights();
+
         IOrderedEnumerable<CardView> viewsOrdered = cardViews
             .Where(t => instances.Any(y => y == t.cardInstance))
             .OrderBy(t => instances.IndexOf(t.cardInstance));
@@ -86,11 +83,26 @@ public class UIView : MonoBehaviour
         }
     }
 
-    public void TurnOffHighlights()
+    public void TurnOffCardHighlights()
     {
         foreach (CardView cardView in cardViews)
         {
             cardView.Highlight(false);
         }
+    }
+
+    public void MoveUpCard(CardView cardView)
+    {
+        cardView.MoveUp();
+    }
+
+    public void MoveBackDownCard(CardView cardView)
+    {
+        cardView.RestoreToOriginalPosition();
+    }
+
+    public JewelView FindJewelView(JewelInstance jewelInstance)
+    {
+        return jewelsFrame.jewelViews.Find(t => t.instance == jewelInstance);
     }
 }

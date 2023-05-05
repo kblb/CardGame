@@ -11,6 +11,7 @@ public class ActorStatsView : MonoBehaviour
 
     [SerializeField] private Image healthBar;
     [SerializeField] private TMP_Text healthText;
+    [SerializeField] private TMP_Text shieldsText;
     [SerializeField] public Transform buffBar;
     [SerializeField] public Transform intentBar;
     [SerializeField] [AssetsOnly] private Image buffBarImagePrefab;
@@ -22,8 +23,9 @@ public class ActorStatsView : MonoBehaviour
     public void Init(ActorInstance actor)
     {
         SetHealth(actor.scriptableObject.health, actor.currentHealth);
+        SetShields(actor.currentShields);
         SetBuffs(actor.buffs);
-        SetIntent(actor.deck.intents);
+        UpdateIntent(actor.inventory.deck.intent);
     }
 
     private void Awake()
@@ -38,17 +40,17 @@ public class ActorStatsView : MonoBehaviour
         healthBar.sprite = Sprite.Create(_healthBarImage, new Rect(0, 0, ImageWidth, 1), Vector2.zero);
     }
 
-    public void SetIntent(List<CardInstance> intents)
+    public void UpdateIntent(IntentInstance intent)
     {
         foreach (Transform t in intentBar)
         {
             Destroy(t.gameObject);
         }
 
-        foreach (CardInstance intent in intents)
+        if (intent != null)
         {
             Image intentImage = Instantiate(buffBarImagePrefab, intentBar);
-            intentImage.sprite = intent.scriptableObject.intentIcon;
+            intentImage.sprite = intent.card.scriptableObject.intentIcon;
         }
     }
 
@@ -66,6 +68,12 @@ public class ActorStatsView : MonoBehaviour
         }
     }
 
+    public void SetShields(int shields)
+    {
+        shieldsText.text = "Shields\n" + shields;
+        shieldsText.transform.parent.gameObject.SetActive(shields > 0);
+    }
+
     public void SetHealth(float maxHealth, float currentHealth)
     {
         float shields = 0;
@@ -75,7 +83,7 @@ public class ActorStatsView : MonoBehaviour
             _oldHealth = currentHealth;
             _oldShield = shields;
 
-            healthText.text = currentHealth.ToString(CultureInfo.InvariantCulture) +
+            healthText.text = "Health\n" + currentHealth.ToString(CultureInfo.InvariantCulture) +
                               (shields > 0 ? $"(+{shields})" : "") + "/" +
                               maxHealth.ToString(CultureInfo.InvariantCulture);
 

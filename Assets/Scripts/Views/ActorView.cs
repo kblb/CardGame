@@ -1,16 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActorView : MonoBehaviour
 {
     [SerializeField] [SceneObjectsOnly] public ActorStatsView statsView;
+    [SerializeField] private Image hightlight;
+
     private GameObject model;
-    public ActorInstance actorInstance;
-    
     private float originalScale;
     private const float AttackScaleFactor = 1.2f;
+
+    public ActorInstance actorInstance;
+
+    public event Action<ActorView> OnMouseOverEvent, OnMouseExitEvent;
 
     public void Init(ActorInstance actor)
     {
@@ -19,12 +24,13 @@ public class ActorView : MonoBehaviour
         statsView.Init(actor);
         model = Instantiate(actor.scriptableObject.prefab, transform);
         originalScale = model.transform.localScale.x;
+        hightlight.gameObject.SetActive(false);
         transform.DOScale(Vector3.one, 0.5f);
     }
 
     public void ShowAttackAnimation()
     {
-        model.transform.localScale = Vector3.one * (originalScale * AttackScaleFactor);
+        model.transform.localScale *= AttackScaleFactor;
     }
 
     public void HideAttackAnimation()
@@ -32,8 +38,38 @@ public class ActorView : MonoBehaviour
         model.transform.localScale = Vector3.one * originalScale;
     }
 
-    public void UpdateIntent(List<CardInstance> intents)
+    public void UpdateIntent(IntentInstance intent)
     {
-        statsView.SetIntent(intents);
+        statsView.UpdateIntent(intent);
+    }
+
+    void OnMouseOver()
+    {
+        OnMouseOverEvent?.Invoke(this);
+    }
+
+    void OnMouseExit()
+    {
+        OnMouseExitEvent?.Invoke(this);
+    }
+
+    public void Highlight()
+    {
+        hightlight.gameObject.SetActive(true);
+    }
+
+    public void TurnOffHighlight()
+    {
+        hightlight.gameObject.SetActive(false);
+    }
+
+    public void Selected()
+    {
+        hightlight.color = Color.red;
+    }
+
+    public void TurnOffSelect()
+    {
+        hightlight.color = Color.green;
     }
 }

@@ -3,15 +3,14 @@
 public class BattlePhasePullCardsFromHand : IBattlePhase
 {
     private readonly DeckInstance deck;
-    private readonly int handSize;
+    private readonly int pullCardsNumber;
     private readonly LogicQueue logicQueue;
     
-    public event Action OnCardsArePulled;
 
-    public BattlePhasePullCardsFromHand(DeckInstance deck, int handSize, LogicQueue logicQueue)
+    public BattlePhasePullCardsFromHand(DeckInstance deck, int pullCardsNumber, LogicQueue logicQueue)
     {
         this.deck = deck;
-        this.handSize = handSize;
+        this.pullCardsNumber = pullCardsNumber;
         this.logicQueue = logicQueue;
     }
 
@@ -19,7 +18,7 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
 
     public void Start()
     {
-        int count = handSize - deck.hand.Count;
+        int count = pullCardsNumber;
 
         int? reshuffleAtIndex = null;
         if (count > deck.drawPile.Count)
@@ -38,7 +37,6 @@ public class BattlePhasePullCardsFromHand : IBattlePhase
 
         logicQueue.AddElement(0.1f, () =>
         {
-            OnCardsArePulled?.Invoke();
             OnFinish?.Invoke();
         });
     }
