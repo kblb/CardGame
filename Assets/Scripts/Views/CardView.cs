@@ -13,7 +13,6 @@ public class CardView : InteractableMonoBehaviour<CardView>
     [SerializeField] private TMP_Text descriptionText;
     [SerializeField] private GameObject mask;
     [SerializeField] private Image highlightImage;
-    [SerializeField] private Image[] sockets;
 
     public CardInstance cardInstance;
 
@@ -34,18 +33,6 @@ public class CardView : InteractableMonoBehaviour<CardView>
         cardIcon.sprite = attackCard.scriptableObject.icon;
         titleText.text = attackCard.scriptableObject.displayName;
         descriptionText.text = attackCard.scriptableObject.description;
-        if (attackCard.jewels.Count > 0)
-        {
-            descriptionText.text += "\n" + attackCard.jewels.Select(t => t.scriptableObject.name).Aggregate((t, y) => t + " " + y);
-        }
-
-        for (int j = 0; j < sockets.Length; j++)
-        {
-            JewelInstance jewelInstance = attackCard.jewels.Count > j ? attackCard.jewels[j] : null;
-            Transform childTransform = sockets[j].transform.GetChild(0);
-            childTransform.gameObject.SetActive(jewelInstance != null);
-            childTransform.GetComponent<Image>().sprite = jewelInstance?.scriptableObject.sprite;
-        }
     }
 
     public void Highlight(bool highlight)
@@ -96,10 +83,5 @@ public class CardView : InteractableMonoBehaviour<CardView>
         transform.DORotate(originalAngle, .5f);
         transform.DOScale(1, .5f);
         transform.SetSiblingIndex(this.originalSiblingIndex);
-    }
-
-    public void AnimateNewJewel(JewelInstance obj)
-    {
-        Init(cardInstance);
     }
 }

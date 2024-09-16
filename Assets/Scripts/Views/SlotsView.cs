@@ -10,7 +10,6 @@ public class SlotsView : MonoBehaviour
     [SceneObjectsOnly, SerializeField] public SlotView playerSlot;
     [SceneObjectsOnly, SerializeField] public SlotView[] enemySlots;
     [SerializeField, AssetsOnly] public ActorView actorViewPrefab;
-    [FormerlySerializedAs("itemViewPrefab")] [SerializeField, AssetsOnly] public JewelView jewelViewPrefab;
 
     public List<ActorView> actorViews = new();
     private static int createdEnemies;

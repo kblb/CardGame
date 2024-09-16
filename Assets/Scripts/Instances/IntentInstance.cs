@@ -23,11 +23,6 @@ public class IntentInstance
         {
             CastInstance castInstance = card.scriptableObject.cast.CreateCastInstance(owner, targetActor);
 
-            foreach (JewelInstance jewel in card.jewels)
-            {
-                jewel.scriptableObject.modifier.Modify(castInstance, battleInstance);
-            }
-
             castInstance.Cast();
         }
     }

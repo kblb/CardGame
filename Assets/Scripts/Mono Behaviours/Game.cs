@@ -1,7 +1,5 @@
 ﻿using System.Linq;
-using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Game : MonoBehaviour
 {
@@ -21,8 +19,6 @@ public class Game : MonoBehaviour
 
         fightView.OnCasted += (intent) => intent.Cast(battleInstance);
 
-        fightView.uiView.jewelsFrame.OnJewelFinishedAnimatingToSlot += itemView => { battleInstance.Player.inventory.AddJewel(itemView.instance); };
-
         battleInstance.OnActorDestroyed += instance => { fightView.slotsView.DestroyActor(instance); };
 
         battleInstance.OnActorSpawned += (ActorInstance actorInstance, bool isPlayer) =>
@@ -31,14 +27,6 @@ public class Game : MonoBehaviour
             actorInstance.OnZeroHealth += () =>
             {
                 SlotView slotView = fightView.slotsView.enemySlots.First(t => (t.actorView != null ? t.actorView.actorInstance : null) == actorInstance);
-
-                if (actorInstance.scriptableObject.lootGenerator != null)
-                {
-                    fightView.uiView.jewelsFrame.SpawnItemViewAndAnimateToSlot(
-                        0,
-                        actorInstance.scriptableObject.lootGenerator.Generate(),
-                        Camera.main.WorldToScreenPoint(slotView.actorView.transform.position));
-                }
 
                 battleInstance.DestroyActor(actorInstance);
             };
@@ -58,17 +46,9 @@ public class Game : MonoBehaviour
 
         ActorInstance playerInstance = battleInstance.SpawnPlayer(playerScriptableObject);
         
-        playerInstance.inventory.OnJewelRemoved += instance =>
-        {
-            JewelView jewelView = fightView.uiView.FindJewelView(instance);
-            Destroy(jewelView.gameObject);
-        };
-
-
         foreach (CardInstance cardInstance in battleInstance.Player.inventory.deck.drawPile)
         {
             CardView cardView = fightView.uiView.CreateCardView(cardInstance);
-            cardInstance.OnJewelAdded += cardView.AnimateNewJewel;
         }
 
         fightView.uiView.ShowDrawPile(battleInstance.Player.inventory.deck.drawPile);

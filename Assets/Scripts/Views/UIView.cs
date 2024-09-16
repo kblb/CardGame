@@ -10,7 +10,6 @@ public class UIView : MonoBehaviour
     [SerializeField] [SceneObjectsOnly] public DrawPileView drawPileView;
     [SerializeField] public HandView handView;
     [SerializeField] public Button endTurn;
-    [SerializeField] public JewelsFrameView jewelsFrame;
 
     [SerializeField] [AssetsOnly] public CardView cardViewPrefab;
 
@@ -99,10 +98,5 @@ public class UIView : MonoBehaviour
     public void MoveBackDownCard(CardView cardView)
     {
         cardView.RestoreToOriginalPosition();
-    }
-
-    public JewelView FindJewelView(JewelInstance jewelInstance)
-    {
-        return jewelsFrame.jewelViews.Find(t => t.instance == jewelInstance);
     }
 }
